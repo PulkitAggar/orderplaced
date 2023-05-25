@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mycycleclinic/models/order.model.dart';
 import '../blocs/blocs.dart';
 import '../datamodels/models.dart';
 import '../widgets/widgets.dart';
@@ -172,12 +173,19 @@ class _ShoppingCartState extends State<ShoppingCart> {
                         ),
                         TextButton(
                           onPressed: () {
+                            OrderModel modelOfOrder = OrderModel(
+                                time: "17:45",
+                                weekday: "Thursday",
+                                date: "15 Jan , 2023",
+                                cost: total - discount,
+                                storeUid: "Jw05mBpXnk9ydGaJh0p0",
+                                isCancelled: false,
+                                lstOfItems: messages);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => PaymentScreen(
-                                  weekday: 'Thursday',
-                                  amount: (total - discount),
+                                  orderModel: modelOfOrder,
                                 ),
                               ),
                             );

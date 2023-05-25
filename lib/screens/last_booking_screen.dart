@@ -1,20 +1,90 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
+import 'package:http/http.dart';
+import 'package:mycycleclinic/models/order.model.dart';
+import 'package:mycycleclinic/screens/landing_screen.dart';
 
 import '../widgets/widgets.dart';
 
-class LastBookingScreen extends StatelessWidget {
-  final bool cancel;
-  final String time;
-  final String weekday;
-  final String date;
+class LastBookingScreen extends StatefulWidget {
+  OrderModel orderModel;
 
-  const LastBookingScreen({
-    Key? key,
-    this.cancel = false,
-    this.time = "07:15",
-    this.weekday = "Thursday",
-    this.date = "4 january,2022",
-  }) : super(key: key);
+  LastBookingScreen({Key? key, required this.orderModel}) : super(key: key);
+
+  @override
+  State<LastBookingScreen> createState() => _LastBookingScreenState();
+}
+
+class _LastBookingScreenState extends State<LastBookingScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _store = FirebaseFirestore.instance;
+
+  _updatingOrderINtoFirebase(String date, String weekday, String time,
+      bool isCancelled, String storeId) async {
+    String uuid = _auth.currentUser!.uid;
+    await _store
+        .collection("stores")
+        .doc(storeId)
+        .collection("orders")
+        .doc(uuid)
+        .set({"time": time, "date": date, "weekday": weekday, "user": uuid},
+            SetOptions(merge: true));
+
+    await _store
+        .collection("users")
+        .doc(uuid)
+        .collection("orders")
+        .doc(uuid)
+        .set({
+      "time": time,
+      "date": date,
+      "weekday": weekday,
+      "isCancelled": isCancelled,
+    }, SetOptions(merge: true));
+
+    for (var items in widget.orderModel.lstOfItems) {
+      await _store
+          .collection("users")
+          .doc(uuid)
+          .collection("orders")
+          .doc(uuid)
+          .set({
+        "order": {
+          items.get("name"): {
+            "cost": items.get("cost"),
+            "count": items.get("count"),
+            "image": items.get("imageurl")
+          },
+        }
+      }, SetOptions(merge: true));
+
+      await _store
+          .collection("stores")
+          .doc(uuid)
+          .collection("orders")
+          .doc(uuid)
+          .set({
+        "order": {
+          items.get("name"): {"cost": items.get("cost")},
+          "count": items.get("count"),
+          "image": items.get("imageurl")
+        }
+      }, SetOptions(merge: true));
+    }
+  }
+
+  @override
+  void initState() {
+    _updatingOrderINtoFirebase(
+        widget.orderModel.date,
+        widget.orderModel.weekday,
+        widget.orderModel.time,
+        widget.orderModel.isCancelled,
+        widget.orderModel.storeUid);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +97,14 @@ class LastBookingScreen extends StatelessWidget {
             padding: EdgeInsets.all(10),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                fixedSize: Size(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height * 0.06),
-                shape: StadiumBorder(),
-                backgroundColor: Colors.white
-              ),
+                  fixedSize: Size(MediaQuery.of(context).size.width,
+                      MediaQuery.of(context).size.height * 0.06),
+                  shape: StadiumBorder(),
+                  backgroundColor: Colors.white),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text("Go Back Home", style: TextStyle(fontSize: 16, color: Colors.black)),
+                child: Text("Go Back Home",
+                    style: TextStyle(fontSize: 16, color: Colors.black)),
               ),
               onPressed: () {},
             ),
@@ -51,7 +122,10 @@ class LastBookingScreen extends StatelessWidget {
                 padding: EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   boxShadow: [
-                    BoxShadow(color: Colors.grey.withOpacity(0.2), blurRadius: 0.6, spreadRadius: 1),
+                    BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        blurRadius: 0.6,
+                        spreadRadius: 1),
                   ],
                   color: Colors.white,
                   shape: BoxShape.circle,
@@ -59,15 +133,18 @@ class LastBookingScreen extends StatelessWidget {
                 child: Icon(Icons.done, size: 80, color: Colors.black),
               ),
               Space(16),
-              Text(cancel ? "Cancelled!!" : "Confirmed", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32)),
+              Text(widget.orderModel.isCancelled ? "Cancelled!!" : "Confirmed",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32)),
               Space(32),
               Text(
-                cancel ? "Your booking has been cancelled successfully" : "Your booking has been confirmed for $date",
+                widget.orderModel.isCancelled
+                    ? "Your booking has been cancelled successfully"
+                    : "Your booking has been confirmed for ${widget.orderModel.date}",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
               Visibility(
-                visible: cancel ? false : true,
+                visible: widget.orderModel.isCancelled ? false : true,
                 child: Column(
                   children: [
                     Space(8),
@@ -83,11 +160,16 @@ class LastBookingScreen extends StatelessWidget {
                       children: [
                         Icon(Icons.timer_outlined, color: Colors.grey),
                         Space(4),
-                        Text(time, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                        Text(widget.orderModel.time,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17)),
                         Space(4),
-                        Text("on", style: TextStyle(color: Colors.grey, fontSize: 13)),
+                        Text("on",
+                            style: TextStyle(color: Colors.grey, fontSize: 13)),
                         Space(4),
-                        Text(weekday, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)),
+                        Text(widget.orderModel.weekday,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 17)),
                       ],
                     )
                   ],
