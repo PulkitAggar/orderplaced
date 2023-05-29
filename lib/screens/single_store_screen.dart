@@ -226,3 +226,4 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
     );
   }
 }
+

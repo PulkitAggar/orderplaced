@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mycycleclinic/models/order.model.dart';
 import '../blocs/blocs.dart';
 import '../datamodels/models.dart';
 import '../widgets/widgets.dart';
@@ -172,12 +173,22 @@ class _ShoppingCartState extends State<ShoppingCart> {
                         ),
                         TextButton(
                           onPressed: () {
+                            DateTime currentDate = DateTime.now();
+                            DateTime currentTime = DateTime.now();
+                            OrderModel modelOfOrder = OrderModel(
+                                time: "${currentTime.hour}:${currentTime.minute}:${currentTime.second}",
+                                weekday: "${currentDate.weekday}",
+                                date: "${currentDate.day}-${currentDate.month}-${currentDate.year}",
+                                cost: total - discount,
+                                storeUid: "Jw05mBpXnk9ydGaJh0p0",
+                                isCancelled: false,
+                                lstOfItems: messages);
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => PaymentScreen(
-                                  weekday: 'Thursday',
-                                  amount: (total - discount),
+                                  totsamount: total - discount.toDouble(),
+                                  orderModel: modelOfOrder,
                                 ),
                               ),
                             );
@@ -636,7 +647,7 @@ class CustomCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 5),
       child: Container(
-        height: 120,
+        //height: 120,
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.grey.shade200,
@@ -649,12 +660,16 @@ class CustomCard extends StatelessWidget {
               Row(
                 children: [
                   Image.network(imageurl, height: 64, width: 64),
-                  SizedBox(width: 20),
-                  Text(
-                    name,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  //Expanded(child: SizedBox(width: 1)),
+                  SizedBox(width: 15,),
+                  Expanded(
+                    child: Text(
+                      name,
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
                   ),
-                  Spacer(),
+                  //Spacer(),
+                  SizedBox(width: 15,),
                   IconButton(
                     icon: Icon(Icons.cancel),
                     onPressed: () {

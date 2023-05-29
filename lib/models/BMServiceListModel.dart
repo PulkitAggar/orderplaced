@@ -6,5 +6,5 @@ class BMServiceListModel {
   String description;
 
   BMServiceListModel(
-      {required this.name, required this.cost, required this.image, required this.description});
+      {required this.name, required this.cost, required this.image, required this.description, required String subname});
 }

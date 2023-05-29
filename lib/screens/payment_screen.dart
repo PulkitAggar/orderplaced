@@ -1,25 +1,23 @@
-
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mycycleclinic/models/order.model.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
-
 
 import '../widgets/widgets.dart';
 import 'screens.dart';
+import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:mycycleclinic/repositories/razor_credentials.dart' as razorCredentials;
+import 'package:mycycleclinic/repositories/razor_credentials.dart'
+    as razorCredentials;
 
 class PaymentScreen extends StatefulWidget {
-
-  
-
-  final String weekday;
-  final double amount;
-
-  PaymentScreen({Key? key, required this.weekday, required this.amount}) : super(key: key);
+  OrderModel orderModel;
+  double totsamount;
+  PaymentScreen({Key? key, required this.orderModel, required this.totsamount}) : super(key: key);
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -30,10 +28,8 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-
   @override
-
-  int selectedValue=0;
+  int selectedValue = 0;
   // void initState() {
   //   if (widget.list[0].date == "") {
   //     widget.setDate();
@@ -43,7 +39,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   final _razorpay = Razorpay();
   
-  get amount => amount;
+  //double amount= widget.totsamount;
+
+  //get amount => totsamount;
 
   @override
   void initState() {
@@ -58,16 +56,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     // Do something when payment succeeds
     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LastBookingScreen(
-                            cancel: false,
-                            weekday: widget.weekday,
-                            // date: widget.list[0].date,
-                            // time: widget.list[0].time,
-                          ),
-                        ),
-                      );
+      context,
+      MaterialPageRoute(
+        builder: (context) => LastBookingScreen(
+          orderModel: widget.orderModel,
+          // date: widget.list[0].date,
+          // time: widget.list[0].time,
+        ),
+      ),
+    );
     print(response);
     verifySignature(
       signature: response.signature,
@@ -103,7 +100,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         'Basic ${base64Encode(utf8.encode('$username:$password'))}';
 
     Map<String, dynamic> body = {
-      "amount": amount * 100,
+      "amount": widget.totsamount * 100,
       "currency": "INR",
       "receipt": "rcptid_11"
     };
@@ -126,8 +123,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
   openGateway(String orderId) {
     var options = {
       'key': razorCredentials.keyId,
-      'amount': 100, //in the smallest currency sub-unit.
-      'name': 'Acme Corp.',
+      'amount': widget.totsamount *100, //in the smallest currency sub-unit.
+      'name': 'Balaji Sports and Fitness',
       'order_id': orderId, // Generate order_id using Orders API
       'description': 'Fine T-Shirt',
       'timeout': 60 * 5, // in seconds // 5 minutes
@@ -194,7 +191,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
         title: Text(
           "Payment",
           textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.w900, fontSize: 20, color: Colors.black),
+          style: TextStyle(
+              fontWeight: FontWeight.w900, fontSize: 20, color: Colors.black),
         ),
       ),
       bottomSheet: BottomSheet(
@@ -211,41 +209,30 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 color: Colors.black,
                 borderRadius: BorderRadius.circular(40),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Expanded(
-                  //   child: Text(
-                  //     "Rs.$amount",
-                  //     style: TextStyle(
-                  //       color: Colors.white,
-                  //       fontWeight: FontWeight.bold,
-                  //     ),
-                  //   ),
-                  // ),
-                  TextButton(
-                    onPressed: () {
-                      if(selectedValue==1){
-                        createOrder();
-                      }
-                      else if(selectedValue==2){
-                        Navigator.of(context).pushAndRemoveUntil( MaterialPageRoute(builder: (context) => LastBookingScreen()), (Route<dynamic> route) => false,);
-                      }
-                      else{
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Choose one of the options"))
-                        );
-                      }
-                    },
-                    child: Text(
-                      "Pay",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+              child: TextButton(
+                onPressed: () {
+                  if (selectedValue == 1) {
+                    createOrder();
+                  } else if (selectedValue == 2) {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(
+                          builder: (context) => LastBookingScreen(
+                                orderModel: widget.orderModel,
+                              )),
+                      (Route<dynamic> route) => false,
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text("Choose one of the options")));
+                  }
+                },
+                child: Text(
+                  "Pay Rs.${widget.totsamount}",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
-                ],
+                ),
               ),
             ),
           );
@@ -258,12 +245,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
           children: [
             Space(75),
             //PaymentContainer(title: "Net Banking", icon: Icons.food_bank),
-           
+
             ListTile(
               title: const Text('Net Banking'),
               leading: Radio<int>(
-                fillColor: MaterialStateColor.resolveWith((states) => Colors.black),
-                focusColor: MaterialStateColor.resolveWith((states) => Colors.black),
+                fillColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black),
+                focusColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black),
                 value: 1,
                 groupValue: selectedValue,
                 onChanged: (value) {
@@ -276,18 +265,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ListTile(
               title: const Text('Cash Delivery'),
               leading: Radio<int>(
-                fillColor: MaterialStateColor.resolveWith((states) => Colors.black),
+                fillColor:
+                    MaterialStateColor.resolveWith((states) => Colors.black),
                 value: 2,
                 groupValue: selectedValue,
-                onChanged: ( value) {
+                onChanged: (value) {
                   setState(() {
                     selectedValue = value!;
                   });
                 },
               ),
             ),
-      
-    
+
             Space(75),
           ],
         ),
