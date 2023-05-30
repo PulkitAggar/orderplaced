@@ -119,6 +119,9 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                         final imageurl =
                                             message.get("itemImage");
                                         final subname = message.get("subname");
+                                        final disc = message
+                                                .data()?["itemDescription"] ??
+                                            "";
                                         // final dis = message.get("itemDescription");
 
                                         //   messagewidget.add({
@@ -131,9 +134,12 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                         print(name);
                                         if (subname == doc[i]) {
                                           messagewidget.add(BMServiceComponent(
-                                              name: name,
-                                              cost: cost,
-                                              imageurl: imageurl));
+                                            name: name,
+                                            cost: cost,
+                                            imageurl: imageurl,
+                                            disc: disc,
+                                            storeid: id,
+                                          ));
                                         }
                                       }
                                     }

@@ -29,7 +29,7 @@ class ShoppingCartState extends State<ShoppingCart> {
 
   final StreamController<QuerySnapshotPlatform> localStreamController =
       StreamController.broadcast();
-  dynamic cop;
+  late List<dynamic> cop;
 
   @override
   void initState() {
@@ -83,7 +83,7 @@ class ShoppingCartState extends State<ShoppingCart> {
         await _firebase.collection("coupon").doc("coupon").get().then((value) {
       // print(value.get("code"));
       setState(() {
-        cop = value.get("code");
+        cop.add(value.get("code"));
       });
       return value.get("code");
     });
@@ -203,6 +203,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                             DateTime currentDate = DateTime.now();
                             DateTime currentTime = DateTime.now();
                             OrderModel modelOfOrder = OrderModel(
+                                trackOrder: "pending",
                                 time:
                                     "${currentTime.hour}:${currentTime.minute}:${currentTime.second}",
                                 weekday: "${currentDate.weekday}",
@@ -481,101 +482,40 @@ class ShoppingCartState extends State<ShoppingCart> {
                                       Icon(Icons.offline_share_outlined,
                                           size: 20),
                                       Space(8),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Apply Coupon",
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w900,
-                                                fontSize: 18),
-                                          ),
-                                          //Space(2),
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.66,
-                                            child: TextField(
-                                              onChanged: (value) {
-                                                coupon = value.toString();
-                                              },
-                                              decoration: InputDecoration(
-                                                  border:
-                                                      UnderlineInputBorder()),
-                                            ),
-                                          ),
-                                          TextButton(
-                                              child: Text("Apply"),
-                                              onPressed: () async {
-                                                print(cop);
-                                                // print(fetch());
-                                                // if (coupon.isEmpty) {
-                                                //   setState(() {
-                                                //     var snackBar = SnackBar(
-                                                //       content: Text(
-                                                //           'enter valid coupon'),
-                                                //     );
-                                                //     ScaffoldMessenger.of(
-                                                //             context)
-                                                //         .showSnackBar(snackBar);
-                                                //     discount = 0;
-                                                //   });
-                                                // }
-                                                //
-                                                // if (coupon.isNotEmpty) {
-                                                //   var doc = await fetch(coupon);
-                                                //   if (doc?.get("code") ==
-                                                //       coupon.toString()) {
-                                                //     var doc =
-                                                //         await fetch(coupon);
-                                                //     setState(() {
-                                                //       discount =
-                                                //           doc?.get("amount");
-                                                //     });
-                                                //   }
-                                                //   if (doc == null) {
-                                                //     setState(() {
-                                                //       var snackBar = SnackBar(
-                                                //         content: Text(
-                                                //             'enter valid coupon'),
-                                                //       );
-                                                //       ScaffoldMessenger.of(
-                                                //               context)
-                                                //           .showSnackBar(
-                                                //               snackBar);
-                                                //       discount = 0;
-                                                //     });
-                                                //   }
-                                                // }
-                                                // print(coupon);
-                                                // if (doc == null) {
-                                                //   print("true");
-                                                // }
-
-                                                // print(total);
-                                                // for (var c in coup!) {
-                                                //   if (coupon ==
-                                                //       c.get("code")) {
-                                                //     discount = c.get(
-                                                //         "amount");
-                                                //     setState(() {
-                                                //       total = total -
-                                                //           c.get(
-                                                //               "amount");
-                                                //     });
-                                                //   }
-                                                // }
-                                                // for(int i=0;i<id.length;i++){
-                                                //   if(coupon == id[i]){
-                                                //     discount =
-                                                //   }
-                                                // }
-                                              })
-                                        ],
+                                      Expanded(
+                                        child: Text(
+                                          "Apply Coupon",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                              fontSize: 18),
+                                        ),
                                       ),
+                                      IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: (){
+                                          // ignore: use_build_context_synchronously
+                                          showDialog(context: context, builder: (BuildContext context){
+                                            return ListView.builder(
+                                              itemCount: cop.length,
+                                              itemBuilder: (context, index){
+                                                return Card(
+                                                  child: Column(
+                                                    children: [
+                                                      Text(cop[index]),
+                                                      TextButton(onPressed: (){
+                                                        coupon=cop[index];
+                                                        Navigator.pop(context);
+                                                      }, child: Text('Apply'))
+                                                    ],
+                                                  )
+                                                );
+                                              }
+                                            );
+                                          });
+                                          print(cop);
+                                        },
+                                      )
                                     ],
                                   ),
                                 ),

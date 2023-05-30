@@ -4,11 +4,14 @@ import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../models/BMServiceListModel.dart';
+import '../utils/BMBottomSheet.dart';
 import '../utils/BMColors.dart';
 import '../utils/BMCommonWidgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
 import 'package:collection/collection.dart';
+
+import 'BMServiceComponent2.dart';
 
 final _firebase = FirebaseFirestorePlatform.instance;
 
@@ -16,10 +19,16 @@ User? loggineduser;
 
 class BMServiceComponent extends StatefulWidget {
   BMServiceComponent(
-      {required this.name, required this.cost, required this.imageurl});
+      {required this.name,
+      required this.cost,
+      required this.imageurl,
+      required this.disc,
+      required this.storeid});
   String name;
   String imageurl;
   int cost;
+  String disc;
+  String storeid;
 
   @override
   State<BMServiceComponent> createState() => BMServiceComponentState();
@@ -128,7 +137,12 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                   border: Border.all(color: bmPrimaryColor),
                 ),
                 padding: EdgeInsets.all(6),
-                child: Icon(Icons.info, color: bmPrimaryColor),
+                child: GestureDetector(
+                    onTap: () {
+                      showBookBottomSheet(context, widget.imageurl, widget.disc,
+                          widget.name, widget.cost);
+                    },
+                    child: Icon(Icons.info, color: bmPrimaryColor)),
               ),
               8.width,
               if (add == 0)
