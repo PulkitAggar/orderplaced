@@ -4,22 +4,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mycycleclinic/models/order.model.dart';
 import '../blocs/blocs.dart';
 import '../datamodels/models.dart';
 import '../widgets/widgets.dart';
 import 'screens.dart';
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
+import '../models/order.model.dart';
 
 final _firebase = FirebaseFirestorePlatform.instance;
 User? loggineduser;
 
 class ShoppingCart extends StatefulWidget {
   @override
-  _ShoppingCartState createState() => _ShoppingCartState();
+  ShoppingCartState createState() => ShoppingCartState();
 }
 
-class _ShoppingCartState extends State<ShoppingCart> {
+class ShoppingCartState extends State<ShoppingCart> {
   double total = 0.00;
   String coupon = '';
   var discount = 0;
@@ -27,33 +27,36 @@ class _ShoppingCartState extends State<ShoppingCart> {
   final AddressBloc addressBloc = AddressBloc();
   final _auth = FirebaseAuth.instance;
 
-  StreamController<QuerySnapshotPlatform> _localStreamController =
+  final StreamController<QuerySnapshotPlatform> localStreamController =
       StreamController.broadcast();
 
   @override
   void initState() {
     super.initState();
-
+    getuser();
     _firebase
         .collection("cart")
         .doc("${loggineduser?.email}")
         .collection("cart")
         .snapshots()
         .listen((QuerySnapshotPlatform querySnapshot) =>
-            _localStreamController.add(querySnapshot));
+            localStreamController.add(querySnapshot));
 
-    _localStreamController.stream.listen((event) {
+    localStreamController.stream.listen((event) {
       var t = 0.0;
       for (var doc in event.docs) {
         t += doc.get("cost") * doc.get("count");
       }
-
-      setState(() {
-        total = t;
-      });
+      if (mounted) {
+        setState(() {
+          // Your state update code goes here
+          total = t;
+        });
+      }
+      // setState(() {
+      //   total = t;
+      // });
     });
-
-    getuser();
   }
 
   void getuser() async {
@@ -74,17 +77,22 @@ class _ShoppingCartState extends State<ShoppingCart> {
         .doc("${loggineduser?.email}")
         .collection("coupon")
         .get();
+    var d =
+        await _firebase.collection("coupon").doc("coupon").get().then((value) {
+      print(value.get("code"));
+    });
     DocumentSnapshotPlatform? foundDoc =
         doc.docs.firstWhereOrNull((element) => element.get("code") == coupon);
     if (doc.docs.isEmpty) {
       return null;
     }
+
     return foundDoc;
   }
 
   @override
   void dispose() {
-    _localStreamController.close();
+    // localStreamController.close();
     textEditingController.dispose();
     super.dispose();
   }
@@ -103,7 +111,7 @@ class _ShoppingCartState extends State<ShoppingCart> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshotPlatform>(
-        stream: _localStreamController.stream,
+        stream: localStreamController.stream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -176,9 +184,11 @@ class _ShoppingCartState extends State<ShoppingCart> {
                             DateTime currentDate = DateTime.now();
                             DateTime currentTime = DateTime.now();
                             OrderModel modelOfOrder = OrderModel(
-                                time: "${currentTime.hour}:${currentTime.minute}:${currentTime.second}",
+                                time:
+                                    "${currentTime.hour}:${currentTime.minute}:${currentTime.second}",
                                 weekday: "${currentDate.weekday}",
-                                date: "${currentDate.day}-${currentDate.month}-${currentDate.year}",
+                                date:
+                                    "${currentDate.day}-${currentDate.month}-${currentDate.year}",
                                 cost: total - discount,
                                 storeUid: "Jw05mBpXnk9ydGaJh0p0",
                                 isCancelled: false,
@@ -661,15 +671,20 @@ class CustomCard extends StatelessWidget {
                 children: [
                   Image.network(imageurl, height: 64, width: 64),
                   //Expanded(child: SizedBox(width: 1)),
-                  SizedBox(width: 15,),
+                  SizedBox(
+                    width: 15,
+                  ),
                   Expanded(
                     child: Text(
                       name,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                   ),
                   //Spacer(),
-                  SizedBox(width: 15,),
+                  SizedBox(
+                    width: 15,
+                  ),
                   IconButton(
                     icon: Icon(Icons.cancel),
                     onPressed: () {

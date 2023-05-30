@@ -17,7 +17,8 @@ import 'package:mycycleclinic/repositories/razor_credentials.dart'
 class PaymentScreen extends StatefulWidget {
   OrderModel orderModel;
   double totsamount;
-  PaymentScreen({Key? key, required this.orderModel, required this.totsamount}) : super(key: key);
+  PaymentScreen({Key? key, required this.orderModel, required this.totsamount})
+      : super(key: key);
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -38,7 +39,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   // }
 
   final _razorpay = Razorpay();
-  
+
   //double amount= widget.totsamount;
 
   //get amount => totsamount;
@@ -54,6 +55,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    //ADD cart clear func
     // Do something when payment succeeds
     Navigator.push(
       context,
@@ -123,7 +125,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   openGateway(String orderId) {
     var options = {
       'key': razorCredentials.keyId,
-      'amount': widget.totsamount *100, //in the smallest currency sub-unit.
+      'amount': widget.totsamount * 100, //in the smallest currency sub-unit.
       'name': 'Balaji Sports and Fitness',
       'order_id': orderId, // Generate order_id using Orders API
       'description': 'Fine T-Shirt',
@@ -214,6 +216,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   if (selectedValue == 1) {
                     createOrder();
                   } else if (selectedValue == 2) {
+                    //ADD cart clear func
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (context) => LastBookingScreen(
@@ -222,8 +225,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       (Route<dynamic> route) => false,
                     );
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text("Choose one of the options")));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Choose one of the options")));
                   }
                 },
                 child: Text(

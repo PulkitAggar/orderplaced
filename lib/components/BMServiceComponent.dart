@@ -16,7 +16,7 @@ User? loggineduser;
 
 class BMServiceComponent extends StatefulWidget {
   BMServiceComponent(
-      {required this.name, required this.cost, required this.imageurl,});
+      {required this.name, required this.cost, required this.imageurl});
   String name;
   String imageurl;
   int cost;
@@ -156,7 +156,7 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                         .collection("cart")
                         .doc("${widget.name}")
                         .set({
-                      'cost': widget.cost,
+                      'cost': widget.cost.toDouble(),
                       'count': 1,
                       'imageurl': widget.imageurl,
                       'name': widget.name

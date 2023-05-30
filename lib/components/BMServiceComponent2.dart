@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-import '../models/BMServiceListModel.dart';
-import '../utils/BMBottomSheet.dart';
-import '../utils/BMColors.dart';
-import '../utils/BMCommonWidgets.dart';
+import '';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
 import 'package:collection/collection.dart';
+
+import '../models/BMServiceListModel.dart';
+import '../utils/BMColors.dart';
+import '../utils/BMCommonWidgets.dart';
 
 final _firebase = FirebaseFirestorePlatform.instance;
 
@@ -28,29 +29,39 @@ class _BMServiceComponent2State extends State<BMServiceComponent2> {
   void initState() {
     super.initState();
     getuser();
+    fetch(widget.element.name);
   }
 
-  void fetch() async {
+  Future<void> fetch(String name) async {
     var doc = await _firebase
         .collection("cart")
         .doc("${loggineduser?.email}")
         .collection("cart")
         .get();
-    DocumentSnapshotPlatform? foundDoc = doc.docs.firstWhereOrNull(
-        (element) => element.get("name") == widget.element.name);
+    DocumentSnapshotPlatform? foundDoc =
+        doc.docs.firstWhereOrNull((element) => element.get("name") == name);
     if (doc.docs.isEmpty) {
-      setState(() {
-        add = 0;
-      });
+      if (mounted) {
+        setState(() {
+          // Your state update code goes here
+          add = 0;
+        });
+      }
     }
     if (foundDoc != null) {
-      setState(() {
-        add = 1;
-      });
+      if (mounted) {
+        setState(() {
+          // Your state update code goes here
+          add = 1;
+        });
+      }
     } else if (foundDoc == null) {
-      setState(() {
-        add = 0;
-      });
+      if (mounted) {
+        setState(() {
+          // Your state update code goes here
+          add = 0;
+        });
+      }
     }
   }
 
@@ -68,7 +79,6 @@ class _BMServiceComponent2State extends State<BMServiceComponent2> {
 
   @override
   Widget build(BuildContext context) {
-    fetch();
     return Container(
       decoration: BoxDecoration(
           color: Colors.grey.withOpacity(0.2),
@@ -131,7 +141,7 @@ class _BMServiceComponent2State extends State<BMServiceComponent2> {
                       ),
                     );
                     // showBookBottomSheet(context, element);
-                    fetch();
+                    // fetch();
                     //print(widget.element.image);
                     _firebase
                         .collection("cart")
@@ -144,11 +154,14 @@ class _BMServiceComponent2State extends State<BMServiceComponent2> {
                       'imageurl': widget.element.image,
                       'name': widget.element.name
                     }).then((value) => {
+                              setState(() {
+                                add = add + 1;
+                              }),
                               ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar)
+                                  .showSnackBar(snackBar),
                             });
                   },
-                  child: Text(add == 0 ? 'ADD' : 'ADDED',
+                  child: Text('ADD',
                       style: boldTextStyle(color: Colors.white, size: 12)),
                 ),
               if (add != 0)
@@ -207,7 +220,10 @@ void showBookBottomSheet(BuildContext context, BMServiceListModel element) {
               ),
               titleText(title: element.name, size: 24),
               16.height,
-              Image.network(element.image,fit: BoxFit.cover,),
+              Image.network(
+                element.image,
+                fit: BoxFit.cover,
+              ),
               // Text(
               //   "NULL available",
               //   style: primaryTextStyle(color:  bmSpecialColorDark),
@@ -219,7 +235,9 @@ void showBookBottomSheet(BuildContext context, BMServiceListModel element) {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   titleText(
-                      title: "Rs. ${element.cost.toString()}", size: 16, maxLines: 2),
+                      title: "Rs. ${element.cost.toString()}",
+                      size: 16,
+                      maxLines: 2),
                   14.height,
                   Text(
                     element.description,
