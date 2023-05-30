@@ -24,10 +24,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     if (selectedTab == 0) {
       return BMHomeFragment2();
     } else if (selectedTab == 1) {
-      return BMSearchFragment();
-    } else if (selectedTab == 2) {
       return RoadSideAssistance();
-    } else if (selectedTab == 3) {
+    } else if (selectedTab == 2) {
       return ShoppingCart();
     } else {
       return ProfileScreen();
@@ -89,12 +87,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
         items: list.map((e) {
           int index = list.indexOf(e);
           return BottomNavigationBarItem(
-            icon: Image.asset(e.unSelectedIcon,
-                height: 24, color: bmPrimaryColor),
+            icon: Icon(e.unSelectedIcon,color: bmPrimaryColor),
             activeIcon: index == 0
-                ? Image.asset(e.selectedIcon, height: 24, color: bmPrimaryColor)
-                : Image.asset(e.selectedIcon,
-                    height: 24, color: bmPrimaryColor),
+                ? Icon(e.selectedIcon, color: bmPrimaryColor)
+                : Icon(e.selectedIcon, color: bmPrimaryColor),
             label: '',
           );
         }).toList(),
@@ -104,8 +100,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 }
 
 class DashboardModel {
-  String selectedIcon;
-  String unSelectedIcon;
+  IconData selectedIcon;
+  IconData unSelectedIcon;
 
   DashboardModel({required this.selectedIcon, required this.unSelectedIcon});
 }
@@ -114,20 +110,17 @@ List<DashboardModel> getDashboardList() {
   List<DashboardModel> list = [];
 
   list.add(DashboardModel(
-      selectedIcon: 'assets/images/beauty_master/home.png',
-      unSelectedIcon: 'assets/images/beauty_master/house.png'));
+      selectedIcon: Icons.home_filled,
+      unSelectedIcon: Icons.home_outlined));
   list.add(DashboardModel(
-      selectedIcon: 'assets/images/beauty_master/magnifier.png',
-      unSelectedIcon: 'assets/images/beauty_master/search.png'));
+      selectedIcon: Icons.emergency,
+      unSelectedIcon: Icons.emergency_outlined));
   list.add(DashboardModel(
-      selectedIcon: 'assets/images/beauty_master/calendar_selected.png',
-      unSelectedIcon: 'assets/images/beauty_master/calendar.png'));
+      selectedIcon: Icons.shopping_cart,
+      unSelectedIcon: Icons.shopping_cart_outlined));
   list.add(DashboardModel(
-      selectedIcon: 'assets/images/beauty_master/chat_selected.png',
-      unSelectedIcon: 'assets/images/beauty_master/chat.png'));
-  list.add(DashboardModel(
-      selectedIcon: 'assets/images/beauty_master/more_selected.png',
-      unSelectedIcon: 'assets/images/beauty_master/more.png'));
+      selectedIcon: Icons.person,
+      unSelectedIcon: Icons.person_outline));
 
   return list;
 }
