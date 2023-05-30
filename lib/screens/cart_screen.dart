@@ -203,6 +203,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                             DateTime currentDate = DateTime.now();
                             DateTime currentTime = DateTime.now();
                             OrderModel modelOfOrder = OrderModel(
+                                trackOrder: "pending",
                                 time:
                                     "${currentTime.hour}:${currentTime.minute}:${currentTime.second}",
                                 weekday: "${currentDate.weekday}",

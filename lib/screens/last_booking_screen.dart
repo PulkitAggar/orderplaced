@@ -25,33 +25,25 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
   _updatingOrderINtoFirebase(String date, String weekday, String time,
       bool isCancelled, String storeId) async {
     String uuid = _auth.currentUser!.uid;
-    await _store
-        .collection("stores")
-        .doc(storeId)
-        .collection("orders")
-        .doc(uuid)
-        .set({"time": time, "date": date, "weekday": weekday, "user": uuid},
-            SetOptions(merge: true));
 
-    await _store
-        .collection("users")
-        .doc(uuid)
-        .collection("orders")
-        .doc(uuid)
-        .set({
+    final doc_store =
+        _store.collection("stores").doc(storeId).collection("orders").doc();
+    final doc_user =
+        _store.collection("users").doc(uuid).collection("orders").doc();
+
+    await doc_store.set(
+        {"time": time, "date": date, "weekday": weekday, "user": uuid},
+        SetOptions(merge: true));
+
+    await doc_user.set({
       "time": time,
       "date": date,
       "weekday": weekday,
-      "isCancelled": isCancelled,
+      "isCancelled": isCancelled
     }, SetOptions(merge: true));
 
     for (var items in widget.orderModel.lstOfItems) {
-      await _store
-          .collection("users")
-          .doc(uuid)
-          .collection("orders")
-          .doc(uuid)
-          .set({
+      await doc_user.set({
         "order": {
           items.get("name"): {
             "cost": items.get("cost"),
@@ -61,18 +53,18 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
         }
       }, SetOptions(merge: true));
 
-      await _store
-          .collection("stores")
-          .doc(storeId)
-          .collection("orders")
-          .doc(uuid)
-          .set({
+      await doc_store.set({
         "order": {
-          items.get("name"): {"cost": items.get("cost")},
-          "count": items.get("count"),
-          "image": items.get("imageurl")
+          items.get("name"): {
+            "cost": items.get("cost"),
+            "count": items.get("count"),
+            "image": items.get("imageurl")
+          },
         }
       }, SetOptions(merge: true));
+
+      widget.orderModel.trackOrder = "placed";
+      print(widget.orderModel.trackOrder);
     }
   }
 
@@ -108,7 +100,9 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
                     style: TextStyle(fontSize: 16, color: Colors.black)),
               ),
               onPressed: () {
-                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context)=>DashboardScreen()), (Route<dynamic> route) => false);
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context) => DashboardScreen()),
+                    (Route<dynamic> route) => false);
               },
             ),
           );
