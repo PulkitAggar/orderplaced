@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mycycleclinic/models/order.model.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -9,10 +10,12 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../widgets/widgets.dart';
 import 'screens.dart';
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:mycycleclinic/repositories/razor_credentials.dart'
     as razorCredentials;
+
+final _firebase = FirebaseFirestorePlatform.instance;
+User? _loggineduser;
 
 class PaymentScreen extends StatefulWidget {
   OrderModel orderModel;
@@ -39,6 +42,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   // }
 
   final _razorpay = Razorpay();
+  final _auth = FirebaseAuth.instance;
 
   //double amount= widget.totsamount;
 
@@ -46,6 +50,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   void initState() {
+    getuser();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
       _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -54,8 +60,34 @@ class _PaymentScreenState extends State<PaymentScreen> {
     super.initState();
   }
 
+  void getuser() async {
+    try {
+      final user = await _auth.currentUser;
+      if (user != null) {
+        _loggineduser = user;
+        print(_loggineduser?.email);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  void delete() async {
+    FirebaseFirestore.instance
+        .collection("cart")
+        .doc("${loggineduser?.email}")
+        .collection("cart")
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
+  }
+
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     //ADD cart clear func
+    delete();
     // Do something when payment succeeds
     Navigator.push(
       context,
@@ -66,7 +98,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
           // time: widget.list[0].time,
         ),
       ),
-    );
+    ).then((value) {
+      _firebase.collection("cart").doc("${_loggineduser?.email}").delete();
+    });
     print(response);
     verifySignature(
       signature: response.signature,
@@ -217,6 +251,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     createOrder();
                   } else if (selectedValue == 2) {
                     //ADD cart clear func
+                    delete();
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (context) => LastBookingScreen(

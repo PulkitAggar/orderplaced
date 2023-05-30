@@ -29,11 +29,13 @@ class ShoppingCartState extends State<ShoppingCart> {
 
   final StreamController<QuerySnapshotPlatform> localStreamController =
       StreamController.broadcast();
+  dynamic cop;
 
   @override
   void initState() {
     super.initState();
     getuser();
+    fetch();
     _firebase
         .collection("cart")
         .doc("${loggineduser?.email}")
@@ -71,7 +73,7 @@ class ShoppingCartState extends State<ShoppingCart> {
     }
   }
 
-  Future<DocumentSnapshotPlatform?> fetch(String coupon) async {
+  Future fetch() async {
     var doc = await _firebase
         .collection("coupon")
         .doc("${loggineduser?.email}")
@@ -79,15 +81,19 @@ class ShoppingCartState extends State<ShoppingCart> {
         .get();
     var d =
         await _firebase.collection("coupon").doc("coupon").get().then((value) {
-      print(value.get("code"));
+      // print(value.get("code"));
+      setState(() {
+        cop = value.get("code");
+      });
+      return value.get("code");
     });
-    DocumentSnapshotPlatform? foundDoc =
-        doc.docs.firstWhereOrNull((element) => element.get("code") == coupon);
+    // DocumentSnapshotPlatform? foundDoc =
+    //     doc.docs.firstWhereOrNull((element) => element.get("code") == coupon);
     if (doc.docs.isEmpty) {
       return null;
     }
 
-    return foundDoc;
+    return d;
   }
 
   @override
@@ -106,6 +112,19 @@ class ShoppingCartState extends State<ShoppingCart> {
       res = res + element.price * element.quantity;
     });
     totalAmount = res;
+  }
+
+  void delete() async {
+    FirebaseFirestore.instance
+        .collection("cart")
+        .doc("${loggineduser?.email}")
+        .collection("cart")
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
   }
 
   @override
@@ -491,45 +510,47 @@ class ShoppingCartState extends State<ShoppingCart> {
                                           TextButton(
                                               child: Text("Apply"),
                                               onPressed: () async {
-                                                if (coupon.isEmpty) {
-                                                  setState(() {
-                                                    var snackBar = SnackBar(
-                                                      content: Text(
-                                                          'enter valid coupon'),
-                                                    );
-                                                    ScaffoldMessenger.of(
-                                                            context)
-                                                        .showSnackBar(snackBar);
-                                                    discount = 0;
-                                                  });
-                                                }
-
-                                                if (coupon.isNotEmpty) {
-                                                  var doc = await fetch(coupon);
-                                                  if (doc?.get("code") ==
-                                                      coupon.toString()) {
-                                                    var doc =
-                                                        await fetch(coupon);
-                                                    setState(() {
-                                                      discount =
-                                                          doc?.get("amount");
-                                                    });
-                                                  }
-                                                  if (doc == null) {
-                                                    setState(() {
-                                                      var snackBar = SnackBar(
-                                                        content: Text(
-                                                            'enter valid coupon'),
-                                                      );
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                              snackBar);
-                                                      discount = 0;
-                                                    });
-                                                  }
-                                                }
-                                                print(coupon);
+                                                print(cop);
+                                                // print(fetch());
+                                                // if (coupon.isEmpty) {
+                                                //   setState(() {
+                                                //     var snackBar = SnackBar(
+                                                //       content: Text(
+                                                //           'enter valid coupon'),
+                                                //     );
+                                                //     ScaffoldMessenger.of(
+                                                //             context)
+                                                //         .showSnackBar(snackBar);
+                                                //     discount = 0;
+                                                //   });
+                                                // }
+                                                //
+                                                // if (coupon.isNotEmpty) {
+                                                //   var doc = await fetch(coupon);
+                                                //   if (doc?.get("code") ==
+                                                //       coupon.toString()) {
+                                                //     var doc =
+                                                //         await fetch(coupon);
+                                                //     setState(() {
+                                                //       discount =
+                                                //           doc?.get("amount");
+                                                //     });
+                                                //   }
+                                                //   if (doc == null) {
+                                                //     setState(() {
+                                                //       var snackBar = SnackBar(
+                                                //         content: Text(
+                                                //             'enter valid coupon'),
+                                                //       );
+                                                //       ScaffoldMessenger.of(
+                                                //               context)
+                                                //           .showSnackBar(
+                                                //               snackBar);
+                                                //       discount = 0;
+                                                //     });
+                                                //   }
+                                                // }
+                                                // print(coupon);
                                                 // if (doc == null) {
                                                 //   print("true");
                                                 // }
