@@ -120,7 +120,12 @@ class _BMServiceComponent2State extends State<BMServiceComponent2> {
                 padding: EdgeInsets.all(6),
                 child: GestureDetector(
                     onTap: () {
-                      showBookBottomSheet(context, widget.element);
+                      showBookBottomSheet(
+                          context,
+                          widget.element.image,
+                          widget.element.description,
+                          widget.element.name,
+                          widget.element.cost);
                     },
                     child: Icon(Icons.info, color: bmPrimaryColor)),
               ),
@@ -193,7 +198,8 @@ class _BMServiceComponent2State extends State<BMServiceComponent2> {
   }
 }
 
-void showBookBottomSheet(BuildContext context, BMServiceListModel element) {
+void showBookBottomSheet(
+    BuildContext context, String image, String disc, String name, int cost) {
   showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -218,10 +224,10 @@ void showBookBottomSheet(BuildContext context, BMServiceListModel element) {
                       color: bmTextColorDarkMode),
                 ),
               ),
-              titleText(title: element.name, size: 24),
+              titleText(title: name, size: 24),
               16.height,
               Image.network(
-                element.image,
+                image,
                 fit: BoxFit.cover,
               ),
               // Text(
@@ -235,12 +241,10 @@ void showBookBottomSheet(BuildContext context, BMServiceListModel element) {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   titleText(
-                      title: "Rs. ${element.cost.toString()}",
-                      size: 16,
-                      maxLines: 2),
+                      title: "Rs. ${cost.toString()}", size: 16, maxLines: 2),
                   14.height,
                   Text(
-                    element.description,
+                    disc,
                     style: secondaryTextStyle(color: bmPrimaryColor),
                   )
                 ],
