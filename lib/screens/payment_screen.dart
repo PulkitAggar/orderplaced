@@ -51,7 +51,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     getuser();
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
       _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -219,6 +218,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    widget.orderModel.trackOrder = "payment_initiated";
+    print(widget.orderModel.trackOrder);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
