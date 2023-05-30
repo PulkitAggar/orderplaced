@@ -22,11 +22,13 @@ class BMServiceComponent extends StatefulWidget {
       {required this.name,
       required this.cost,
       required this.imageurl,
-      required this.disc});
+      required this.disc,
+      required this.storeid});
   String name;
   String imageurl;
   int cost;
   String disc;
+  String storeid;
 
   @override
   State<BMServiceComponent> createState() => BMServiceComponentState();
