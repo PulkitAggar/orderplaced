@@ -1,4 +1,6 @@
 class BMCommonCardModel {
+  double latitude;
+  double longitude;
   String storeUid;
   String image;
   String title;
@@ -11,10 +13,11 @@ class BMCommonCardModel {
   bool? liked;
 
   BMCommonCardModel(
-      {
-        required this.storeUid,
+      {required this.storeUid,
       required this.image,
       required this.title,
+      required this.latitude,
+      required this.longitude,
       this.subtitle,
       this.comments,
       this.distance,

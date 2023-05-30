@@ -87,7 +87,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         items: list.map((e) {
           int index = list.indexOf(e);
           return BottomNavigationBarItem(
-            icon: Icon(e.unSelectedIcon,color: bmPrimaryColor),
+            icon: Icon(e.unSelectedIcon, color: bmPrimaryColor),
             activeIcon: index == 0
                 ? Icon(e.selectedIcon, color: bmPrimaryColor)
                 : Icon(e.selectedIcon, color: bmPrimaryColor),
@@ -110,17 +110,14 @@ List<DashboardModel> getDashboardList() {
   List<DashboardModel> list = [];
 
   list.add(DashboardModel(
-      selectedIcon: Icons.home_filled,
-      unSelectedIcon: Icons.home_outlined));
+      selectedIcon: Icons.home_filled, unSelectedIcon: Icons.home_outlined));
   list.add(DashboardModel(
-      selectedIcon: Icons.emergency,
-      unSelectedIcon: Icons.emergency_outlined));
+      selectedIcon: Icons.emergency, unSelectedIcon: Icons.emergency_outlined));
   list.add(DashboardModel(
       selectedIcon: Icons.shopping_cart,
       unSelectedIcon: Icons.shopping_cart_outlined));
   list.add(DashboardModel(
-      selectedIcon: Icons.person,
-      unSelectedIcon: Icons.person_outline));
+      selectedIcon: Icons.person, unSelectedIcon: Icons.person_outline));
 
   return list;
 }

@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../models/BMServiceListModel.dart';
 import '../repositories/stores_repository.dart';
@@ -28,9 +29,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
   late String storeid;
   late Future<List<BMServiceListModel>> servicesList;
   late Future<List<dynamic>> accessoriesList;
-  // late Future<List<BMServiceListModel>> bikepartsList;
-  // late Future<List<BMServiceListModel>> bikesList;
-  // late Future<List> accessoriesname;
+
   @override
   void initState() {
     super.initState();
@@ -83,7 +82,6 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                       shrinkWrap: true,
                       itemCount: doc.length,
                       itemBuilder: (context, i) {
-                        //
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ExpansionTile(
@@ -146,14 +144,14 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                         children: messagewidget,
                                       );
                                     } else if (innershot.hasError) {
-                                      return Center(
+                                      return const Center(
                                         child: CircularProgressIndicator(
                                           backgroundColor:
                                               Colors.lightBlueAccent,
                                         ),
                                       );
                                     } else {
-                                      return Center(
+                                      return const Center(
                                         child: CircularProgressIndicator(
                                           backgroundColor:
                                               Colors.lightBlueAccent,
@@ -166,7 +164,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                         );
                       });
                 } else {
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(
                       backgroundColor: Colors.lightBlueAccent,
                     ),

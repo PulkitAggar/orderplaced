@@ -98,6 +98,8 @@ List<BMCommonCardModel> getFavList() {
   List<BMCommonCardModel> list = [];
 
   list.add(BMCommonCardModel(
+    latitude: 23.22,
+    longitude: 23.22,
     storeUid: 'none',
     title: 'Fly Trim Hair Studio',
     image: '$BaseUrl/images/beauty_master/salon_one.jpg',
@@ -109,6 +111,8 @@ List<BMCommonCardModel> getFavList() {
     liked: true,
   ));
   list.add(BMCommonCardModel(
+    latitude: 23.22,
+    longitude: 23.22,
     storeUid: 'none',
     title: 'Paul Cuts',
     image: '$BaseUrl/images/beauty_master/salon_two.jpg',
@@ -121,6 +125,8 @@ List<BMCommonCardModel> getFavList() {
   ));
 
   list.add(BMCommonCardModel(
+    latitude: 23.22,
+    longitude: 23.22,
     storeUid: 'none',
     title: 'Bio Pinky Nail Salon',
     image: '$BaseUrl/images/beauty_master/salon_four.jpg',
@@ -132,6 +138,8 @@ List<BMCommonCardModel> getFavList() {
     liked: true,
   ));
   list.add(BMCommonCardModel(
+    latitude: 23.22,
+    longitude: 23.22,
     storeUid: 'none',
     title: 'Savanna',
     image: '$BaseUrl/images/beauty_master/salon_three.jpg',
@@ -152,6 +160,8 @@ List<BMCommonCardModel> getRecommendedList() {
   List<BMCommonCardModel> list = [];
 
   list.add(BMCommonCardModel(
+    latitude: 23.22,
+    longitude: 23.22,
     storeUid: 'none',
     title: 'Savanna',
     image: '$BaseUrl/images/beauty_master/salon_three.jpg',
@@ -164,6 +174,8 @@ List<BMCommonCardModel> getRecommendedList() {
     likes: '124',
   ));
   list.add(BMCommonCardModel(
+    latitude: 23.22,
+    longitude: 23.22,
     storeUid: 'none',
     title: 'Bio Pinky Nail Salon',
     image: '$BaseUrl/images/beauty_master/salon_four.jpg',
@@ -177,6 +189,8 @@ List<BMCommonCardModel> getRecommendedList() {
   ));
 
   list.add(BMCommonCardModel(
+    latitude: 23.22,
+    longitude: 23.22,
     storeUid: 'none',
     title: 'Fly Trim Hair Studio',
     image: '$BaseUrl/images/beauty_master/salon_one.jpg',
@@ -189,6 +203,8 @@ List<BMCommonCardModel> getRecommendedList() {
     likes: '258',
   ));
   list.add(BMCommonCardModel(
+    latitude: 23.22,
+    longitude: 23.22,
     storeUid: 'none',
     title: 'Paul Cuts',
     image: '$BaseUrl/images/beauty_master/salon_two.jpg',

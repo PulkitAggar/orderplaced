@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:mycycleclinic/screens/single_store_screen.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -11,17 +12,32 @@ class BMCommonCardComponent extends StatefulWidget {
   BMCommonCardModel element;
   bool fullScreenComponent;
   bool isFavList;
+  double latitude;
+  double longitude;
 
   BMCommonCardComponent(
       {required this.element,
       required this.fullScreenComponent,
-      required this.isFavList});
+      required this.isFavList,
+      required this.latitude,
+      required this.longitude});
 
   @override
   State<BMCommonCardComponent> createState() => _BMCommonCardComponentState();
 }
 
 class _BMCommonCardComponentState extends State<BMCommonCardComponent> {
+  late double distance;
+  late int distanceinKM;
+
+  @override
+  void initState() {
+    distance = Geolocator.distanceBetween(widget.latitude, widget.longitude,
+        widget.element.latitude, widget.element.longitude) / 1000;
+    distanceinKM = distance.floor();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -82,7 +98,7 @@ class _BMCommonCardComponentState extends State<BMCommonCardComponent> {
                   //         style: secondaryTextStyle(color: bmPrimaryColor)),
                   //   ],
                   // ),
-                  Text(widget.element.distance!,
+                  Text("${distanceinKM} Km",
                       style: secondaryTextStyle(color: bmPrimaryColor)),
                 ],
               ).paddingSymmetric(horizontal: 8),

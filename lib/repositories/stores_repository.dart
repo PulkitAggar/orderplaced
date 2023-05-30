@@ -21,6 +21,10 @@ class StoresRepository {
 
       String image = doc.data()['storeAvatarUrl'] ?? '';
 
+      double latitude = double.parse(doc.data()['lat'] ?? 0);
+
+      double longitude = double.parse(doc.data()['lng'] ?? 0);
+
       // double distance = doc['distance'].toDouble();
       String distance = "0.00";
 
@@ -33,6 +37,8 @@ class StoresRepository {
         image: image,
         distance: distance,
         saveTag: saveTag,
+        latitude: latitude,
+        longitude: longitude,
       );
 
       storesList.add(cardModel);
@@ -40,29 +46,27 @@ class StoresRepository {
 
     return storesList;
   }
-  static Future<List<BMRoadAssListModel>> getRoadAssList()async{
+
+  static Future<List<BMRoadAssListModel>> getRoadAssList() async {
     List<BMRoadAssListModel> storesList = [];
 
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await FirebaseFirestore.instance.collection('stores').where("roadsideassistance", isEqualTo: true).get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('stores')
+        .where("roadsideassistance", isEqualTo: true)
+        .get();
 
-    querySnapshot.docs.forEach((doc) { 
+    querySnapshot.docs.forEach((doc) {
       String title = doc.data()['storeName'] ?? '';
       String storeUid = doc.data()['storeUid'] ?? '';
       String image = doc.data()['storeAvatarUrl'] ?? '';
       int number = doc.data()['phone'] ?? '';
-    
 
-    BMRoadAssListModel cardModel = BMRoadAssListModel(
-        storeuid: storeUid,
-        image: image,
-        name: title,
-        number: number
-      );
+      BMRoadAssListModel cardModel = BMRoadAssListModel(
+          storeuid: storeUid, image: image, name: title, number: number);
 
       storesList.add(cardModel);
-
-   });
+    });
     return storesList;
   }
 
@@ -101,7 +105,8 @@ class StoresRepository {
         name: name,
         cost: cost,
         description: description,
-        image: image, subname: '',
+        image: image,
+        subname: '',
       );
 
       storesList.add(cardModel);
