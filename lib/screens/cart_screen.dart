@@ -548,35 +548,33 @@ class ShoppingCartState extends State<ShoppingCart> {
                                           icon: Icon(Icons.edit),
                                           onPressed: () {
                                             // ignore: use_build_context_synchronously
-                                            if (total == 0)
-                                              showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return ListView.builder(
-                                                        itemCount: cop.length,
-                                                        itemBuilder:
-                                                            (context, index) {
-                                                          return Card(
-                                                              child: Column(
-                                                            children: [
-                                                              Text(cop[index]),
-                                                              TextButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    coupon = cop[
-                                                                        index];
-                                                                    print(
-                                                                        coupon);
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  child: Text(
-                                                                      'Apply'))
-                                                            ],
-                                                          ));
-                                                        });
-                                                  });
+                                            // if (total == 0)
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return ListView.builder(
+                                                      itemCount: cop.length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return Card(
+                                                            child: Column(
+                                                          children: [
+                                                            Text(cop[index]),
+                                                            TextButton(
+                                                                onPressed: () {
+                                                                  coupon = cop[
+                                                                      index];
+                                                                  print(coupon);
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                child: Text(
+                                                                    'Apply'))
+                                                          ],
+                                                        ));
+                                                      });
+                                                });
                                             print(cop);
                                           },
                                         )
