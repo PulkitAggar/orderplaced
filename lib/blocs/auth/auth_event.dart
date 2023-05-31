@@ -17,8 +17,9 @@ class SignInRequested extends AuthEvent {
 class SignUpRequested extends AuthEvent {
   final String email;
   final String password;
+  final String mobile;
 
-  SignUpRequested(this.email, this.password);
+  SignUpRequested(this.email, this.password, this.mobile);
 }
 
 // When the user signing in with google this event is called and the [AuthRepository] is called to sign in the user
@@ -27,12 +28,11 @@ class GoogleSignInRequested extends AuthEvent {}
 // When the user signing out this event is called and the [AuthRepository] is called to sign out the user
 class SignOutRequested extends AuthEvent {}
 
-
 class ResetPassword extends AuthEvent {
   final String email;
 
   ResetPassword(this.email);
-  
+
   @override
   List<Object> get props => [email];
 }

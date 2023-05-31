@@ -12,7 +12,8 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
-  bool? rememberMe = false;
+  bool? showPassword = true;
+
   final _formKey = GlobalKey<FormState>();
   final _email = TextEditingController();
   final _password = TextEditingController();
@@ -43,7 +44,7 @@ class _SigninScreenState extends State<SigninScreen> {
                 child: CircularProgressIndicator(),
               );
             }
-            if(state is UnAuthenticated || state is PasswordResetSuccess ){
+            if (state is UnAuthenticated || state is PasswordResetSuccess) {
               return Center(
                 child: SingleChildScrollView(
                   child: Container(
@@ -53,18 +54,26 @@ class _SigninScreenState extends State<SigninScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          SizedBox(height: 30),
+                          const SizedBox(height: 30),
                           Image.asset("assets/images/logo.png",
                               height: 100, width: 100),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               formHeading("Sign In/"),
-                              formSubHeadingForm("Sign Up"),
+                              GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => SignupScreen(),
+                                        ));
+                                  },
+                                  child: formSubHeadingForm("Sign Up")),
                             ],
                           ),
-                          SizedBox(height: 50),
+                          const SizedBox(height: 50),
                           editTextStyle("E-mail",
                               controller: _email,
                               isPassword: false, validator: (value) {
@@ -73,15 +82,15 @@ class _SigninScreenState extends State<SigninScreen> {
                                 ? 'Enter a valid email'
                                 : null;
                           }),
-                          SizedBox(height: 16),
+                          const SizedBox(height: 16),
                           editTextStyle("Password",
                               controller: _password,
-                              isPassword: true, validator: (value) {
+                              isPassword: showPassword, validator: (value) {
                             return value != null && value.length < 6
                                 ? "Enter min. 6 characters"
                                 : null;
                           }),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Padding(
                             padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
                             child: CheckboxListTile(
@@ -89,27 +98,32 @@ class _SigninScreenState extends State<SigninScreen> {
                               selectedTileColor: Colors.white,
                               checkColor: Colors.black,
                               title: const Text(
-                                "Remember Me",
+                                "Hide password",
                                 style: TextStyle(color: Colors.white),
                               ),
-                              value: rememberMe,
+                              value: showPassword,
                               onChanged: (newValue) {
-                                rememberMe = newValue;
+                                showPassword = newValue;
                                 setState(() {});
                               },
                               controlAffinity: ListTileControlAffinity.leading,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Padding(
-                              padding: EdgeInsets.fromLTRB(40, 16, 40, 16),
+                              padding:
+                                  const EdgeInsets.fromLTRB(40, 16, 40, 16),
                               child: shadowButton("Signin", () {
                                 _authenticateWithEmailAndPassword(context);
                               })),
-                          SizedBox(height: 24),
+                          const SizedBox(height: 24),
                           TextButton(
-                            onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> PasswordResetScreen()));
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const PasswordResetScreen()));
                             },
                             child: const Text(
                               "Forgot password",
@@ -148,14 +162,15 @@ class _SigninScreenState extends State<SigninScreen> {
 
 Text formHeading(var label) {
   return Text(label,
-      style:
-          TextStyle(color: Color(0xFFCCFE00), fontSize: 30, fontFamily: 'Bold'),
+      style: const TextStyle(
+          color: Color(0xFFCCFE00), fontSize: 30, fontFamily: 'Bold'),
       textAlign: TextAlign.center);
 }
 
 Text formSubHeadingForm(var label) {
   return Text(label,
-      style: TextStyle(color: Colors.grey, fontSize: 20, fontFamily: 'Bold'),
+      style:
+          const TextStyle(color: Colors.grey, fontSize: 20, fontFamily: 'Bold'),
       textAlign: TextAlign.center);
 }
 
@@ -164,24 +179,24 @@ Padding editTextStyle(var hintText,
     TextEditingController? controller,
     String? Function(String?)? validator}) {
   return Padding(
-    padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
+    padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
     child: TextFormField(
-      style: TextStyle(fontSize: 20, color: Colors.white),
+      style: const TextStyle(fontSize: 20, color: Colors.white),
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: validator,
       obscureText: isPassword,
       controller: controller,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(24, 18, 24, 18),
+        contentPadding: const EdgeInsets.fromLTRB(24, 18, 24, 18),
         hintText: hintText,
         filled: true,
-        fillColor: Color(0xFF1C1F26),
+        fillColor: const Color(0xFF1C1F26),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(40),
             borderSide: const BorderSide(color: Color(0XFFE8E8E8), width: 0.0)),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(40),
-          borderSide: BorderSide(color: Color(0XFFE8E8E8), width: 0.0),
+          borderSide: const BorderSide(color: Color(0XFFE8E8E8), width: 0.0),
         ),
       ),
     ),
@@ -194,11 +209,11 @@ Widget shadowButton(String name, void Function()? onPressed) {
     minWidth: double.infinity,
     child: Text(
       name,
-      style: TextStyle(fontWeight: FontWeight.bold),
+      style: const TextStyle(fontWeight: FontWeight.bold),
     ),
     textColor: Colors.black,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40.0)),
-    color: Color(0xFFCCFE00),
+    color: const Color(0xFFCCFE00),
     onPressed: onPressed,
   );
 }

@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
           title: 'Aura',
           home: (FirebaseAuth.instance.currentUser != null)
               ? DashboardScreen()
-              : const SplashScreen(),
+              : const LandingScreen(),
         ),
       ),
     );

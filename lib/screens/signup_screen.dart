@@ -29,14 +29,14 @@ class _SignupScreenState extends State<SignupScreen> {
 
   void _createAccountWithEmailAndPassword(BuildContext context) {
     //if (_formKey.currentState!.validate()) {
-      BlocProvider.of<AuthBloc>(context).add(
-        SignUpRequested(
-          _email.text,
-          _password.text,
-        ),
-      );
-    }
-  
+    BlocProvider.of<AuthBloc>(context).add(
+      SignUpRequested(
+        _email.text,
+        _password.text,
+        _mobile.text,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,12 +81,19 @@ class _SignupScreenState extends State<SignupScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           formHeading("Sign Up/"),
-                          formSubHeadingForm("Sign in"),
+                          GestureDetector(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushReplacement(MaterialPageRoute(
+                                  builder: (context) => SigninScreen(),
+                                ));
+                              },
+                              child: formSubHeadingForm("Sign in")),
                         ],
                       ),
                       const SizedBox(height: 40),
                       editTextStyle(
-                        "Full Name",
+                        "Enter EMAIL",
                         isPassword: false,
                         controller: _email,
                         validator: (value) {

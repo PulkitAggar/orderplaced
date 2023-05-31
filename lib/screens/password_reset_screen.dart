@@ -35,7 +35,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
               (route) => false,
             );
             ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Password reset email sent')));
+                const SnackBar(content: Text('Password reset email sent')));
           }
         },
         builder: (context, state) {

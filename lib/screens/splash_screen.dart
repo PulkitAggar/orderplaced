@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'screens.dart';
 
-
 class SplashScreen extends StatefulWidget {
-  static String tag = '/beauty_master';
-
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
@@ -23,8 +20,8 @@ class _SplashScreenState extends State<SplashScreen> {
     // setStatusBarColor(appStore.isDarkModeOn ? appStore.scaffoldBackground! : bmLightScaffoldBackgroundColor);
     await 1.seconds.delay;
     finish(context);
-    // WalkThroughScreen().launch(context);
-    LandingScreen().launch(context);
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: ((context) => LandingScreen())));
   }
 
   @override
@@ -36,13 +33,14 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: appStore.isDarkModeOn ? appStore.scaffoldBackground! : bmLightScaffoldBackgroundColor,
-      backgroundColor: Color(0xFF000000),
+      backgroundColor: const Color(0xFF000000),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image.asset('assets/images/logo.png', height: 200),
-          Text('MYCYCLECLINIC', style: boldTextStyle(size: 20, color:Colors.white)),
+          Text('MYCYCLECLINIC',
+              style: boldTextStyle(size: 20, color: Colors.white)),
         ],
       ).center(),
     );
