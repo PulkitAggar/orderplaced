@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -164,6 +163,10 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                     // fetch(widget.element.name);
 
                     print(widget.imageurl);
+                    _firebase
+                        .collection("cart")
+                        .doc("${loggineduser?.email}")
+                        .set({"storeid": widget.storeid});
                     _firebase
                         .collection("cart")
                         .doc("${loggineduser?.email}")
