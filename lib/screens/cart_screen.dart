@@ -29,13 +29,16 @@ class ShoppingCartState extends State<ShoppingCart> {
 
   final StreamController<QuerySnapshotPlatform> localStreamController =
       StreamController.broadcast();
-  late List<dynamic> cop;
+  List<dynamic> cop = [];
+  bool exist = false;
 
   @override
   void initState() {
+    xyz();
+    fetch();
     super.initState();
     getuser();
-    fetch();
+
     _firebase
         .collection("cart")
         .doc("${loggineduser?.email}")
@@ -83,7 +86,7 @@ class ShoppingCartState extends State<ShoppingCart> {
         await _firebase.collection("coupon").doc("coupon").get().then((value) {
       // print(value.get("code"));
       setState(() {
-        cop.add(value.get("code"));
+        cop = value.get("code");
       });
       return value.get("code");
     });
@@ -94,6 +97,39 @@ class ShoppingCartState extends State<ShoppingCart> {
     }
 
     return d;
+  }
+
+  void xyz() {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc("${loggineduser?.uid}")
+        .collection("userAddress")
+        .get()
+        .then((value) {
+      QueryDocumentSnapshot<Map<String, dynamic>>? foundDoc = value.docs
+          .firstWhereOrNull((element) => element.get("fullAddress") == "");
+      QueryDocumentSnapshot<Map<String, dynamic>>? foundDoc1 =
+          value.docs.firstWhereOrNull((element) => element.get("name") == "");
+      QueryDocumentSnapshot<Map<String, dynamic>>? foundDoc2 =
+          value.docs.firstWhereOrNull((element) => element.get("number") == "");
+      if (value.docs.length != 0 &&
+          foundDoc?.get("fullAddress") != "" &&
+          foundDoc1?.get("name") != "" &&
+          foundDoc2?.get("number") != "") {
+        // if(value.docs.){}
+        setState(() {
+          exist = true;
+        });
+        print("added");
+      } else {
+        setState(() {
+          exist = false;
+        });
+
+        print("add");
+      }
+      print(foundDoc?.get("name"));
+    });
   }
 
   @override
@@ -200,28 +236,41 @@ class ShoppingCartState extends State<ShoppingCart> {
                         ),
                         TextButton(
                           onPressed: () {
-                            DateTime currentDate = DateTime.now();
-                            DateTime currentTime = DateTime.now();
-                            OrderModel modelOfOrder = OrderModel(
-                                trackOrder: "pending",
-                                time:
-                                    "${currentTime.hour}:${currentTime.minute}:${currentTime.second}",
-                                weekday: "${currentDate.weekday}",
-                                date:
-                                    "${currentDate.day}-${currentDate.month}-${currentDate.year}",
-                                cost: total - discount,
-                                storeUid: "Jw05mBpXnk9ydGaJh0p0",
-                                isCancelled: false,
-                                lstOfItems: messages);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PaymentScreen(
-                                  totsamount: total - discount.toDouble(),
-                                  orderModel: modelOfOrder,
+                            if (exist == false) {
+                              var snackBar = const SnackBar(
+                                dismissDirection: DismissDirection.down,
+                                content: Text(
+                                  'Please Fill Recivers Details',
+                                  style: TextStyle(color: Colors.white),
                                 ),
-                              ),
-                            );
+                              );
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            }
+                            if (messagewidget.isNotEmpty && exist) {
+                              DateTime currentDate = DateTime.now();
+                              DateTime currentTime = DateTime.now();
+                              OrderModel modelOfOrder = OrderModel(
+                                  trackOrder: "pending",
+                                  time:
+                                      "${currentTime.hour}:${currentTime.minute}:${currentTime.second}",
+                                  weekday: "${currentDate.weekday}",
+                                  date:
+                                      "${currentDate.day}-${currentDate.month}-${currentDate.year}",
+                                  cost: total - discount,
+                                  storeUid: "Jw05mBpXnk9ydGaJh0p0",
+                                  isCancelled: false,
+                                  lstOfItems: messages);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PaymentScreen(
+                                    totsamount: total - discount.toDouble(),
+                                    orderModel: modelOfOrder,
+                                  ),
+                                ),
+                              );
+                            }
                           },
                           child: Text(
                             "Proceed to Pay",
@@ -436,7 +485,10 @@ class ShoppingCartState extends State<ShoppingCart> {
                                                                     "number":
                                                                         number,
                                                                     "name": name
+                                                                  }).then((value) {
+                                                                    xyz();
                                                                   });
+
                                                                   Navigator.pop(
                                                                       context);
                                                                 },
@@ -493,26 +545,33 @@ class ShoppingCartState extends State<ShoppingCart> {
                                       ),
                                       IconButton(
                                         icon: Icon(Icons.edit),
-                                        onPressed: (){
+                                        onPressed: () {
                                           // ignore: use_build_context_synchronously
-                                          showDialog(context: context, builder: (BuildContext context){
-                                            return ListView.builder(
-                                              itemCount: cop.length,
-                                              itemBuilder: (context, index){
-                                                return Card(
-                                                  child: Column(
-                                                    children: [
-                                                      Text(cop[index]),
-                                                      TextButton(onPressed: (){
-                                                        coupon=cop[index];
-                                                        Navigator.pop(context);
-                                                      }, child: Text('Apply'))
-                                                    ],
-                                                  )
-                                                );
-                                              }
-                                            );
-                                          });
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return ListView.builder(
+                                                    itemCount: cop.length,
+                                                    itemBuilder:
+                                                        (context, index) {
+                                                      return Card(
+                                                          child: Column(
+                                                        children: [
+                                                          Text(cop[index]),
+                                                          TextButton(
+                                                              onPressed: () {
+                                                                coupon =
+                                                                    cop[index];
+                                                                print(coupon);
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child:
+                                                                  Text('Apply'))
+                                                        ],
+                                                      ));
+                                                    });
+                                              });
                                           print(cop);
                                         },
                                       )
