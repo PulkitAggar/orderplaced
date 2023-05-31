@@ -183,7 +183,7 @@ class ShoppingCartState extends State<ShoppingCart> {
             final count = message.get("count");
             final imageurl = message.get("imageurl");
             final name = message.get("name");
-            var mess = CustomCard(cost, count, imageurl, name);
+            var mess = CustomCard(cost, count, imageurl, name, messagewidget);
             messagewidget.add(mess);
           }
           print(loggineduser?.uid);
@@ -247,7 +247,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(snackBar);
                             }
-                            if (messagewidget.isNotEmpty && exist) {
+                            if (total != 0 && exist) {
                               DateTime currentDate = DateTime.now();
                               DateTime currentTime = DateTime.now();
                               OrderModel modelOfOrder = OrderModel(
@@ -543,38 +543,43 @@ class ShoppingCartState extends State<ShoppingCart> {
                                               fontSize: 18),
                                         ),
                                       ),
-                                      IconButton(
-                                        icon: Icon(Icons.edit),
-                                        onPressed: () {
-                                          // ignore: use_build_context_synchronously
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return ListView.builder(
-                                                    itemCount: cop.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return Card(
-                                                          child: Column(
-                                                        children: [
-                                                          Text(cop[index]),
-                                                          TextButton(
-                                                              onPressed: () {
-                                                                coupon =
-                                                                    cop[index];
-                                                                print(coupon);
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              child:
-                                                                  Text('Apply'))
-                                                        ],
-                                                      ));
-                                                    });
-                                              });
-                                          print(cop);
-                                        },
-                                      )
+                                      if (total != 0)
+                                        IconButton(
+                                          icon: Icon(Icons.edit),
+                                          onPressed: () {
+                                            // ignore: use_build_context_synchronously
+                                            if (total == 0)
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return ListView.builder(
+                                                        itemCount: cop.length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return Card(
+                                                              child: Column(
+                                                            children: [
+                                                              Text(cop[index]),
+                                                              TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    coupon = cop[
+                                                                        index];
+                                                                    print(
+                                                                        coupon);
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  child: Text(
+                                                                      'Apply'))
+                                                            ],
+                                                          ));
+                                                        });
+                                                  });
+                                            print(cop);
+                                          },
+                                        )
                                     ],
                                   ),
                                 ),
@@ -665,12 +670,12 @@ class ShoppingCartState extends State<ShoppingCart> {
 }
 
 class CustomCard extends StatelessWidget {
-  CustomCard(this.cost, this.count, this.imageurl, this.name);
+  CustomCard(this.cost, this.count, this.imageurl, this.name, this.list);
   final double cost;
   final int count;
   final String imageurl;
   final String name;
-
+  final List<CustomCard> list;
   @override
   Widget build(BuildContext context) {
     final url = 'https://picsum.photos/200/300';
@@ -708,6 +713,28 @@ class CustomCard extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.cancel),
                     onPressed: () {
+                      if (list.length == 1) {
+                        _firebase
+                            .collection("cart")
+                            .doc("${loggineduser?.email}")
+                            .collection("cart")
+                            .doc(name)
+                            .delete()
+                            .then((value) {
+                          FirebaseFirestore.instance
+                              .collection("cart")
+                              .doc("${loggineduser?.email}")
+                              .delete()
+                              .then((value) {
+                            FirebaseFirestore.instance
+                                .collection("cart")
+                                .doc("${loggineduser?.email}")
+                                .set({
+                              "storeid": "",
+                            });
+                          });
+                        });
+                      }
                       _firebase
                           .collection("cart")
                           .doc("${loggineduser?.email}")

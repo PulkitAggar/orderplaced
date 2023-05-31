@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '';
@@ -16,8 +17,8 @@ User? loggineduser;
 class BMServiceComponent2 extends StatefulWidget {
   BMServiceListModel element;
 
-  BMServiceComponent2({required this.element});
-
+  BMServiceComponent2({required this.element, required this.storeid});
+  String storeid;
   @override
   State<BMServiceComponent2> createState() => _BMServiceComponent2State();
 }
@@ -25,45 +26,46 @@ class BMServiceComponent2 extends StatefulWidget {
 class _BMServiceComponent2State extends State<BMServiceComponent2> {
   final _auth = FirebaseAuth.instance;
   int add = 0;
+  String currentid = "";
   @override
   void initState() {
+    addcart();
     super.initState();
     getuser();
-    fetch(widget.element.name);
   }
 
-  Future<void> fetch(String name) async {
-    var doc = await _firebase
-        .collection("cart")
-        .doc("${loggineduser?.email}")
-        .collection("cart")
-        .get();
-    DocumentSnapshotPlatform? foundDoc =
-        doc.docs.firstWhereOrNull((element) => element.get("name") == name);
-    if (doc.docs.isEmpty) {
-      if (mounted) {
-        setState(() {
-          // Your state update code goes here
-          add = 0;
-        });
-      }
-    }
-    if (foundDoc != null) {
-      if (mounted) {
-        setState(() {
-          // Your state update code goes here
-          add = 1;
-        });
-      }
-    } else if (foundDoc == null) {
-      if (mounted) {
-        setState(() {
-          // Your state update code goes here
-          add = 0;
-        });
-      }
-    }
-  }
+  // Future<void> fetch(String name) async {
+  //   var doc = await _firebase
+  //       .collection("cart")
+  //       .doc("${loggineduser?.email}")
+  //       .collection("cart")
+  //       .get();
+  //   DocumentSnapshotPlatform? foundDoc =
+  //       doc.docs.firstWhereOrNull((element) => element.get("name") == name);
+  //   if (doc.docs.isEmpty) {
+  //     if (mounted) {
+  //       setState(() {
+  //         // Your state update code goes here
+  //         add = 0;
+  //       });
+  //     }
+  //   }
+  //   if (foundDoc != null) {
+  //     if (mounted) {
+  //       setState(() {
+  //         // Your state update code goes here
+  //         add = 1;
+  //       });
+  //     }
+  //   } else if (foundDoc == null) {
+  //     if (mounted) {
+  //       setState(() {
+  //         // Your state update code goes here
+  //         add = 0;
+  //       });
+  //     }
+  //   }
+  // }
 
   void getuser() async {
     try {
@@ -75,6 +77,42 @@ class _BMServiceComponent2State extends State<BMServiceComponent2> {
     } catch (e) {
       print(e);
     }
+  }
+
+  void addcart() async {
+    var doc = await _firebase
+        .collection("cart")
+        .doc("${loggineduser?.email}")
+        .collection("cart")
+        .get();
+    FirebaseFirestore.instance
+        .collection("cart")
+        .doc("${loggineduser?.email}")
+        .get()
+        .then((value) {
+      setState(() {
+        currentid = value.get("storeid");
+      });
+      if (widget.storeid == value.get("storeid")) {
+        DocumentSnapshotPlatform? foundDoc = doc.docs.firstWhereOrNull(
+            (element) => element.get("name") == widget.element.name);
+        if (foundDoc == null) {
+          setState(() {
+            add = 0;
+          });
+        }
+        if (foundDoc != null) {
+          setState(() {
+            add = 1;
+          });
+        }
+      }
+      if (widget.storeid != value.get("storeid")) {
+        setState(() {
+          add = 0;
+        });
+      }
+    });
   }
 
   @override
@@ -138,33 +176,76 @@ class _BMServiceComponent2State extends State<BMServiceComponent2> {
                       borderRadius: BorderRadius.circular(32)),
                   color: bmPrimaryColor,
                   onTap: () {
-                    var snackBar = const SnackBar(
-                      dismissDirection: DismissDirection.down,
-                      content: Text(
-                        'Your Item is added to the Cart',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    );
-                    // showBookBottomSheet(context, element);
-                    // fetch();
-                    //print(widget.element.image);
-                    _firebase
-                        .collection("cart")
-                        .doc("${loggineduser?.email}")
-                        .collection("cart")
-                        .doc("${widget.element.name}")
-                        .set({
-                      'cost': widget.element.cost.toDouble(),
-                      'count': 1,
-                      'imageurl': widget.element.image,
-                      'name': widget.element.name
-                    }).then((value) => {
-                              setState(() {
-                                add = add + 1;
-                              }),
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar),
-                            });
+                    if (currentid == widget.storeid) {
+                      var snackBar = const SnackBar(
+                        dismissDirection: DismissDirection.down,
+                        content: Text(
+                          'Your Item is added to the Cart',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      );
+                      // showBookBottomSheet(context, element);
+                      // fetch(widget.element.name);
+
+                      print(widget.element.image);
+                      _firebase
+                          .collection("cart")
+                          .doc("${loggineduser?.email}")
+                          .set({"storeid": widget.storeid});
+                      _firebase
+                          .collection("cart")
+                          .doc("${loggineduser?.email}")
+                          .collection("cart")
+                          .doc("${widget.element.name}")
+                          .set({
+                        'cost': widget.element.cost.toDouble(),
+                        'count': 1,
+                        'imageurl': widget.element.image,
+                        'name': widget.element.name
+                      }).then((value) {
+                        setState(() {
+                          add = 1;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      });
+                    } else if (currentid == "") {
+                      var snackBar = const SnackBar(
+                        dismissDirection: DismissDirection.down,
+                        content: Text(
+                          'Your Item is added to the Cart',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      );
+                      _firebase
+                          .collection("cart")
+                          .doc("${loggineduser?.email}")
+                          .set({"storeid": widget.storeid});
+                      _firebase
+                          .collection("cart")
+                          .doc("${loggineduser?.email}")
+                          .collection("cart")
+                          .doc(widget.element.name)
+                          .set({
+                        'cost': widget.element.cost.toDouble(),
+                        'count': 1,
+                        'imageurl': widget.element.image,
+                        'name': widget.element.name
+                      }).then((value) {
+                        setState(() {
+                          add = 1;
+                        });
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      });
+                    } else {
+                      var snackBar = const SnackBar(
+                        dismissDirection: DismissDirection.down,
+                        content: Text(
+                          'Cannot Add multiple store items remove your other store items to add this item',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
                   },
                   child: Text('ADD',
                       style: boldTextStyle(color: Colors.white, size: 12)),

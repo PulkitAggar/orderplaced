@@ -109,53 +109,65 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                       .collection("menus")
                                       .snapshots(),
                                   builder: (context, innershot) {
-                                    final messages = innershot.data?.docs;
-                                    List<BMServiceComponent> messagewidget = [];
-                                    if (messages != null) {
-                                      for (var message in messages) {
-                                        final name =
-                                            message.data()?["itemName"] ?? "";
-                                        final cost = message.get("itemPrice");
-                                        final imageurl =
-                                            message.get("itemImage");
-                                        final subname = message.get("subname");
-                                        final disc = message
-                                                .data()?["itemDescription"] ??
-                                            "";
-                                        // final dis = message.get("itemDescription");
+                                    if (innershot.hasData) {
+                                      final messages = innershot.data?.docs;
+                                      List<BMServiceComponent> messagewidget =
+                                          [];
+                                      if (messages != null) {
+                                        for (var message in messages) {
+                                          final name =
+                                              message.data()?["itemName"] ?? "";
+                                          final cost = message.get("itemPrice");
+                                          final imageurl =
+                                              message.get("itemImage");
+                                          final subname =
+                                              message.get("subname");
+                                          final disc = message
+                                                  .data()?["itemDescription"] ??
+                                              "";
+                                          // final dis = message.get("itemDescription");
 
-                                        //   messagewidget.add({
-                                        //     "name": name1,
-                                        //     "cost": cost,
-                                        //     "imageurl": imageurl,
-                                        //     "subname": subname
-                                        //   });
-                                        // }
-                                        print(name);
-                                        if (subname == doc[i]) {
-                                          messagewidget.add(BMServiceComponent(
-                                            name: name,
-                                            cost: cost,
-                                            imageurl: imageurl,
-                                            disc: disc,
-                                            storeid: id,
-                                          ));
+                                          //   messagewidget.add({
+                                          //     "name": name1,
+                                          //     "cost": cost,
+                                          //     "imageurl": imageurl,
+                                          //     "subname": subname
+                                          //   });
+                                          // }
+                                          print(name);
+                                          if (subname == doc[i]) {
+                                            messagewidget
+                                                .add(BMServiceComponent(
+                                              name: name,
+                                              cost: cost,
+                                              imageurl: imageurl,
+                                              disc: disc,
+                                              storeid: id,
+                                            ));
+                                          }
                                         }
                                       }
-                                    }
 
-                                    //print(messagewidget);
-                                    if (innershot.hasData) {
-                                      return Column(
-                                        children: messagewidget,
-                                      );
-                                    } else if (innershot.hasError) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(
-                                          backgroundColor:
-                                              Colors.lightBlueAccent,
-                                        ),
-                                      );
+                                      //print(messagewidget);
+                                      if (innershot.hasData) {
+                                        return Column(
+                                          children: messagewidget,
+                                        );
+                                      } else if (innershot.hasError) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(
+                                            backgroundColor:
+                                                Colors.lightBlueAccent,
+                                          ),
+                                        );
+                                      } else {
+                                        return const Center(
+                                          child: CircularProgressIndicator(
+                                            backgroundColor:
+                                                Colors.lightBlueAccent,
+                                          ),
+                                        );
+                                      }
                                     } else {
                                       return const Center(
                                         child: CircularProgressIndicator(
@@ -191,7 +203,10 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
             mainAxisSize: MainAxisSize.min,
             //title: titleText(title: name, size: 24),
             children: snapshot.data!.map((e) {
-              return BMServiceComponent2(element: e);
+              return BMServiceComponent2(
+                element: e,
+                storeid: widget.storeUid,
+              );
             }).toList(),
           );
         } else if (snapshot.hasError) {
