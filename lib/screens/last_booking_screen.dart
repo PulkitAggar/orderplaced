@@ -23,27 +23,32 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
   final FirebaseFirestore _store = FirebaseFirestore.instance;
 
   _updatingOrderINtoFirebase(String date, String weekday, String time,
-      bool isCancelled, String storeId) async {
+      bool isCancelled, String storeId, String orderStatus) async {
     String uuid = _auth.currentUser!.uid;
 
-    final doc_store =
+    final docStore =
         _store.collection("stores").doc(storeId).collection("orders").doc();
-    final doc_user =
+    final docUser =
         _store.collection("users").doc(uuid).collection("orders").doc();
 
-    await doc_store.set(
-        {"time": time, "date": date, "weekday": weekday, "user": uuid},
-        SetOptions(merge: true));
-
-    await doc_user.set({
+    await docStore.set({
       "time": time,
       "date": date,
       "weekday": weekday,
-      "isCancelled": isCancelled
+      "user": uuid,
+      "orderStatus": orderStatus
+    }, SetOptions(merge: true));
+
+    await docUser.set({
+      "time": time,
+      "date": date,
+      "weekday": weekday,
+      "isCancelled": isCancelled,
+      "orderStatus": orderStatus
     }, SetOptions(merge: true));
 
     for (var items in widget.orderModel.lstOfItems) {
-      await doc_user.set({
+      await docUser.set({
         "order": {
           items.get("name"): {
             "cost": items.get("cost"),
@@ -53,7 +58,7 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
         }
       }, SetOptions(merge: true));
 
-      await doc_store.set({
+      await docStore.set({
         "order": {
           items.get("name"): {
             "cost": items.get("cost"),
@@ -62,9 +67,6 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
           },
         }
       }, SetOptions(merge: true));
-
-      widget.orderModel.trackOrder = "placed";
-      print(widget.orderModel.trackOrder);
     }
   }
 
@@ -75,7 +77,8 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
         widget.orderModel.weekday,
         widget.orderModel.time,
         widget.orderModel.isCancelled,
-        widget.orderModel.storeUid);
+        widget.orderModel.storeUid,
+        "placed");
     super.initState();
   }
 
