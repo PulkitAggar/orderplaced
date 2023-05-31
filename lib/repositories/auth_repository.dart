@@ -11,10 +11,16 @@ class AuthRepository {
     try {
       await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
+      String? userUid = FirebaseAuth.instance.currentUser?.uid;
+      // SHOULD WE KEEP IT USERID OR EMAIL? DEPENDS ON THE OTHER CART AND STORE IMPLEMENTATIONS.
       await FirebaseFirestore.instance
           .collection('users')
-          .doc(email)
-          .set({"email": email, "mobile": mobile});
+          .doc(userUid)
+          .set({"email": email, "mobile": mobile, "userUid": userUid});
+      await FirebaseFirestore.instance
+                                .collection("cart")
+                                .doc(email)
+                                .set({"storeid": "",});
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         throw Exception('The password provided is too weak.');

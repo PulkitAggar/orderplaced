@@ -78,10 +78,10 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
                           // BMTopOffersScreen().launch(context);
                         },
                         child: Text('See All',
-                            style: boldTextStyle(color: bmTextColorDarkMode)),
+                            style: boldTextStyle(color: Colors.transparent)),
                       ),
                       const Icon(Icons.arrow_forward_ios,
-                          color: bmTextColorDarkMode, size: 16),
+                          color: Colors.transparent, size: 16),
                     ],
                   )
                 ],
@@ -100,10 +100,10 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
                           // BMTopOffersScreen().launch(context);
                         },
                         child: Text('See All',
-                            style: boldTextStyle(color: bmTextColorDarkMode)),
+                            style: boldTextStyle(color: Colors.transparent)),
                       ),
-                      Icon(Icons.arrow_forward_ios,
-                          color: bmTextColorDarkMode, size: 16),
+                      const Icon(Icons.arrow_forward_ios,
+                          color: Colors.transparent, size: 16),
                     ],
                   )
                 ],
@@ -124,6 +124,12 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
                         FutureBuilder<double>(
                             future: getposition(),
                             builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Center(
+                                  child: Text(
+                                      'Error: ${snapshot.error}. Please allow location service in settings'),
+                                );
+                              }
                               if (snapshot.hasData) {
                                 return FutureBuilder<List<BMCommonCardModel>>(
                                   future:

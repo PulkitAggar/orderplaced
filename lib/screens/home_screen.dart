@@ -22,13 +22,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget getFragment() {
     if (selectedTab == 0) {
-      return BMHomeFragment2();
+      return const BMHomeFragment2();
     } else if (selectedTab == 1) {
       return RoadSideAssistance();
     } else if (selectedTab == 2) {
       return ShoppingCart();
     } else {
-      return ProfileScreen();
+      return const ProfileScreen();
     }
   }
 
