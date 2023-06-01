@@ -3,6 +3,9 @@ import '../models/BMRoadListModel.dart';
 import '../models/models.dart';
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
 
+import '../models/order.model.dart';
+import '../models/userordermodel.dart';
+
 class StoresRepository {
   static Future<List<BMCommonCardModel>> getStoresList() async {
     List<BMCommonCardModel> storesList = [];
@@ -222,5 +225,69 @@ class StoresRepository {
     });
 
     return storesList;
+  }
+
+  static Future<List<userOrderModel>> getStoreDataList(String uid) async {
+    List<userOrderModel> orders = [];
+
+    // Fetch data from Firestore
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(uid).collection('orders').where("orderStatus" , isNotEqualTo: "Delivered").get();
+
+    // Process each document in the query snapshot
+    for (var doc in querySnapshot.docs) {
+      String date = doc.data()['date'] ?? '';
+
+      String time = doc.data()['time'] ?? '';
+
+      String storeid = doc.data()['storeuid'] ?? '';
+
+      bool paymentType = doc.data()['isCancelled'] ?? false;
+
+      String weekday = doc.data()['weekday'] ?? '';
+      String orderStatus =doc.data()['orderStatus']??'';
+      String nameR =doc.data()['nameR']??'';
+      String phoneR =doc.data()['numberR']??'';
+      String addressR =doc.data()['addressR']??'';
+      List<DocumentSnapshotPlatform>list =  doc.data()['lstOfItems']??[];
+
+      userOrderModel orderModel = userOrderModel(date: date, weekday: weekday, time: time, storeUid: storeid, isCancelled: paymentType, orderStatus: orderStatus, addressR: addressR, nameR: nameR, phoneR:phoneR, lstOfItems: list);
+
+      orders.add(orderModel);
+    }
+
+    return orders;
+  }
+
+  static Future<List<userOrderModel>> getPastStoreDataList(String uid) async {
+    List<userOrderModel> orders = [];
+
+    // Fetch data from Firestore
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(uid).collection('orders').where("orderStatus" , isEqualTo: "Delivered").get();
+
+    // Process each document in the query snapshot
+    for (var doc in querySnapshot.docs) {
+      String date = doc.data()['date'] ?? '';
+
+      String time = doc.data()['time'] ?? '';
+
+      String storeid = doc.data()['storeuid'] ?? '';
+
+      bool paymentType = doc.data()['isCancelled'] ?? false;
+
+      String weekday = doc.data()['weekday'] ?? '';
+      String orderStatus =doc.data()['orderStatus']??'';
+      String nameR =doc.data()['nameR']??'';
+      String phoneR =doc.data()['numberR']??'';
+      String addressR =doc.data()['addressR']??'';
+      List<DocumentSnapshotPlatform>list =  doc.data()['lstOfItems']??[];
+
+      userOrderModel orderModel = userOrderModel(date: date, weekday: weekday, time: time, storeUid: storeid, isCancelled: paymentType, orderStatus: orderStatus, addressR: addressR, nameR: nameR, phoneR:phoneR, lstOfItems: list);
+
+      orders.add(orderModel);
+    }
+
+    return orders;
   }
 }
