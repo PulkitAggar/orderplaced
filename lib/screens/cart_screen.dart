@@ -14,6 +14,7 @@ import '../models/order.model.dart';
 
 final _firebase = FirebaseFirestorePlatform.instance;
 User? loggineduser;
+int fee = 0;
 
 class ShoppingCart extends StatefulWidget {
   @override
@@ -75,7 +76,6 @@ class ShoppingCartState extends State<ShoppingCart> {
   String coupon = '';
   int discount = 0;
   int dis = 0;
-  int fee = 0;
 
   TextEditingController textEditingController = TextEditingController();
   final AddressBloc addressBloc = AddressBloc();
@@ -236,18 +236,20 @@ class ShoppingCartState extends State<ShoppingCart> {
         .doc("${loggineduser?.email}")
         .get()
         .then((value) {
-      try {
-        FirebaseFirestore.instance
-            .collection("stores")
-            .doc(value.get("storeid"))
-            .get()
-            .then((value) {
-          setState(() {
-            fee = value.get("Fee");
+      if (total > 0.00) {
+        try {
+          FirebaseFirestore.instance
+              .collection("stores")
+              .doc(value.get("storeid"))
+              .get()
+              .then((value) {
+            setState(() {
+              fee = value.get("Fee");
+            });
           });
-        });
-      } catch (e) {
-        print("hello");
+        } catch (e) {
+          print("hello");
+        }
       }
     });
   }
@@ -450,14 +452,22 @@ class ShoppingCartState extends State<ShoppingCart> {
             body: SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
-                    height: 300,
-                    child: ListView(
-                      padding: EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 20.0),
-                      children: messagewidget,
+                  if (empty != 0)
+                    Container(
+                      height: 300,
+                      child: ListView(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 10.0, vertical: 20.0),
+                        children: messagewidget,
+                      ),
                     ),
-                  ),
+                  if (empty == 0)
+                    SizedBox(
+                      height: 300,
+                      child: Center(
+                        child: Text("Your Cart is empty"),
+                      ),
+                    ),
                   Space(8),
                   StreamBuilder<QuerySnapshotPlatform>(
                       stream: _firebase
@@ -475,194 +485,201 @@ class ShoppingCartState extends State<ShoppingCart> {
                               backgroundColor: Colors.lightBlueAccent,
                             ),
                           );
-                        }
-                        var address = innershot.data?.docs;
-                        List<String> addres = [];
-                        for (var add in address!) {
-                          addres.add(add.get("fullAddress"));
-                          addres.add(add.get("name"));
-                          addres.add(add.get("number"));
-                        }
-                        // final nameR = name;
-                        // final numberR = number;
-                        // final addressR = addre;
-                        //OrderModel modelOfOrder = OrderModel
-                        return Padding(
-                          padding: EdgeInsets.only(left: 15, right: 15),
-                          child: Card(
-                            color: Colors.grey.shade200,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                              padding: EdgeInsets.all(16),
-                              child: Row(
-                                children: [
-                                  Icon(Icons.location_on, size: 20),
-                                  Space(24),
-                                  Expanded(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Address",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 21),
-                                        ),
-                                        Space(4),
-                                        Text(
-                                          addres.length != 0
-                                              ? "${addres[0]}"
-                                              : "enter your Address",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 16,
+                        } else {
+                          var address = innershot.data?.docs;
+                          List<String> addres = [];
+                          for (var add in address!) {
+                            addres.add(add.get("fullAddress"));
+                            addres.add(add.get("name"));
+                            addres.add(add.get("number"));
+                          }
+                          // final nameR = name;
+                          // final numberR = number;
+                          // final addressR = addre;
+                          //OrderModel modelOfOrder = OrderModel
+                          return Padding(
+                            padding: EdgeInsets.only(left: 15, right: 15),
+                            child: Card(
+                              color: Colors.grey.shade200,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                padding: EdgeInsets.all(16),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.location_on, size: 20),
+                                    Space(24),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Address",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 21),
                                           ),
-                                        ),
-                                        Space(4),
-                                        Text(
-                                          "Name",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 21),
-                                        ),
-                                        Space(4),
-                                        Text(
-                                          addres.length != 0
-                                              ? "${addres[1]}"
-                                              : "enter your name",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 16,
+                                          Space(4),
+                                          Text(
+                                            addres.length != 0
+                                                ? "${addres[0]}"
+                                                : "enter your Address",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 16,
+                                            ),
                                           ),
-                                        ),
-                                        Space(4),
-                                        Text(
-                                          "Number",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 21),
-                                        ),
-                                        Space(4),
-                                        Text(
-                                          addres.length != 0
-                                              ? "${addres[2]}"
-                                              : "enter your number",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 16,
+                                          Space(4),
+                                          Text(
+                                            "Name",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 21),
                                           ),
-                                        )
-                                      ],
+                                          Space(4),
+                                          Text(
+                                            addres.length != 0
+                                                ? "${addres[1]}"
+                                                : "enter your name",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          Space(4),
+                                          Text(
+                                            "Number",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 21),
+                                          ),
+                                          Space(4),
+                                          Text(
+                                            addres.length != 0
+                                                ? "${addres[2]}"
+                                                : "enter your number",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 16,
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Space(8),
-                                  IconButton(
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return Dialog(
-                                                child: Container(
-                                                  height: 250,
-                                                  width: 500,
-                                                  padding:
-                                                      const EdgeInsets.all(20),
-                                                  child: SingleChildScrollView(
-                                                    child: Column(
-                                                      children: [
-                                                        CustomTextField(
-                                                            controller:
-                                                                textEditingController,
-                                                            maxLines: 3,
-                                                            title: 'Address',
-                                                            hasTitle: true,
-                                                            initialValue: '',
-                                                            onChanged: (value) {
-                                                              addre = value
-                                                                  .toString();
-                                                            }),
-                                                        CustomTextField(
-                                                            controller:
-                                                                textEditingController,
-                                                            maxLines: 1,
-                                                            title: 'Name',
-                                                            hasTitle: true,
-                                                            initialValue: '',
-                                                            onChanged: (value) {
-                                                              name = value
-                                                                  .toString();
-                                                            }),
-                                                        CustomTextField(
-                                                            controller:
-                                                                textEditingController,
-                                                            maxLines: 1,
-                                                            title: 'Number',
-                                                            hasTitle: true,
-                                                            initialValue: '',
-                                                            onChanged: (value) {
-                                                              number = value
-                                                                  .toString();
-                                                            }),
-                                                        ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .white),
-                                                          onPressed: () {
-                                                            _firebase
-                                                                .collection(
-                                                                    "users")
-                                                                .doc(
-                                                                    "${loggineduser?.uid}")
-                                                                .collection(
-                                                                    "userAddress")
-                                                                .doc(
-                                                                    "${loggineduser?.email}")
-                                                                .set({
-                                                              "fullAddress":
-                                                                  addre,
-                                                              "number": number,
-                                                              "name": name
-                                                            }).then((value) {
-                                                              xyz();
-                                                            });
+                                    Space(8),
+                                    IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Dialog(
+                                                  child: Container(
+                                                    height: 250,
+                                                    width: 500,
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            20),
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      child: Column(
+                                                        children: [
+                                                          CustomTextField(
+                                                              controller:
+                                                                  textEditingController,
+                                                              maxLines: 3,
+                                                              title: 'Address',
+                                                              hasTitle: true,
+                                                              initialValue: '',
+                                                              onChanged:
+                                                                  (value) {
+                                                                addre = value
+                                                                    .toString();
+                                                              }),
+                                                          CustomTextField(
+                                                              controller:
+                                                                  textEditingController,
+                                                              maxLines: 1,
+                                                              title: 'Name',
+                                                              hasTitle: true,
+                                                              initialValue: '',
+                                                              onChanged:
+                                                                  (value) {
+                                                                name = value
+                                                                    .toString();
+                                                              }),
+                                                          CustomTextField(
+                                                              controller:
+                                                                  textEditingController,
+                                                              maxLines: 1,
+                                                              title: 'Number',
+                                                              hasTitle: true,
+                                                              initialValue: '',
+                                                              onChanged:
+                                                                  (value) {
+                                                                number = value
+                                                                    .toString();
+                                                              }),
+                                                          ElevatedButton(
+                                                            style: ElevatedButton
+                                                                .styleFrom(
+                                                                    backgroundColor:
+                                                                        Colors
+                                                                            .white),
+                                                            onPressed: () {
+                                                              _firebase
+                                                                  .collection(
+                                                                      "users")
+                                                                  .doc(
+                                                                      "${loggineduser?.uid}")
+                                                                  .collection(
+                                                                      "userAddress")
+                                                                  .doc(
+                                                                      "${loggineduser?.email}")
+                                                                  .set({
+                                                                "fullAddress":
+                                                                    addre,
+                                                                "number":
+                                                                    number,
+                                                                "name": name
+                                                              }).then((value) {
+                                                                xyz();
+                                                              });
 
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: Text(
-                                                            'Save',
-                                                            style: Theme.of(
-                                                                    context)
-                                                                .textTheme
-                                                                .headline5!
-                                                                .copyWith(
-                                                                    color: Colors
-                                                                        .black),
-                                                          ),
-                                                        )
-                                                      ],
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                            child: Text(
+                                                              'Save',
+                                                              style: Theme.of(
+                                                                      context)
+                                                                  .textTheme
+                                                                  .headline5!
+                                                                  .copyWith(
+                                                                      color: Colors
+                                                                          .black),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              );
-                                            });
-                                      },
-                                      icon: Icon(Icons.edit)),
-                                ],
+                                                );
+                                              });
+                                        },
+                                        icon: Icon(Icons.edit)),
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
+                          );
+                        }
                       }),
                   Space(8),
                   Column(
@@ -872,6 +889,7 @@ class CustomCard extends StatelessWidget {
                     icon: Icon(Icons.cancel),
                     onPressed: () {
                       if (list.length == 1) {
+                        fee = 0;
                         _firebase
                             .collection("cart")
                             .doc("${loggineduser?.email}")
