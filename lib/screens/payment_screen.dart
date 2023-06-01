@@ -48,6 +48,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   final _razorpay = Razorpay();
   final _auth = FirebaseAuth.instance;
+  String nameR = '';
+  String numberR = '';
+  String addressR = '';
 
   //double amount= widget.totsamount;
 
@@ -56,6 +59,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     getuser();
+    details();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
       _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
@@ -74,6 +78,22 @@ class _PaymentScreenState extends State<PaymentScreen> {
     } catch (e) {
       print(e);
     }
+  }
+
+  void details() {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc("${loggineduser?.uid}")
+        .collection("userAddress")
+        .doc("${loggineduser?.email}")
+        .get()
+        .then((value) {
+      setState(() {
+        nameR = value.get("name");
+        numberR = value.get("number");
+        addressR = value.get("fullAddress");
+      });
+    });
   }
 
   void delete() async {

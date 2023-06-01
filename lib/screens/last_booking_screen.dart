@@ -22,8 +22,16 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _store = FirebaseFirestore.instance;
 
-  _updatingOrderINtoFirebase(String date, String weekday, String time,
-      bool isCancelled, String storeId, String orderStatus, String nameR, String numberR, String addressR) async {
+  _updatingOrderINtoFirebase(
+      String date,
+      String weekday,
+      String time,
+      bool isCancelled,
+      String storeId,
+      String orderStatus,
+      String nameR,
+      String numberR,
+      String addressR) async {
     String uuid = _auth.currentUser!.uid;
 
     final docStore =
@@ -38,8 +46,8 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       "user": uuid,
       "orderStatus": orderStatus,
       "nameR": nameR,
-      "addressR":addressR,
-      "numberR":numberR,
+      "addressR": addressR,
+      "numberR": numberR,
     }, SetOptions(merge: true));
 
     await docUser.set({
@@ -49,8 +57,8 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       "isCancelled": isCancelled,
       "orderStatus": orderStatus,
       "nameR": nameR,
-      "addressR":addressR,
-      "numberR":numberR,
+      "addressR": addressR,
+      "numberR": numberR,
     }, SetOptions(merge: true));
 
     for (var items in widget.orderModel.lstOfItems) {
@@ -79,16 +87,14 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
   @override
   void initState() {
     _updatingOrderINtoFirebase(
-        widget.orderModel.date,
-        widget.orderModel.weekday,
-        widget.orderModel.time,
-        widget.orderModel.isCancelled,
-        widget.orderModel.storeUid,
-        "placed",
-        widget.orderModel.nameR,
-        widget.orderModel.numberR,
-        widget.orderModel.addressR,
-        );
+      widget.orderModel.date,
+      widget.orderModel.weekday,
+      widget.orderModel.time,
+      widget.orderModel.isCancelled,
+      widget.orderModel.storeUid,
+      "placed",
+      //TODO: add address ,name,number from payment screen
+    );
     super.initState();
   }
 

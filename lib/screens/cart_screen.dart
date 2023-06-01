@@ -84,10 +84,6 @@ class ShoppingCartState extends State<ShoppingCart> {
   List<dynamic> cop = [];
   bool exist = false;
 
-  late String nameR = '';
-  late String numberR = '';
-  late String addressR = '';
-
   @override
   void initState() {
     feeFetch();
@@ -365,9 +361,6 @@ class ShoppingCartState extends State<ShoppingCart> {
                                   cost: total - discount,
                                   storeUid: "Jw05mBpXnk9ydGaJh0p0",
                                   isCancelled: false,
-                                  nameR: nameR,
-                                  numberR: numberR,
-                                  addressR: addressR,
                                   lstOfItems: messages);
                               Navigator.push(
                                 context,
@@ -435,9 +428,9 @@ class ShoppingCartState extends State<ShoppingCart> {
                                 addres.add(add.get("name"));
                                 addres.add(add.get("number"));
                               }
-                              final nameR = name;
-                              final numberR = number;
-                              final addressR = addre;
+                              // final nameR = name;
+                              // final numberR = number;
+                              // final addressR = addre;
                               //OrderModel modelOfOrder = OrderModel
                               return Padding(
                                 padding: EdgeInsets.only(left: 15, right: 15),
