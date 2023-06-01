@@ -101,7 +101,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         .collection("users")
         .doc("${loggineduser?.uid}")
         .update({
-      "data": FieldValue.arrayUnion([widget.code])
+      "code": FieldValue.arrayUnion([widget.code])
     });
   }
 
@@ -273,6 +273,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   if (selectedValue == 1) {
                     createOrder();
                   } else if (selectedValue == 2) {
+                    addCode();
                     //ADD cart clear func
                     delete();
                     Navigator.of(context).pushAndRemoveUntil(

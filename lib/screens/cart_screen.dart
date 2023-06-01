@@ -81,11 +81,26 @@ class ShoppingCartState extends State<ShoppingCart> {
 
   Future fetch() async {
     await _firebase.collection("coupon").doc("coupon").get().then((value) {
-      for (int i = 0; i < value.get("code").length; i++) {
+      _firebase
+          .collection("users")
+          .doc("${loggineduser?.uid}")
+          .get()
+          .then((value2) {
+        List<dynamic> cop1 = [];
+        for (int i = 0; i < value.get("code").length; i++) {
+          if (total > value.get("code")[i]["amount"]) {
+            setState(() {
+              cop1.add(value.get("code")[i]["codename"]);
+            });
+          }
+        }
+        for (int j = 0; j < value2.get("code").length; j++) {
+          cop1.remove(value2.get("code")[j]);
+        }
         setState(() {
-          cop.add(value.get("code")[i]["codename"]);
+          cop = cop1;
         });
-      }
+      });
     });
     // DocumentSnapshotPlatform? foundDoc =
     //     doc.docs.firstWhereOrNull((element) => element.get("code") == coupon);
