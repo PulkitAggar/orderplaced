@@ -228,9 +228,9 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         16.height,
-        titleText(title: 'Services', size: 24),
+        // titleText(title: 'Services', size: 24),
         //16.height,
-        getbuilder2(servicesList, 'Services'),
+        getbuilder("Services", storeid.toString()),
         //16.height,
         //titleText(title: 'Accessories', size: 24),
 
