@@ -94,7 +94,7 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  titleText(title: 'Our Stores (IN YO CITY)'),
+                  titleText(title: 'Our Stores'),
                   Row(
                     children: [
                       TextButton(
@@ -123,6 +123,7 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        5.height,
                         FutureBuilder<double>(
                             future: getposition(),
                             builder: (context, snapshot) {

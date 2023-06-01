@@ -110,6 +110,7 @@ class _BMCommonCardComponentState extends State<BMCommonCardComponent> {
             right: 15,
             child: Icon(
               Icons.favorite,
+              color: Colors.transparent,
               // color: widget.element.liked! ? Colors.amber : bmTextColorDarkMode,
               size: 24,
             ).onTap(() {
