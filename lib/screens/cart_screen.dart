@@ -192,14 +192,44 @@ class ShoppingCartState extends State<ShoppingCart> {
   // }
 
   void couponDiscount2() async {
+    String storeid = "";
+    await FirebaseFirestore.instance
+        .collection("cart")
+        .doc("${loggineduser?.email}")
+        .get()
+        .then((value) {
+      setState(() {
+        storeid = value.get("storeid");
+      });
+    });
     List amount = [];
+    List nonamount = [];
+    List gearamount = [];
     var doc = await FirebaseFirestore.instance
+        .collection("stores")
+        .doc(storeid)
+        .collection("menus")
+        .get();
+    var doc1 = await FirebaseFirestore.instance
         .collection("cart")
         .doc("${loggineduser?.email}")
         .collection("cart")
         .get();
-    var founddoc = doc.docs
+    var founddoc = doc1.docs
+        .firstWhereOrNull((element) => element.get("subname") == "geared");
+    var founddoc2 = doc1.docs
+        .firstWhereOrNull((element) => element.get("subname") == "non-geared");
+    var founddoc3 = doc1.docs
         .firstWhereOrNull((element) => element.get("catname") == "Services");
+    if (founddoc3 != null) {
+      FirebaseFirestore.instance
+          .collection("coupon")
+          .doc("coupon")
+          .get()
+          .then((value) {
+        cop.add(value.get("service")[0]["codename"]);
+      });
+    }
     FirebaseFirestore.instance
         .collection("users")
         .doc("${loggineduser?.uid}")
@@ -207,36 +237,65 @@ class ShoppingCartState extends State<ShoppingCart> {
         .then((value) {
       if (value.get("count") % 3 == 0) {
         if (founddoc != null) {
-          FirebaseFirestore.instance
-              .collection("coupon")
-              .doc("coupon")
-              .get()
-              .then((value) {
-            cop.add(value.get("service")[0]["codename"]);
-          });
           for (int i = 0; i < doc.docs.length; i++) {
-            print(doc.docs[i].get("catname"));
-            if (doc.docs[i].get("catname") == "Services") {
-              amount.add(doc.docs[i].get("cost"));
+            // print(doc.docs[i].get("catname"));
+            if (doc.docs[i].get("subname") == "geared") {
+              gearamount.add(doc.docs[i].get("itemPrice"));
+            }
+            // if (doc.docs[i].get("subname") == "non-geared") {
+            //   nonamount.add(doc.docs[i].get("itemPrice"));
+            // }
+          }
+          int val = gearamount
+              .reduce((value, element) => value < element ? value : element);
+          // int val2 = nonamount
+          //     .reduce((value, element) => value < element ? value : element);
+          amount.add(val);
+          // amount.add(val2);
+          // int val3 = amount
+          //     .reduce((value, element) => value < element ? value : element);
+          // setState(() {
+          //   dis = val3.toInt();
+          // });
+        }
+        if (founddoc2 != null) {
+          for (int i = 0; i < doc.docs.length; i++) {
+            // print(doc.docs[i].get("catname"));
+            // if (doc.docs[i].get("subname") == "geared") {
+            //   gearamount.add(doc.docs[i].get("itemPrice"));
+            // }
+            if (doc.docs[i].get("subname") == "non-geared") {
+              nonamount.add(doc.docs[i].get("itemPrice"));
             }
           }
-          double val = amount
+          // int val = gearamount
+          //     .reduce((value, element) => value < element ? value : element);
+          int val2 = nonamount
               .reduce((value, element) => value < element ? value : element);
-          setState(() {
-            dis = val.toInt();
-          });
+          // amount.add(val);
+          amount.add(val2);
+          // int val3 = amount
+          //     .reduce((value, element) => value < element ? value : element);
+          // setState(() {
+          //   dis = val3.toInt();
+          // });
         }
+        int val3 = amount
+            .reduce((value, element) => value < element ? value : element);
+        setState(() {
+          dis = val3.toInt();
+        });
       }
     });
   }
 
   void feeFetch() async {
-    await FirebaseFirestore.instance
-        .collection("cart")
-        .doc("${loggineduser?.email}")
-        .get()
-        .then((value) {
-      if (total > 0.00) {
+    if (0.00 < total && total < 800.00) {
+      await FirebaseFirestore.instance
+          .collection("cart")
+          .doc("${loggineduser?.email}")
+          .get()
+          .then((value) {
         try {
           FirebaseFirestore.instance
               .collection("stores")
@@ -250,8 +309,12 @@ class ShoppingCartState extends State<ShoppingCart> {
         } catch (e) {
           print("hello");
         }
-      }
-    });
+      });
+    } else {
+      setState(() {
+        fee = 0;
+      });
+    }
   }
 
   void xyz() {
@@ -851,6 +914,7 @@ class CustomCard extends StatelessWidget {
   final String subname;
   final String catname;
   final List<CustomCard> list;
+
   @override
   Widget build(BuildContext context) {
     final url = 'https://picsum.photos/200/300';
@@ -888,6 +952,11 @@ class CustomCard extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.cancel),
                     onPressed: () {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  ShoppingCart()));
                       if (list.length == 1) {
                         fee = 0;
                         _firebase
@@ -928,6 +997,40 @@ class CustomCard extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.remove),
                     onPressed: () {
+                      // if (list.length == 1) {
+                      //   Navigator.pushReplacement(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (BuildContext context) =>
+                      //               ShoppingCart()));
+                      //   fee = 0;
+                      //   _firebase
+                      //       .collection("cart")
+                      //       .doc("${loggineduser?.email}")
+                      //       .collection("cart")
+                      //       .doc(name)
+                      //       .delete()
+                      //       .then((value) {
+                      //     FirebaseFirestore.instance
+                      //         .collection("cart")
+                      //         .doc("${loggineduser?.email}")
+                      //         .delete()
+                      //         .then((value) {
+                      //       FirebaseFirestore.instance
+                      //           .collection("cart")
+                      //           .doc("${loggineduser?.email}")
+                      //           .set({
+                      //         "storeid": "",
+                      //       });
+                      //     });
+                      //   });
+                      //   _firebase
+                      //       .collection("cart")
+                      //       .doc("${loggineduser?.email}")
+                      //       .collection("cart")
+                      //       .doc(name)
+                      //       .delete();
+                      // }
                       if (count > 0) {
                         int countnew = count - 1;
                         _firebase
@@ -942,6 +1045,39 @@ class CustomCard extends StatelessWidget {
                           'name': name,
                           'subname': subname,
                           'catname': catname,
+                        }).then((value) {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ShoppingCart()));
+                          fee = 0;
+                          _firebase
+                              .collection("cart")
+                              .doc("${loggineduser?.email}")
+                              .collection("cart")
+                              .doc(name)
+                              .delete()
+                              .then((value) {
+                            FirebaseFirestore.instance
+                                .collection("cart")
+                                .doc("${loggineduser?.email}")
+                                .delete()
+                                .then((value) {
+                              FirebaseFirestore.instance
+                                  .collection("cart")
+                                  .doc("${loggineduser?.email}")
+                                  .set({
+                                "storeid": "",
+                              });
+                            });
+                          });
+                          _firebase
+                              .collection("cart")
+                              .doc("${loggineduser?.email}")
+                              .collection("cart")
+                              .doc(name)
+                              .delete();
                         });
                       }
                     },
