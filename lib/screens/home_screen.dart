@@ -20,9 +20,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   int selectedTab = 0;
 
+  void updateSelectedTab(int newSelectedTab) {
+    // Update the selected tab value
+    selectedTab = newSelectedTab;
+    setState(() {});
+  }
+
   Widget getFragment() {
     if (selectedTab == 0) {
-      return const BMHomeFragment2();
+      return BMHomeFragment2(
+        onTabChanged: updateSelectedTab,
+      );
     } else if (selectedTab == 1) {
       return RoadSideAssistance();
     } else if (selectedTab == 2) {

@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mycycleclinic/utils/BMCommonWidgets.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -7,7 +8,20 @@ import 'package:nb_utils/nb_utils.dart';
 import '../utils/BMColors.dart';
 
 class HomeFragmentHeadComponent extends StatelessWidget {
-  const HomeFragmentHeadComponent({Key? key}) : super(key: key);
+  final Function(int) onButtonPressed;
+
+  HomeFragmentHeadComponent({required this.onButtonPressed});
+
+  void handleButtonPress() {
+    // Set the new selected tab value
+    int newSelectedTab =
+        3; // Example value, you can set it based on your requirements
+
+    // Call the callback function to update the selected tab
+    onButtonPressed(newSelectedTab);
+  }
+
+  String? userName = FirebaseAuth.instance.currentUser?.displayName;
 
   @override
   Widget build(BuildContext context) {
@@ -26,33 +40,39 @@ class HomeFragmentHeadComponent extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('New York',
+                      Text('Hi',
                           style: boldTextStyle(color: Colors.white, size: 14)),
-                      Wrap(
-                        children: [
-                          Text('32',
-                              style:
-                                  boldTextStyle(size: 24, color: Colors.white)),
-                          Text(
-                            '°C',
-                            style: TextStyle(
-                                fontFeatures: [FontFeature.superscripts()],
-                                color: Colors.white),
-                          )
-                        ],
-                      )
+                      Text(userName ?? "Cyclist", style: boldTextStyle(color: Colors.white, size: 24),),
+                      // Wrap(
+                      //   children: [
+                      //     Text('32',
+                      //         style:
+                      //             boldTextStyle(size: 24, color: Colors.white)),
+                      //     Text(
+                      //       '°C',
+                      //       style: TextStyle(
+                      //           fontFeatures: [FontFeature.superscripts()],
+                      //           color: Colors.white),
+                      //     )
+                      //   ],
+                      // )
                     ],
                   )
                 ],
               ),
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.white, borderRadius: radius(100)),
-                padding: EdgeInsets.all(8),
-                child: Icon(
-                  Icons.person_2_outlined,
-                  color: bmSpecialColorDark,
-                  size: 30,
+              GestureDetector(
+                onTap: () {
+                  handleButtonPress();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white, borderRadius: radius(100)),
+                  padding: EdgeInsets.all(8),
+                  child: Icon(
+                    Icons.person_2_outlined,
+                    color: bmSpecialColorDark,
+                    size: 30,
+                  ),
                 ),
               )
             ],

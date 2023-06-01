@@ -13,6 +13,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _name = TextEditingController();
   final _email = TextEditingController();
   final _mobile = TextEditingController();
   final _password = TextEditingController();
@@ -21,6 +22,7 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   void dispose() {
     _email.dispose();
+    _name.dispose();
     _password.dispose();
     _mobile.dispose();
     _confirmpassword.dispose();
@@ -34,6 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _email.text,
         _password.text,
         _mobile.text,
+        _name.text,
       ),
     );
   }
@@ -93,7 +96,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       const SizedBox(height: 40),
                       editTextStyle(
-                        "Enter EMAIL",
+                        "Enter E-mail",
                         isPassword: false,
                         controller: _email,
                         validator: (value) {
@@ -103,6 +106,9 @@ class _SignupScreenState extends State<SignupScreen> {
                               : null;
                         },
                       ),
+                      const SizedBox(height: 16,),
+                      editTextStyle("Enter your name",
+                          isPassword: false, controller: _name),
                       const SizedBox(height: 16),
                       editTextStyle("Mobile number",
                           isPassword: false, controller: _mobile),
