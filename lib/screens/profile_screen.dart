@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -76,20 +77,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 //         fit: BoxFit.contain),
                 //   ),
                 // ),
-                const Text(
-                  // "${FirebaseAuth.instance.currentUser!.displayName}"
-                  'RidingLion86',
-                  style: TextStyle(
+                Text(
+                  "${FirebaseAuth.instance.currentUser!.displayName}",
+                  style: const TextStyle(
                     fontSize: 26,
                     color: Colors.black,
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 7),
+                 Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 7),
                   child: Text(
-                    // "${FirebaseAuth.instance.currentUser!.email}",
-                    "Laughing ghost",
-                    style: TextStyle(
+                    "${FirebaseAuth.instance.currentUser!.email}",
+                    style: const TextStyle(
                         color: Color(0xFF797979),
                         fontWeight: FontWeight.w500,
                         fontSize: 12),
