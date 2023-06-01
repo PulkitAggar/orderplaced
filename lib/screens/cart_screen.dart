@@ -21,6 +21,57 @@ class ShoppingCart extends StatefulWidget {
 }
 
 class ShoppingCartState extends State<ShoppingCart> {
+
+String weekday = '';
+
+  void getCurrentWeekday() {
+    DateTime now = DateTime.now();
+    int currentWeekday = now.weekday;
+
+    switch (currentWeekday) {
+      case 1:
+        setState(() {
+          weekday = 'Monday';
+        });
+        break;
+      case 2:
+        setState(() {
+          weekday = 'Tuesday';
+        });
+        break;
+      case 3:
+        setState(() {
+          weekday = 'Wednesday';
+        });
+        break;
+      case 4:
+        setState(() {
+          weekday = 'Thursday';
+        });
+        break;
+      case 5:
+        setState(() {
+          weekday = 'Friday';
+        });
+        break;
+      case 6:
+        setState(() {
+          weekday = 'Saturday';
+        });
+        break;
+      case 7:
+        setState(() {
+          weekday = 'Sunday';
+        });
+        break;
+      default:
+        setState(() {
+          weekday = 'Unknown';
+        });
+        break;
+    }
+  }
+
   double total = 0.00;
   String coupon = '';
   int discount = 0;
@@ -34,6 +85,10 @@ class ShoppingCartState extends State<ShoppingCart> {
   List<dynamic> cop = [];
   bool exist = false;
 
+  late String nameR = '';
+  late String numberR = '';
+  late String addressR = '';
+
   @override
   void initState() {
     feeFetch();
@@ -41,6 +96,7 @@ class ShoppingCartState extends State<ShoppingCart> {
     fetch();
     super.initState();
     getuser();
+    getCurrentWeekday();
 
     _firebase
         .collection("cart")
@@ -234,6 +290,7 @@ class ShoppingCartState extends State<ShoppingCart> {
             messagewidget.add(mess);
           }
           print(loggineduser?.uid);
+          
 
           return Scaffold(
             backgroundColor: Colors.white,
@@ -301,12 +358,15 @@ class ShoppingCartState extends State<ShoppingCart> {
                                   trackOrder: "pending",
                                   time:
                                       "${currentTime.hour}:${currentTime.minute}:${currentTime.second}",
-                                  weekday: "${currentDate.weekday}",
+                                  weekday: weekday,
                                   date:
                                       "${currentDate.day}-${currentDate.month}-${currentDate.year}",
                                   cost: total - discount,
                                   storeUid: "Jw05mBpXnk9ydGaJh0p0",
                                   isCancelled: false,
+                                  nameR: nameR,
+                                  numberR: numberR,
+                                  addressR: addressR,
                                   lstOfItems: messages);
                               Navigator.push(
                                 context,
@@ -374,6 +434,10 @@ class ShoppingCartState extends State<ShoppingCart> {
                                 addres.add(add.get("name"));
                                 addres.add(add.get("number"));
                               }
+                              final nameR= name;
+                              final numberR = number;
+                              final addressR= addre;
+                              //OrderModel modelOfOrder = OrderModel
                               return Padding(
                                 padding: EdgeInsets.only(left: 15, right: 15),
                                 child: Card(

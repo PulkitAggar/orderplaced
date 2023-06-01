@@ -23,7 +23,7 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
   final FirebaseFirestore _store = FirebaseFirestore.instance;
 
   _updatingOrderINtoFirebase(String date, String weekday, String time,
-      bool isCancelled, String storeId, String orderStatus) async {
+      bool isCancelled, String storeId, String orderStatus, String nameR, String numberR, String addressR) async {
     String uuid = _auth.currentUser!.uid;
 
     final docStore =
@@ -36,7 +36,10 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       "date": date,
       "weekday": weekday,
       "user": uuid,
-      "orderStatus": orderStatus
+      "orderStatus": orderStatus,
+      "nameR": nameR,
+      "addressR":addressR,
+      "numberR":numberR,
     }, SetOptions(merge: true));
 
     await docUser.set({
@@ -44,7 +47,10 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       "date": date,
       "weekday": weekday,
       "isCancelled": isCancelled,
-      "orderStatus": orderStatus
+      "orderStatus": orderStatus,
+      "nameR": nameR,
+      "addressR":addressR,
+      "numberR":numberR,
     }, SetOptions(merge: true));
 
     for (var items in widget.orderModel.lstOfItems) {
@@ -78,7 +84,11 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
         widget.orderModel.time,
         widget.orderModel.isCancelled,
         widget.orderModel.storeUid,
-        "placed");
+        "placed",
+        widget.orderModel.nameR,
+        widget.orderModel.numberR,
+        widget.orderModel.addressR,
+        );
     super.initState();
   }
 
@@ -149,7 +159,7 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
                   children: [
                     Space(8),
                     Text(
-                      "The designated personal from the store",
+                      "The designated personal from the store will contact you",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 14, color: Colors.grey),
                     ),

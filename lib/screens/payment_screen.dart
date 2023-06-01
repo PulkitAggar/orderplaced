@@ -183,7 +183,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'amount': widget.totsamount * 100, //in the smallest currency sub-unit.
       'name': 'Balaji Sports and Fitness',
       'order_id': orderId, // Generate order_id using Orders API
-      'description': 'Fine T-Shirt',
+      'description': 'Sports and Fitness',
       'timeout': 60 * 5, // in seconds // 5 minutes
       'prefill': {
         'contact': '9123456789',

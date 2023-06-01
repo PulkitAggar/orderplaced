@@ -7,6 +7,9 @@ class OrderModel {
   String trackOrder;
   String storeUid;
   bool isCancelled;
+  String nameR;
+  String numberR;
+  String addressR;
   List<DocumentSnapshotPlatform> lstOfItems;
 
   OrderModel(
@@ -17,5 +20,8 @@ class OrderModel {
       required this.cost,
       required this.storeUid,
       required this.isCancelled,
-      required this.lstOfItems});
+      required this.lstOfItems,
+      required this.nameR,
+      required this.numberR,
+      required this.addressR,});
 }
