@@ -221,15 +221,24 @@ class ShoppingCartState extends State<ShoppingCart> {
         .firstWhereOrNull((element) => element.get("subname") == "non-geared");
     var founddoc3 = doc1.docs
         .firstWhereOrNull((element) => element.get("catname") == "Services");
-    if (founddoc3 != null) {
-      FirebaseFirestore.instance
-          .collection("coupon")
-          .doc("coupon")
-          .get()
-          .then((value) {
-        cop.add(value.get("service")[0]["codename"]);
-      });
-    }
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc("${loggineduser?.uid}")
+        .get()
+        .then((value) {
+      if (value.get("count") % 3 == 0) {
+        if (founddoc3 != null) {
+          FirebaseFirestore.instance
+              .collection("coupon")
+              .doc("coupon")
+              .get()
+              .then((value) {
+            cop.add(value.get("service")[0]["codename"]);
+          });
+        }
+      }
+    });
+
     FirebaseFirestore.instance
         .collection("users")
         .doc("${loggineduser?.uid}")
