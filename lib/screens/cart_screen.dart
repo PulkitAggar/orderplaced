@@ -22,6 +22,7 @@ class ShoppingCart extends StatefulWidget {
 }
 
 class ShoppingCartState extends State<ShoppingCart> {
+  String storeuid = "";
   String weekday = '';
   int empty = 0;
   void getCurrentWeekday() {
@@ -95,7 +96,15 @@ class ShoppingCartState extends State<ShoppingCart> {
     super.initState();
     getuser();
     getCurrentWeekday();
-
+    FirebaseFirestore.instance
+        .collection("cart")
+        .doc("${loggineduser?.email}")
+        .get()
+        .then((value) {
+      setState(() {
+        storeuid = value.get("storeid");
+      });
+    });
     _firebase
         .collection("cart")
         .doc("${loggineduser?.email}")
@@ -489,7 +498,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                                   date:
                                       "${currentDate.day}-${currentDate.month}-${currentDate.year}",
                                   cost: ((total + fee) - discount),
-                                  storeUid: "Jw05mBpXnk9ydGaJh0p0",
+                                  storeUid: storeuid,
                                   isCancelled: false,
                                   lstOfItems: messages);
                               Navigator.push(
