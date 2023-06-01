@@ -231,8 +231,13 @@ class StoresRepository {
     List<userOrderModel> orders = [];
 
     // Fetch data from Firestore
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await FirebaseFirestore.instance.collection('users').doc(uid).collection('orders').where("orderStatus" , isNotEqualTo: "Delivered").get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('users')
+        .doc(uid)
+        .collection('orders')
+        .where("orderStatus", isNotEqualTo: "Delivered")
+        .get();
 
     // Process each document in the query snapshot
     for (var doc in querySnapshot.docs) {
@@ -245,13 +250,26 @@ class StoresRepository {
       bool paymentType = doc.data()['isCancelled'] ?? false;
 
       String weekday = doc.data()['weekday'] ?? '';
-      String orderStatus =doc.data()['orderStatus']??'';
-      String nameR =doc.data()['nameR']??'';
-      String phoneR =doc.data()['numberR']??'';
-      String addressR =doc.data()['addressR']??'';
-      List<DocumentSnapshotPlatform>list =  doc.data()['lstOfItems']??[];
+      String orderStatus = doc.data()['orderStatus'] ?? '';
+      String nameR = doc.data()['nameR'] ?? '';
+      String phoneR = doc.data()['numberR'] ?? '';
+      String addressR = doc.data()['addressR'] ?? '';
+      // List<DocumentSnapshotPlatform> list = doc.data()['order'] ?? [];
+      Map<String, dynamic> map = doc.data()['order'] ?? [];
+      String storeName = doc.data()['name'] ?? '';
 
-      userOrderModel orderModel = userOrderModel(date: date, weekday: weekday, time: time, storeUid: storeid, isCancelled: paymentType, orderStatus: orderStatus, addressR: addressR, nameR: nameR, phoneR:phoneR, lstOfItems: list);
+      userOrderModel orderModel = userOrderModel(
+          date: date,
+          weekday: weekday,
+          time: time,
+          storeUid: storeid,
+          isCancelled: paymentType,
+          orderStatus: orderStatus,
+          addressR: addressR,
+          nameR: nameR,
+          phoneR: phoneR,
+          map: map,
+          storeName: storeName);
 
       orders.add(orderModel);
     }
@@ -263,8 +281,13 @@ class StoresRepository {
     List<userOrderModel> orders = [];
 
     // Fetch data from Firestore
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await FirebaseFirestore.instance.collection('users').doc(uid).collection('orders').where("orderStatus" , isEqualTo: "Delivered").get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('users')
+        .doc(uid)
+        .collection('orders')
+        .where("orderStatus", isEqualTo: "Delivered")
+        .get();
 
     // Process each document in the query snapshot
     for (var doc in querySnapshot.docs) {
@@ -277,13 +300,26 @@ class StoresRepository {
       bool paymentType = doc.data()['isCancelled'] ?? false;
 
       String weekday = doc.data()['weekday'] ?? '';
-      String orderStatus =doc.data()['orderStatus']??'';
-      String nameR =doc.data()['nameR']??'';
-      String phoneR =doc.data()['numberR']??'';
-      String addressR =doc.data()['addressR']??'';
-      List<DocumentSnapshotPlatform>list =  doc.data()['lstOfItems']??[];
+      String orderStatus = doc.data()['orderStatus'] ?? '';
+      String nameR = doc.data()['nameR'] ?? '';
+      String phoneR = doc.data()['numberR'] ?? '';
+      String addressR = doc.data()['addressR'] ?? '';
+      // List<DocumentSnapshotPlatform> list = doc.data()['order'] ?? [];
+      Map<String, dynamic> map = doc.data()['order'] ?? [];
+      String storeName = doc.data()['name'] ?? '';
 
-      userOrderModel orderModel = userOrderModel(date: date, weekday: weekday, time: time, storeUid: storeid, isCancelled: paymentType, orderStatus: orderStatus, addressR: addressR, nameR: nameR, phoneR:phoneR, lstOfItems: list);
+      userOrderModel orderModel = userOrderModel(
+          date: date,
+          weekday: weekday,
+          time: time,
+          storeUid: storeid,
+          isCancelled: paymentType,
+          orderStatus: orderStatus,
+          addressR: addressR,
+          nameR: nameR,
+          phoneR: phoneR,
+          map: map,
+          storeName: storeName);
 
       orders.add(orderModel);
     }

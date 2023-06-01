@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mycycleclinic/screens/current_order_screen.dart';
+import 'package:nb_utils/nb_utils.dart';
 import '../screens/screens.dart';
 import '../blocs/blocs.dart';
 
@@ -84,11 +86,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: Colors.black,
                   ),
                 ),
-                 Padding(
+                Padding(
                   padding: const EdgeInsets.symmetric(vertical: 7),
                   child: Text(
                     "${FirebaseAuth.instance.currentUser!.email}",
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Color(0xFF797979),
                         fontWeight: FontWeight.w500,
                         fontSize: 12),
@@ -171,10 +173,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        children: const [
-                          Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            color: Colors.white,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: ((context) => CurrentOrders())));
+                            },
+                            child: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              color: Colors.white,
+                            ),
                           ),
                           SizedBox(
                             height: 25,
@@ -310,7 +320,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.only(top: 12, left: 20),
                       child: Column(
                         children: [
+                          8.height,
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(right: 110.0),
@@ -335,9 +347,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ],
                                 ),
                               ),
-                              const Icon(
-                                Icons.warning_amber_outlined,
-                                color: Color(0xFFFF6565),
+                              const Padding(
+                                padding: EdgeInsets.only(right: 16.0),
+                                child: Icon(
+                                  Icons.warning_amber_outlined,
+                                  color: Color(0xFFFF6565),
+                                ),
                               ),
                             ],
                           ),

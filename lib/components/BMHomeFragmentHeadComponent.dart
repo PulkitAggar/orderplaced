@@ -42,7 +42,10 @@ class HomeFragmentHeadComponent extends StatelessWidget {
                     children: [
                       Text('Hi',
                           style: boldTextStyle(color: Colors.white, size: 14)),
-                      Text(userName ?? "Cyclist", style: boldTextStyle(color: Colors.white, size: 24),),
+                      Text(
+                        userName!.toUpperCase() ?? "Cyclist",
+                        style: boldTextStyle(color: Colors.white, size: 24),
+                      ),
                       // Wrap(
                       //   children: [
                       //     Text('32',
