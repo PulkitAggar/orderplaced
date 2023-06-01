@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nb_utils/nb_utils.dart';
 import '../blocs/blocs.dart';
 import '../datamodels/models.dart';
 import '../widgets/widgets.dart';
@@ -22,7 +23,8 @@ class ShoppingCart extends StatefulWidget {
 class ShoppingCartState extends State<ShoppingCart> {
   double total = 0.00;
   String coupon = '';
-  var discount = 0;
+  int discount = 0;
+  int fee = 0;
   TextEditingController textEditingController = TextEditingController();
   final AddressBloc addressBloc = AddressBloc();
   final _auth = FirebaseAuth.instance;
@@ -34,6 +36,7 @@ class ShoppingCartState extends State<ShoppingCart> {
 
   @override
   void initState() {
+    feeFetch();
     xyz();
     fetch();
     super.initState();
@@ -77,26 +80,51 @@ class ShoppingCartState extends State<ShoppingCart> {
   }
 
   Future fetch() async {
-    var doc = await _firebase
-        .collection("coupon")
-        .doc("${loggineduser?.email}")
-        .collection("coupon")
-        .get();
-    var d =
-        await _firebase.collection("coupon").doc("coupon").get().then((value) {
-      // print(value.get("code"));
-      setState(() {
-        cop = value.get("code");
-      });
-      return value.get("code");
+    await _firebase.collection("coupon").doc("coupon").get().then((value) {
+      for (int i = 0; i < value.get("code").length; i++) {
+        setState(() {
+          cop.add(value.get("code")[i]["codename"]);
+        });
+      }
     });
     // DocumentSnapshotPlatform? foundDoc =
     //     doc.docs.firstWhereOrNull((element) => element.get("code") == coupon);
-    if (doc.docs.isEmpty) {
-      return null;
-    }
+  }
 
-    return d;
+  void codeDiscount(String name) async {
+    await _firebase.collection("coupon").doc("coupon").get().then((value) {
+      for (int i = 0; i < value.get("code").length; i++) {
+        if (value.get("code")[i]["codename"] == name) {
+          print(value.get("code")[i]["amount"]);
+          setState(() {
+            discount = value.get("code")[i]["amount"];
+          });
+        }
+        // else {
+        //   setState(() {
+        //     discount = 0;
+        //   });
+        // }
+      }
+    });
+  }
+
+  void feeFetch() {
+    FirebaseFirestore.instance
+        .collection("cart")
+        .doc("${loggineduser?.email}")
+        .get()
+        .then((value) {
+      FirebaseFirestore.instance
+          .collection("stores")
+          .doc(value.get("storeid"))
+          .get()
+          .then((value) {
+        setState(() {
+          fee = value.get("Fee");
+        });
+      });
+    });
   }
 
   void xyz() {
@@ -267,6 +295,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                                   builder: (context) => PaymentScreen(
                                     totsamount: total - discount.toDouble(),
                                     orderModel: modelOfOrder,
+                                    code: coupon,
                                   ),
                                 ),
                               );
@@ -563,6 +592,8 @@ class ShoppingCartState extends State<ShoppingCart> {
                                                             Text(cop[index]),
                                                             TextButton(
                                                                 onPressed: () {
+                                                                  codeDiscount(
+                                                                      cop[index]);
                                                                   coupon = cop[
                                                                       index];
                                                                   print(coupon);

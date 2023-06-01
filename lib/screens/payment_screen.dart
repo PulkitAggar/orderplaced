@@ -20,7 +20,12 @@ User? _loggineduser;
 class PaymentScreen extends StatefulWidget {
   OrderModel orderModel;
   double totsamount;
-  PaymentScreen({Key? key, required this.orderModel, required this.totsamount})
+  String code;
+  PaymentScreen(
+      {Key? key,
+      required this.orderModel,
+      required this.totsamount,
+      required this.code})
       : super(key: key);
 
   @override
@@ -81,10 +86,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
       for (DocumentSnapshot ds in snapshot.docs) {
         ds.reference.delete();
       }
+    }).then((value) {
+      FirebaseFirestore.instance
+          .collection("cart")
+          .doc("${loggineduser?.email}")
+          .set({
+        "storeid": "",
+      });
+    });
+  }
+
+  void addCode() {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc("${loggineduser?.uid}")
+        .update({
+      "data": FieldValue.arrayUnion([widget.code])
     });
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    addCode();
     //ADD cart clear func
     delete();
     // Do something when payment succeeds
