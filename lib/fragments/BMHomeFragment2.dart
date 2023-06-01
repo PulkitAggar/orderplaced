@@ -11,7 +11,9 @@ import '../utils/BMColors.dart';
 import '../utils/BMCommonWidgets.dart';
 
 class BMHomeFragment2 extends StatefulWidget {
-  const BMHomeFragment2({Key? key}) : super(key: key);
+  final Function(int) onTabChanged;
+
+  BMHomeFragment2({required this.onTabChanged});
 
   @override
   State<BMHomeFragment2> createState() => _BMHomeFragmentState2();
@@ -65,7 +67,7 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const HomeFragmentHeadComponent(),
+              HomeFragmentHeadComponent(onButtonPressed: widget.onTabChanged,),
               20.height,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

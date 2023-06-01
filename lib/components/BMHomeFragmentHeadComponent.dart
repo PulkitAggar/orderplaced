@@ -7,7 +7,18 @@ import 'package:nb_utils/nb_utils.dart';
 import '../utils/BMColors.dart';
 
 class HomeFragmentHeadComponent extends StatelessWidget {
-  const HomeFragmentHeadComponent({Key? key}) : super(key: key);
+  final Function(int) onButtonPressed;
+
+  HomeFragmentHeadComponent({required this.onButtonPressed});
+
+  void handleButtonPress() {
+    // Set the new selected tab value
+    int newSelectedTab =
+        3; // Example value, you can set it based on your requirements
+
+    // Call the callback function to update the selected tab
+    onButtonPressed(newSelectedTab);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +56,19 @@ class HomeFragmentHeadComponent extends StatelessWidget {
                   )
                 ],
               ),
-              Container(
-                decoration: BoxDecoration(
-                    color: Colors.white, borderRadius: radius(100)),
-                padding: EdgeInsets.all(8),
-                child: Icon(
-                  Icons.person_2_outlined,
-                  color: bmSpecialColorDark,
-                  size: 30,
+              GestureDetector(
+                onTap: () {
+                  handleButtonPress();
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white, borderRadius: radius(100)),
+                  padding: EdgeInsets.all(8),
+                  child: Icon(
+                    Icons.person_2_outlined,
+                    color: bmSpecialColorDark,
+                    size: 30,
+                  ),
                 ),
               )
             ],
