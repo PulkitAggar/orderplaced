@@ -17,8 +17,13 @@ class AuthRepository {
 
       String? userUid = FirebaseAuth.instance.currentUser?.uid;
       // SHOULD WE KEEP IT USERID OR EMAIL? DEPENDS ON THE OTHER CART AND STORE IMPLEMENTATIONS.
-      await FirebaseFirestore.instance.collection('users').doc(userUid).set(
-          {"email": email, "mobile": mobile, "userUid": userUid, "name": name});
+      await FirebaseFirestore.instance.collection('users').doc(userUid).set({
+        "email": email,
+        "mobile": mobile,
+        "userUid": userUid,
+        "name": name,
+        "count": 0,
+      });
       await FirebaseFirestore.instance.collection("cart").doc(email).set({
         "storeid": "",
       });

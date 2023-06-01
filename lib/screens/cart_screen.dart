@@ -22,7 +22,7 @@ class ShoppingCart extends StatefulWidget {
 
 class ShoppingCartState extends State<ShoppingCart> {
   String weekday = '';
-
+  int empty = 0;
   void getCurrentWeekday() {
     DateTime now = DateTime.now();
     int currentWeekday = now.weekday;
@@ -74,7 +74,9 @@ class ShoppingCartState extends State<ShoppingCart> {
   double total = 0.00;
   String coupon = '';
   int discount = 0;
+  int dis = 0;
   int fee = 0;
+
   TextEditingController textEditingController = TextEditingController();
   final AddressBloc addressBloc = AddressBloc();
   final _auth = FirebaseAuth.instance;
@@ -86,9 +88,10 @@ class ShoppingCartState extends State<ShoppingCart> {
 
   @override
   void initState() {
+    emptyCart();
+    couponDiscount2();
     feeFetch();
     xyz();
-    fetch();
     super.initState();
     getuser();
     getCurrentWeekday();
@@ -130,53 +133,105 @@ class ShoppingCartState extends State<ShoppingCart> {
     }
   }
 
-  Future fetch() async {
-    await _firebase.collection("coupon").doc("coupon").get().then((value) {
-      _firebase
-          .collection("users")
-          .doc("${loggineduser?.uid}")
-          .get()
-          .then((value2) {
-        List<dynamic> cop1 = [];
-        for (int i = 0; i < value.get("code").length; i++) {
-          if (total > value.get("code")[i]["amount"]) {
-            setState(() {
-              cop1.add(value.get("code")[i]["codename"]);
-            });
-          }
-        }
-        for (int j = 0; j < value2.get("code").length; j++) {
-          cop1.remove(value2.get("code")[j]);
-        }
-        setState(() {
-          cop = cop1;
-        });
+  void emptyCart() async {
+    var d = await FirebaseFirestore.instance
+        .collection("cart")
+        .doc("${loggineduser?.email}")
+        .collection("cart")
+        .get();
+    if (d.docs.isNotEmpty) {
+      setState(() {
+        empty = 1;
       });
-    });
-    // DocumentSnapshotPlatform? foundDoc =
-    //     doc.docs.firstWhereOrNull((element) => element.get("code") == coupon);
+    }
   }
 
-  void codeDiscount(String name) async {
-    await _firebase.collection("coupon").doc("coupon").get().then((value) {
-      for (int i = 0; i < value.get("code").length; i++) {
-        if (value.get("code")[i]["codename"] == name) {
-          print(value.get("code")[i]["amount"]);
+  // Future fetch() async {
+  //   await _firebase.collection("coupon").doc("coupon").get().then((value) {
+  //     _firebase
+  //         .collection("users")
+  //         .doc("${loggineduser?.uid}")
+  //         .get()
+  //         .then((value2) {
+  //       List<dynamic> cop1 = [];
+  //       for (int i = 0; i < value.get("code").length; i++) {
+  //         if (total > value.get("code")[i]["amount"]) {
+  //           setState(() {
+  //             cop1.add(value.get("code")[i]["codename"]);
+  //           });
+  //         }
+  //       }
+  //       for (int j = 0; j < value2.get("code").length; j++) {
+  //         cop1.remove(value2.get("code")[j]);
+  //       }
+  //       setState(() {
+  //         cop = cop1;
+  //       });
+  //     });
+  //   });
+  //   // DocumentSnapshotPlatform? foundDoc =
+  //   //     doc.docs.firstWhereOrNull((element) => element.get("code") == coupon);
+  // }
+
+  // void codeDiscount(String name) async {
+  //   await _firebase.collection("coupon").doc("coupon").get().then((value) {
+  //     for (int i = 0; i < value.get("code").length; i++) {
+  //       if (value.get("code")[i]["codename"] == name) {
+  //         print(value.get("code")[i]["amount"]);
+  //         setState(() {
+  //           discount = value.get("code")[i]["amount"];
+  //         });
+  //       }
+  //       // else {
+  //       //   setState(() {
+  //       //     discount = 0;
+  //       //   });
+  //       // }
+  //     }
+  //   });
+  // }
+
+  void couponDiscount2() async {
+    List amount = [];
+    var doc = await FirebaseFirestore.instance
+        .collection("cart")
+        .doc("${loggineduser?.email}")
+        .collection("cart")
+        .get();
+    var founddoc = doc.docs
+        .firstWhereOrNull((element) => element.get("catname") == "Services");
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc("${loggineduser?.uid}")
+        .get()
+        .then((value) {
+      if (value.get("count") % 3 == 0) {
+        if (founddoc != null) {
+          FirebaseFirestore.instance
+              .collection("coupon")
+              .doc("coupon")
+              .get()
+              .then((value) {
+            cop.add(value.get("service")[0]["codename"]);
+          });
+          for (int i = 0; i < doc.docs.length; i++) {
+            print(doc.docs[i].get("catname"));
+            if (doc.docs[i].get("catname") == "Services") {
+              amount.add(doc.docs[i].get("cost"));
+            }
+          }
+          double val = amount
+              .reduce((value, element) => value < element ? value : element);
           setState(() {
-            discount = value.get("code")[i]["amount"];
+            dis = val.toInt();
           });
         }
-        // else {
-        //   setState(() {
-        //     discount = 0;
-        //   });
-        // }
       }
     });
   }
 
-  void feeFetch() {
-    FirebaseFirestore.instance
+  void feeFetch() async {
+    await FirebaseFirestore.instance
         .collection("cart")
         .doc("${loggineduser?.email}")
         .get()
@@ -263,6 +318,7 @@ class ShoppingCartState extends State<ShoppingCart> {
 
   @override
   Widget build(BuildContext context) {
+    // print(discount);
     return StreamBuilder<QuerySnapshotPlatform>(
         stream: localStreamController.stream,
         builder: (context, snapshot) {
@@ -327,7 +383,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "\Rs. ${(total - discount).toStringAsFixed(2)}",
+                          "\Rs. ${((total + fee) - discount).toStringAsFixed(2)}",
                           // "\Rs. ${totalAmount.toStringAsFixed(2)}",
                           style: TextStyle(
                             color: Colors.white,
@@ -358,7 +414,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                                   weekday: weekday,
                                   date:
                                       "${currentDate.day}-${currentDate.month}-${currentDate.year}",
-                                  cost: total - discount,
+                                  cost: ((total + fee) - discount),
                                   storeUid: "Jw05mBpXnk9ydGaJh0p0",
                                   isCancelled: false,
                                   lstOfItems: messages);
@@ -366,7 +422,8 @@ class ShoppingCartState extends State<ShoppingCart> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => PaymentScreen(
-                                    totsamount: total - discount.toDouble(),
+                                    totsamount:
+                                        ((total + fee) - discount).toDouble(),
                                     orderModel: modelOfOrder,
                                     code: coupon,
                                   ),
@@ -390,386 +447,378 @@ class ShoppingCartState extends State<ShoppingCart> {
               },
               onClosing: () {},
             ),
-            body: messagewidget.length == 0
-                ? Center(child: Text('Your Cart is Empty'))
-                : SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Container(
-                          height: 300,
-                          child: ListView(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 10.0, vertical: 20.0),
-                            children: messagewidget,
-                          ),
-                        ),
-                        Space(8),
-                        StreamBuilder<QuerySnapshotPlatform>(
-                            stream: _firebase
-                                .collection("users")
-                                .doc("${loggineduser?.uid}")
-                                .collection("userAddress")
-                                .snapshots(),
-                            builder: (context, innershot) {
-                              String name = "";
-                              String number = "";
-                              String addre = "";
-                              if (!innershot.hasData) {
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                    backgroundColor: Colors.lightBlueAccent,
-                                  ),
-                                );
-                              }
-                              var address = innershot.data?.docs;
-                              List<String> addres = [];
-                              for (var add in address!) {
-                                addres.add(add.get("fullAddress"));
-                                addres.add(add.get("name"));
-                                addres.add(add.get("number"));
-                              }
-                              // final nameR = name;
-                              // final numberR = number;
-                              // final addressR = addre;
-                              //OrderModel modelOfOrder = OrderModel
-                              return Padding(
-                                padding: EdgeInsets.only(left: 15, right: 15),
-                                child: Card(
-                                  color: Colors.grey.shade200,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Padding(
-                                    padding: EdgeInsets.all(16),
-                                    child: Row(
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    height: 300,
+                    child: ListView(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 10.0, vertical: 20.0),
+                      children: messagewidget,
+                    ),
+                  ),
+                  Space(8),
+                  StreamBuilder<QuerySnapshotPlatform>(
+                      stream: _firebase
+                          .collection("users")
+                          .doc("${loggineduser?.uid}")
+                          .collection("userAddress")
+                          .snapshots(),
+                      builder: (context, innershot) {
+                        String name = "";
+                        String number = "";
+                        String addre = "";
+                        if (!innershot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator(
+                              backgroundColor: Colors.lightBlueAccent,
+                            ),
+                          );
+                        }
+                        var address = innershot.data?.docs;
+                        List<String> addres = [];
+                        for (var add in address!) {
+                          addres.add(add.get("fullAddress"));
+                          addres.add(add.get("name"));
+                          addres.add(add.get("number"));
+                        }
+                        // final nameR = name;
+                        // final numberR = number;
+                        // final addressR = addre;
+                        //OrderModel modelOfOrder = OrderModel
+                        return Padding(
+                          padding: EdgeInsets.only(left: 15, right: 15),
+                          child: Card(
+                            color: Colors.grey.shade200,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.location_on, size: 20),
+                                  Space(24),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Icon(Icons.location_on, size: 20),
-                                        Space(24),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                "Address",
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w900,
-                                                    fontSize: 21),
-                                              ),
-                                              Space(4),
-                                              Text(
-                                                addres.length != 0
-                                                    ? "${addres[0]}"
-                                                    : "enter your Address",
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                              Space(4),
-                                              Text(
-                                                "Name",
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w900,
-                                                    fontSize: 21),
-                                              ),
-                                              Space(4),
-                                              Text(
-                                                addres.length != 0
-                                                    ? "${addres[1]}"
-                                                    : "enter your name",
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 16,
-                                                ),
-                                              ),
-                                              Space(4),
-                                              Text(
-                                                "Number",
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w900,
-                                                    fontSize: 21),
-                                              ),
-                                              Space(4),
-                                              Text(
-                                                addres.length != 0
-                                                    ? "${addres[2]}"
-                                                    : "enter your number",
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 16,
-                                                ),
-                                              )
-                                            ],
+                                        Text(
+                                          "Address",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                              fontSize: 21),
+                                        ),
+                                        Space(4),
+                                        Text(
+                                          addres.length != 0
+                                              ? "${addres[0]}"
+                                              : "enter your Address",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16,
                                           ),
                                         ),
-                                        Space(8),
-                                        IconButton(
-                                            onPressed: () {
-                                              showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return Dialog(
-                                                      child: Container(
-                                                        height: 250,
-                                                        width: 500,
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(20),
-                                                        child:
-                                                            SingleChildScrollView(
-                                                          child: Column(
-                                                            children: [
-                                                              CustomTextField(
-                                                                  controller:
-                                                                      textEditingController,
-                                                                  maxLines: 3,
-                                                                  title:
-                                                                      'Address',
-                                                                  hasTitle:
-                                                                      true,
-                                                                  initialValue:
-                                                                      '',
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    addre = value
-                                                                        .toString();
-                                                                  }),
-                                                              CustomTextField(
-                                                                  controller:
-                                                                      textEditingController,
-                                                                  maxLines: 1,
-                                                                  title: 'Name',
-                                                                  hasTitle:
-                                                                      true,
-                                                                  initialValue:
-                                                                      '',
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    name = value
-                                                                        .toString();
-                                                                  }),
-                                                              CustomTextField(
-                                                                  controller:
-                                                                      textEditingController,
-                                                                  maxLines: 1,
-                                                                  title:
-                                                                      'Number',
-                                                                  hasTitle:
-                                                                      true,
-                                                                  initialValue:
-                                                                      '',
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    number = value
-                                                                        .toString();
-                                                                  }),
-                                                              ElevatedButton(
-                                                                style: ElevatedButton
-                                                                    .styleFrom(
-                                                                        backgroundColor:
-                                                                            Colors.white),
-                                                                onPressed: () {
-                                                                  _firebase
-                                                                      .collection(
-                                                                          "users")
-                                                                      .doc(
-                                                                          "${loggineduser?.uid}")
-                                                                      .collection(
-                                                                          "userAddress")
-                                                                      .doc(
-                                                                          "${loggineduser?.email}")
-                                                                      .set({
-                                                                    "fullAddress":
-                                                                        addre,
-                                                                    "number":
-                                                                        number,
-                                                                    "name": name
-                                                                  }).then((value) {
-                                                                    xyz();
-                                                                  });
-
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                                child: Text(
-                                                                  'Save',
-                                                                  style: Theme.of(
-                                                                          context)
-                                                                      .textTheme
-                                                                      .headline5!
-                                                                      .copyWith(
-                                                                          color:
-                                                                              Colors.black),
-                                                                ),
-                                                              )
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
-                                                  });
-                                            },
-                                            icon: Icon(Icons.edit)),
+                                        Space(4),
+                                        Text(
+                                          "Name",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                              fontSize: 21),
+                                        ),
+                                        Space(4),
+                                        Text(
+                                          addres.length != 0
+                                              ? "${addres[1]}"
+                                              : "enter your name",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Space(4),
+                                        Text(
+                                          "Number",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                              fontSize: 21),
+                                        ),
+                                        Space(4),
+                                        Text(
+                                          addres.length != 0
+                                              ? "${addres[2]}"
+                                              : "enter your number",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 16,
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ),
-                                ),
-                              );
-                            }),
-                        Space(8),
-                        Column(
-                          children: [
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 15, right: 15),
-                              child: Card(
-                                color: Colors.grey.shade200,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Padding(
-                                  padding: EdgeInsets.all(15),
-                                  child: Row(
-                                    children: [
-                                      Icon(Icons.offline_share_outlined,
-                                          size: 20),
-                                      Space(8),
-                                      Expanded(
-                                        child: Text(
-                                          "Apply Coupon",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 18),
-                                        ),
-                                      ),
-                                      if (total != 0)
-                                        IconButton(
-                                          icon: Icon(Icons.edit),
-                                          onPressed: () {
-                                            // ignore: use_build_context_synchronously
-                                            // if (total == 0)
-                                            showDialog(
-                                                context: context,
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return ListView.builder(
-                                                      itemCount: cop.length,
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return Card(
-                                                            child: Column(
-                                                          children: [
-                                                            Text(cop[index]),
-                                                            TextButton(
-                                                                onPressed: () {
-                                                                  codeDiscount(
-                                                                      cop[index]);
-                                                                  coupon = cop[
-                                                                      index];
-                                                                  print(coupon);
-                                                                  Navigator.pop(
-                                                                      context);
-                                                                },
-                                                                child: Text(
-                                                                    'Apply'))
-                                                          ],
-                                                        ));
-                                                      });
-                                                });
-                                            print(cop);
-                                          },
-                                        )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Space(8),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 15, right: 15),
-                              child: Card(
-                                color: Colors.grey.shade200,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: Column(
-                                    children: [
-                                      ExpansionTile(
-                                        title: Text(
-                                          "Detailed Bill",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 18),
-                                        ),
-                                        children: [
-                                          ListTile(
-                                            title: Text(
-                                              "Subtotal",
-                                              textAlign: TextAlign.start,
-                                              style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14),
-                                            ),
-                                            trailing: Text(
-                                                "\₹${(total - discount).toStringAsFixed(2)}",
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(fontSize: 14)),
-                                          ),
-                                          ListTile(
-                                            title: Text(
-                                              "Coupon Discount",
-                                              textAlign: TextAlign.start,
-                                              style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14),
-                                            ),
-                                            trailing: Text("$discount",
-                                                textAlign: TextAlign.start,
-                                                style: TextStyle(fontSize: 14)),
-                                          ),
-                                        ],
-                                      ),
+                                  Space(8),
+                                  IconButton(
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Dialog(
+                                                child: Container(
+                                                  height: 250,
+                                                  width: 500,
+                                                  padding:
+                                                      const EdgeInsets.all(20),
+                                                  child: SingleChildScrollView(
+                                                    child: Column(
+                                                      children: [
+                                                        CustomTextField(
+                                                            controller:
+                                                                textEditingController,
+                                                            maxLines: 3,
+                                                            title: 'Address',
+                                                            hasTitle: true,
+                                                            initialValue: '',
+                                                            onChanged: (value) {
+                                                              addre = value
+                                                                  .toString();
+                                                            }),
+                                                        CustomTextField(
+                                                            controller:
+                                                                textEditingController,
+                                                            maxLines: 1,
+                                                            title: 'Name',
+                                                            hasTitle: true,
+                                                            initialValue: '',
+                                                            onChanged: (value) {
+                                                              name = value
+                                                                  .toString();
+                                                            }),
+                                                        CustomTextField(
+                                                            controller:
+                                                                textEditingController,
+                                                            maxLines: 1,
+                                                            title: 'Number',
+                                                            hasTitle: true,
+                                                            initialValue: '',
+                                                            onChanged: (value) {
+                                                              number = value
+                                                                  .toString();
+                                                            }),
+                                                        ElevatedButton(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                                  backgroundColor:
+                                                                      Colors
+                                                                          .white),
+                                                          onPressed: () {
+                                                            _firebase
+                                                                .collection(
+                                                                    "users")
+                                                                .doc(
+                                                                    "${loggineduser?.uid}")
+                                                                .collection(
+                                                                    "userAddress")
+                                                                .doc(
+                                                                    "${loggineduser?.email}")
+                                                                .set({
+                                                              "fullAddress":
+                                                                  addre,
+                                                              "number": number,
+                                                              "name": name
+                                                            }).then((value) {
+                                                              xyz();
+                                                            });
 
-                                      ///Divider(indent: 10, endIndent: 12, color: Colors.grey),
-                                      ListTile(
-                                        title: Text("Total",
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w900,
-                                                fontSize: 18)),
-                                        trailing: Text(
-                                          "\₹${(total - discount.toDouble()).toStringAsFixed(2)}",
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w900,
-                                              fontSize: 18),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text(
+                                                            'Save',
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .textTheme
+                                                                .headline5!
+                                                                .copyWith(
+                                                                    color: Colors
+                                                                        .black),
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            });
+                                      },
+                                      icon: Icon(Icons.edit)),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
+                        );
+                      }),
+                  Space(8),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        child: Card(
+                          color: Colors.grey.shade200,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: EdgeInsets.all(15),
+                            child: Row(
+                              children: [
+                                Icon(Icons.offline_share_outlined, size: 20),
+                                Space(8),
+                                Expanded(
+                                  child: Text(
+                                    "Apply Coupon",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 18),
+                                  ),
+                                ),
+                                if (total != 0)
+                                  IconButton(
+                                    icon: Icon(Icons.edit),
+                                    onPressed: () {
+                                      // ignore: use_build_context_synchronously
+                                      // if (total == 0)
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return ListView.builder(
+                                                itemCount: cop.length,
+                                                itemBuilder: (context, index) {
+                                                  return Card(
+                                                      child: Column(
+                                                    children: [
+                                                      Text(cop[index]),
+                                                      TextButton(
+                                                          onPressed: () {
+                                                            coupon = cop[index];
+                                                            setState(() {
+                                                              discount = dis;
+                                                            });
+                                                            print(coupon);
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child: Text('Apply'))
+                                                    ],
+                                                  ));
+                                                });
+                                          });
+                                      print(cop);
+                                    },
+                                  )
+                              ],
+                            ),
+                          ),
                         ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.09,
-                        )
-                      ],
-                    ),
+                      ),
+                      Space(8),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15, right: 15),
+                        child: Card(
+                          color: Colors.grey.shade200,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Column(
+                              children: [
+                                ExpansionTile(
+                                  title: Text(
+                                    "Detailed Bill",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 18),
+                                  ),
+                                  children: [
+                                    ListTile(
+                                      title: Text(
+                                        "Subtotal",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14),
+                                      ),
+                                      trailing: Text(
+                                          "\₹${total.toStringAsFixed(2)}",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(fontSize: 14)),
+                                    ),
+                                    ListTile(
+                                      title: Text(
+                                        "Coupon Discount",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14),
+                                      ),
+                                      trailing: Text("$discount",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(fontSize: 14)),
+                                    ),
+                                    ListTile(
+                                      title: Text(
+                                        "Home Service",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14),
+                                      ),
+                                      trailing: Text(
+                                          "\₹${fee.toStringAsFixed(2)}",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(fontSize: 14)),
+                                    ),
+                                  ],
+                                ),
+
+                                ///Divider(indent: 10, endIndent: 12, color: Colors.grey),
+                                ListTile(
+                                  title: Text("Total",
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          fontSize: 18)),
+                                  trailing: Text(
+                                    "\₹${((total + fee) - discount.toDouble()).toStringAsFixed(2)}",
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        fontSize: 18),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.09,
+                  )
+                ],
+              ),
+            ),
           );
         });
   }

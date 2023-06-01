@@ -80,6 +80,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
   }
 
+  void count() {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc("${loggineduser?.uid}")
+        .update({"count": FieldValue.increment(1)});
+  }
+
   void details() {
     FirebaseFirestore.instance
         .collection("users")
@@ -116,17 +123,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
     });
   }
 
-  void addCode() {
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc("${loggineduser?.uid}")
-        .update({
-      "code": FieldValue.arrayUnion([widget.code])
-    });
-  }
-
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
-    addCode();
+    count();
     //ADD cart clear func
     delete();
     // Do something when payment succeeds
@@ -296,7 +294,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   if (selectedValue == 1) {
                     createOrder();
                   } else if (selectedValue == 2) {
-                    addCode();
+                    count();
                     //ADD cart clear func
                     delete();
                     Navigator.of(context).pushAndRemoveUntil(
