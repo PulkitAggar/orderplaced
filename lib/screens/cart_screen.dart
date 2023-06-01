@@ -130,15 +130,19 @@ class ShoppingCartState extends State<ShoppingCart> {
         .doc("${loggineduser?.email}")
         .get()
         .then((value) {
-      FirebaseFirestore.instance
-          .collection("stores")
-          .doc(value.get("storeid"))
-          .get()
-          .then((value) {
-        setState(() {
-          fee = value.get("Fee");
+      try {
+        FirebaseFirestore.instance
+            .collection("stores")
+            .doc(value.get("storeid"))
+            .get()
+            .then((value) {
+          setState(() {
+            fee = value.get("Fee");
+          });
         });
-      });
+      } catch (e) {
+        print("hello");
+      }
     });
   }
 
