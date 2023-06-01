@@ -68,6 +68,7 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       "nameR": nameR,
       "addressR": addressR,
       "numberR": numberR,
+      "storeuid":storeId
     }, SetOptions(merge: true));
 
     for (var items in widget.orderModel.lstOfItems) {
