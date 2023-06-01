@@ -11,8 +11,17 @@ import '../widgets/widgets.dart';
 
 class LastBookingScreen extends StatefulWidget {
   OrderModel orderModel;
+  String namer;
+  String numberr;
+  String address;
 
-  LastBookingScreen({Key? key, required this.orderModel}) : super(key: key);
+  LastBookingScreen(
+      {Key? key,
+      required this.orderModel,
+      required this.namer,
+      required this.address,
+      required this.numberr})
+      : super(key: key);
 
   @override
   State<LastBookingScreen> createState() => _LastBookingScreenState();
@@ -93,6 +102,9 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       widget.orderModel.isCancelled,
       widget.orderModel.storeUid,
       "placed",
+      widget.namer,
+      widget.numberr,
+      widget.address,
       //TODO: add address ,name,number from payment screen
     );
     super.initState();

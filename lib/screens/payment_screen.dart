@@ -135,6 +135,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
       MaterialPageRoute(
         builder: (context) => LastBookingScreen(
           orderModel: widget.orderModel,
+          namer: nameR,
+          numberr: numberR,
+          address: addressR,
           // date: widget.list[0].date,
           // time: widget.list[0].time,
         ),
@@ -300,6 +303,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       MaterialPageRoute(
                           builder: (context) => LastBookingScreen(
                                 orderModel: widget.orderModel,
+                                namer: nameR,
+                                numberr: numberR,
+                                address: addressR,
                               )),
                       (Route<dynamic> route) => false,
                     );
