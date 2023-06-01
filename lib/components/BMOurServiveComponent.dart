@@ -143,6 +143,8 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                               imageurl: imageurl,
                                               disc: disc,
                                               storeid: id,
+                                              subname: doc[i],
+                                              catname: n,
                                             ));
                                           }
                                         }

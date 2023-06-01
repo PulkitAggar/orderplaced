@@ -23,12 +23,16 @@ class BMServiceComponent extends StatefulWidget {
       required this.cost,
       required this.imageurl,
       required this.disc,
-      required this.storeid});
+      required this.storeid,
+      required this.subname,
+      required this.catname});
   String name;
   String imageurl;
   int cost;
   String disc;
   String storeid;
+  String subname;
+  String catname;
 
   @override
   State<BMServiceComponent> createState() => BMServiceComponentState();
@@ -129,6 +133,7 @@ class BMServiceComponentState extends State<BMServiceComponent> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.subname);
     return Container(
       decoration: BoxDecoration(
           color: Colors.grey.withOpacity(0.2),
@@ -215,8 +220,10 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                           .set({
                         'cost': widget.cost.toDouble(),
                         'count': 1,
+                        'subname': widget.subname,
+                        'catname': widget.catname,
                         'imageurl': widget.imageurl,
-                        'name': widget.name
+                        'name': widget.name,
                       }).then((value) {
                         setState(() {
                           add = add + 1;
@@ -243,8 +250,10 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                           .set({
                         'cost': widget.cost.toDouble(),
                         'count': 1,
+                        'subname': widget.subname,
                         'imageurl': widget.imageurl,
-                        'name': widget.name
+                        'name': widget.name,
+                        'catname': widget.catname,
                       }).then((value) {
                         setState(() {
                           add = add + 1;

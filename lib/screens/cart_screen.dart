@@ -21,8 +21,7 @@ class ShoppingCart extends StatefulWidget {
 }
 
 class ShoppingCartState extends State<ShoppingCart> {
-
-String weekday = '';
+  String weekday = '';
 
   void getCurrentWeekday() {
     DateTime now = DateTime.now();
@@ -286,11 +285,13 @@ String weekday = '';
             final count = message.get("count");
             final imageurl = message.get("imageurl");
             final name = message.get("name");
-            var mess = CustomCard(cost, count, imageurl, name, messagewidget);
+            final subname = message.get("subname");
+            final catname = message.get("catname");
+            var mess = CustomCard(
+                cost, count, imageurl, name, messagewidget, subname, catname);
             messagewidget.add(mess);
           }
           print(loggineduser?.uid);
-          
 
           return Scaffold(
             backgroundColor: Colors.white,
@@ -434,9 +435,9 @@ String weekday = '';
                                 addres.add(add.get("name"));
                                 addres.add(add.get("number"));
                               }
-                              final nameR= name;
+                              final nameR = name;
                               final numberR = number;
-                              final addressR= addre;
+                              final addressR = addre;
                               //OrderModel modelOfOrder = OrderModel
                               return Padding(
                                 padding: EdgeInsets.only(left: 15, right: 15),
@@ -782,11 +783,14 @@ String weekday = '';
 }
 
 class CustomCard extends StatelessWidget {
-  CustomCard(this.cost, this.count, this.imageurl, this.name, this.list);
+  CustomCard(this.cost, this.count, this.imageurl, this.name, this.list,
+      this.subname, this.catname);
   final double cost;
   final int count;
   final String imageurl;
   final String name;
+  final String subname;
+  final String catname;
   final List<CustomCard> list;
   @override
   Widget build(BuildContext context) {
@@ -875,7 +879,9 @@ class CustomCard extends StatelessWidget {
                           'cost': cost,
                           'count': countnew,
                           'imageurl': imageurl,
-                          'name': name
+                          'name': name,
+                          'subname': subname,
+                          'catname': catname,
                         });
                       }
                     },
@@ -906,7 +912,9 @@ class CustomCard extends StatelessWidget {
                         'cost': cost,
                         'count': countnew,
                         'imageurl': imageurl,
-                        'name': name
+                        'name': name,
+                        'subname': subname,
+                        'catname': catname,
                       });
                     },
                   ),
