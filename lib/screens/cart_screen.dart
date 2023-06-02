@@ -8,13 +8,14 @@ import 'package:nb_utils/nb_utils.dart';
 import '../blocs/blocs.dart';
 import '../datamodels/models.dart';
 import '../widgets/widgets.dart';
+import 'cart_screen.dart';
+import 'cart_screen.dart';
 import 'screens.dart';
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
 import '../models/order.model.dart';
 
 final _firebase = FirebaseFirestorePlatform.instance;
 User? loggineduser;
-int fee = 0;
 
 class ShoppingCart extends StatefulWidget {
   @override
@@ -22,10 +23,17 @@ class ShoppingCart extends StatefulWidget {
 }
 
 class ShoppingCartState extends State<ShoppingCart> {
+  void updateState() {
+    // Update the state of ChatScreen
+    setState(() {
+      // State update logic
+    });
+  }
+
   String storeuid = "";
   String weekday = '';
   int empty = 0;
-
+  int fee = 0;
   void getCurrentWeekday() {
     DateTime now = DateTime.now();
     int currentWeekday = now.weekday;
@@ -90,11 +98,13 @@ class ShoppingCartState extends State<ShoppingCart> {
 
   @override
   void initState() {
+    feeFetch();
+
+    super.initState();
     emptyCart();
     couponDiscount2();
-    feeFetch();
+
     xyz();
-    super.initState();
     getuser();
     getCurrentWeekday();
     FirebaseFirestore.instance
@@ -312,13 +322,24 @@ class ShoppingCartState extends State<ShoppingCart> {
   }
 
   void feeFetch() async {
-    if (0.00 < total && total < 800.00) {
-      await FirebaseFirestore.instance
-          .collection("cart")
-          .doc("${loggineduser?.email}")
-          .get()
-          .then((value) {
-        try {
+    print("hello");
+    var d = await FirebaseFirestore.instance
+        .collection("cart")
+        .doc("${loggineduser?.email}")
+        .collection("cart")
+        .get();
+    if (d.docs.isNotEmpty) {
+      List tot = [];
+      for (int i = 0; i < d.docs.length; i++) {
+        tot.add(d.docs[i].get("cost") * d.docs[i].get("count"));
+      }
+      double sum = tot.reduce((value, element) => value + element);
+      if (sum < 800.00) {
+        FirebaseFirestore.instance
+            .collection("cart")
+            .doc("${loggineduser?.email}")
+            .get()
+            .then((value) {
           FirebaseFirestore.instance
               .collection("stores")
               .doc(value.get("storeid"))
@@ -328,14 +349,12 @@ class ShoppingCartState extends State<ShoppingCart> {
               fee = value.get("Fee");
             });
           });
-        } catch (e) {
-          print("hello");
-        }
-      });
-    } else {
-      setState(() {
-        fee = 0;
-      });
+        });
+      } else {
+        setState(() {
+          fee = 0;
+        });
+      }
     }
   }
 
@@ -426,8 +445,8 @@ class ShoppingCartState extends State<ShoppingCart> {
             final name = message.get("name");
             final subname = message.get("subname");
             final catname = message.get("catname");
-            var mess = CustomCard(
-                cost, count, imageurl, name, messagewidget, subname, catname);
+            var mess = CustomCard(cost, count, imageurl, name, messagewidget,
+                subname, catname, feeFetch);
             messagewidget.add(mess);
           }
           print(loggineduser?.uid);
@@ -666,7 +685,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                                               builder: (BuildContext context) {
                                                 return Dialog(
                                                   child: Container(
-                                                    height: 250,
+                                                    height: 300,
                                                     width: 500,
                                                     padding:
                                                         const EdgeInsets.all(
@@ -678,7 +697,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                                                           CustomTextField(
                                                               controller:
                                                                   textEditingController,
-                                                              maxLines: 3,
+                                                              maxLines: 2,
                                                               title: 'Address',
                                                               hasTitle: true,
                                                               initialValue: '',
@@ -948,7 +967,7 @@ class ShoppingCartState extends State<ShoppingCart> {
 
 class CustomCard extends StatelessWidget {
   CustomCard(this.cost, this.count, this.imageurl, this.name, this.list,
-      this.subname, this.catname);
+      this.subname, this.catname, this.onPressed);
   final double cost;
   final int count;
   final String imageurl;
@@ -956,6 +975,7 @@ class CustomCard extends StatelessWidget {
   final String subname;
   final String catname;
   final List<CustomCard> list;
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -994,13 +1014,7 @@ class CustomCard extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.cancel),
                     onPressed: () {
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ShoppingCart()));
                       if (list.length == 1) {
-                        fee = 0;
                         _firebase
                             .collection("cart")
                             .doc("${loggineduser?.email}")
@@ -1028,6 +1042,7 @@ class CustomCard extends StatelessWidget {
                           .collection("cart")
                           .doc(name)
                           .delete();
+                      onPressed;
                     },
                   ),
                 ],
@@ -1088,38 +1103,31 @@ class CustomCard extends StatelessWidget {
                           'subname': subname,
                           'catname': catname,
                         }).then((value) {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ShoppingCart()));
-                          fee = 0;
-                          _firebase
+                          onPressed;
+                        });
+                      }
+                      if (count == 0) {
+                        _firebase
+                            .collection("cart")
+                            .doc("${loggineduser?.email}")
+                            .collection("cart")
+                            .doc(name)
+                            .delete()
+                            .then((value) {
+                          FirebaseFirestore.instance
                               .collection("cart")
                               .doc("${loggineduser?.email}")
-                              .collection("cart")
-                              .doc(name)
                               .delete()
                               .then((value) {
                             FirebaseFirestore.instance
                                 .collection("cart")
                                 .doc("${loggineduser?.email}")
-                                .delete()
-                                .then((value) {
-                              FirebaseFirestore.instance
-                                  .collection("cart")
-                                  .doc("${loggineduser?.email}")
-                                  .set({
-                                "storeid": "",
-                              });
+                                .set({
+                              "storeid": "",
                             });
                           });
-                          _firebase
-                              .collection("cart")
-                              .doc("${loggineduser?.email}")
-                              .collection("cart")
-                              .doc(name)
-                              .delete();
+                        }).then((value) {
+                          onPressed;
                         });
                       }
                     },
@@ -1153,6 +1161,8 @@ class CustomCard extends StatelessWidget {
                         'name': name,
                         'subname': subname,
                         'catname': catname,
+                      }).then((value) {
+                        onPressed;
                       });
                     },
                   ),
