@@ -25,6 +25,7 @@ class ShoppingCartState extends State<ShoppingCart> {
   String storeuid = "";
   String weekday = '';
   int empty = 0;
+
   void getCurrentWeekday() {
     DateTime now = DateTime.now();
     int currentWeekday = now.weekday;
@@ -77,7 +78,7 @@ class ShoppingCartState extends State<ShoppingCart> {
   String coupon = '';
   int discount = 0;
   int dis = 0;
-
+  int c = 0;
   TextEditingController textEditingController = TextEditingController();
   final AddressBloc addressBloc = AddressBloc();
   final _auth = FirebaseAuth.instance;
@@ -235,7 +236,10 @@ class ShoppingCartState extends State<ShoppingCart> {
         .doc("${loggineduser?.uid}")
         .get()
         .then((value) {
-      if (value.get("count") % 3 == 0) {
+      setState(() {
+        c = value.get("count");
+      });
+      if (value.get("count") % 3 == 0 || value.get("count") == 1) {
         if (founddoc3 != null) {
           FirebaseFirestore.instance
               .collection("coupon")
@@ -253,7 +257,7 @@ class ShoppingCartState extends State<ShoppingCart> {
         .doc("${loggineduser?.uid}")
         .get()
         .then((value) {
-      if (value.get("count") % 3 == 0) {
+      if (value.get("count") % 3 == 0 || value.get("count") == 1) {
         if (founddoc != null) {
           for (int i = 0; i < doc.docs.length; i++) {
             // print(doc.docs[i].get("catname"));
@@ -301,7 +305,7 @@ class ShoppingCartState extends State<ShoppingCart> {
         int val3 = amount
             .reduce((value, element) => value < element ? value : element);
         setState(() {
-          dis = val3.toInt();
+          discount = val3.toInt();
         });
       }
     });
@@ -773,55 +777,69 @@ class ShoppingCartState extends State<ShoppingCart> {
                               borderRadius: BorderRadius.circular(10)),
                           child: Padding(
                             padding: const EdgeInsets.all(15),
-                            child: Row(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Icon(Icons.offline_share_outlined,
-                                    size: 20),
-                                Space(8),
-                                const Expanded(
-                                  child: Text(
-                                    "Apply Coupon",
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 18),
-                                  ),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.offline_share_outlined,
+                                        size: 20),
+                                    Space(8),
+                                    Expanded(
+                                      child: Text(
+                                        "This is your $c Order",
+                                        textAlign: TextAlign.start,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 18),
+                                      ),
+                                    ),
+
+                                    // if (total != 0)
+                                    //   IconButton(
+                                    //     icon: const Icon(Icons.edit),
+                                    //     onPressed: () {
+                                    //       // ignore: use_build_context_synchronously
+                                    //       // if (total == 0)
+                                    //       showDialog(
+                                    //           context: context,
+                                    //           builder: (BuildContext context) {
+                                    //             return ListView.builder(
+                                    //                 itemCount: cop.length,
+                                    //                 itemBuilder: (context, index) {
+                                    //                   return Card(
+                                    //                       child: Column(
+                                    //                     children: [
+                                    //                       Text(cop[index]),
+                                    //                       TextButton(
+                                    //                           onPressed: () {
+                                    //                             coupon = cop[index];
+                                    //                             setState(() {
+                                    //                               discount = dis;
+                                    //                             });
+                                    //                             print(coupon);
+                                    //                             Navigator.pop(
+                                    //                                 context);
+                                    //                           },
+                                    //                           child: const Text(
+                                    //                               'Apply'))
+                                    //                     ],
+                                    //                   ));
+                                    //                 });
+                                    //           });
+                                    //       print(cop);
+                                    //     },
+                                    //   )
+                                  ],
                                 ),
-                                if (total != 0)
-                                  IconButton(
-                                    icon: const Icon(Icons.edit),
-                                    onPressed: () {
-                                      // ignore: use_build_context_synchronously
-                                      // if (total == 0)
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return ListView.builder(
-                                                itemCount: cop.length,
-                                                itemBuilder: (context, index) {
-                                                  return Card(
-                                                      child: Column(
-                                                    children: [
-                                                      Text(cop[index]),
-                                                      TextButton(
-                                                          onPressed: () {
-                                                            coupon = cop[index];
-                                                            setState(() {
-                                                              discount = dis;
-                                                            });
-                                                            print(coupon);
-                                                            Navigator.pop(
-                                                                context);
-                                                          },
-                                                          child: const Text(
-                                                              'Apply'))
-                                                    ],
-                                                  ));
-                                                });
-                                          });
-                                      print(cop);
-                                    },
-                                  )
+                                Space(8),
+                                Text(
+                                  "*Get Discount in Your Every 3rd Order",
+                                  textAlign: TextAlign.start,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 10),
+                                ),
                               ],
                             ),
                           ),
@@ -888,6 +906,10 @@ class ShoppingCartState extends State<ShoppingCart> {
                                           textAlign: TextAlign.start,
                                           style: const TextStyle(fontSize: 14)),
                                     ),
+                                    const Text(
+                                      "*Get Free Home Service on Order Above ₹800",
+                                      style: TextStyle(fontSize: 10),
+                                    )
                                   ],
                                 ),
 

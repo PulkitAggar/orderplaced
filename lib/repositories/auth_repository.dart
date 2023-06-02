@@ -22,7 +22,7 @@ class AuthRepository {
         "mobile": mobile,
         "userUid": userUid,
         "name": name,
-        "count": 0,
+        "count": 1,
       });
       await FirebaseFirestore.instance.collection("cart").doc(email).set({
         "storeid": "",
