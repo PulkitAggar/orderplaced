@@ -15,7 +15,7 @@ class CancellationPolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Terms and Conditions'),
+        title: Text('Cancellation Policy'),
         backgroundColor: Colors.black,
       ),
       body: Container(

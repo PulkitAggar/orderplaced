@@ -14,7 +14,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Terms and Conditions'),
+        title: Text('Privacy Policy'),
         backgroundColor: Colors.black,
       ),
       body: Container(
