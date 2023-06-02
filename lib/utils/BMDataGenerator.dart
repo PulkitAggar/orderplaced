@@ -7,14 +7,14 @@ List<BMMasterModel>ServiceList(){
   List<BMMasterModel> list = [];
 
   list.add(BMMasterModel(
-    image: 'assets/store.jpeg', name: 'Stores')
+    image: 'assets/bsl.webp', name: 'Stores')
   );
   list.add(BMMasterModel(
-      image: 'assets/cycle.jpeg', name: 'Services'));
+      image: 'assets/store.jpeg', name: 'Services'));
   list.add(BMMasterModel(
-      image: 'assets/tyre.jpeg', name: 'Tires'));
+      image: 'assets/tyre.jpeg', name: 'Tyres'));
   list.add(BMMasterModel(
-      image: 'assets/access.webp', name: 'Accesories'));
+      image: 'assets/acccc.jpeg', name: 'Accessories'));
   list.add(BMMasterModel(
       image: 'assets/bp.png', name: 'Bikes'));
 
