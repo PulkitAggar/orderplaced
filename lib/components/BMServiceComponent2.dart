@@ -292,56 +292,58 @@ void showBookBottomSheet(
       builder: (context) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  onPressed: () {
-                    finish(context);
-                  },
-                  icon: const Icon(Icons.cancel_rounded,
-                      color: bmTextColorDarkMode),
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
+                      finish(context);
+                    },
+                    icon: const Icon(Icons.cancel_rounded,
+                        color: bmTextColorDarkMode),
+                  ),
                 ),
-              ),
-              titleText(title: name, size: 24),
-              16.height,
-              Image.network(
-                image,
-                fit: BoxFit.cover,
-              ),
-              // Text(
-              //   "NULL available",
-              //   style: primaryTextStyle(color:  bmSpecialColorDark),
-              // ),
-              20.height,
-
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  titleText(
-                      title: "Rs. ${cost.toString()}", size: 16, maxLines: 2),
-                  14.height,
-                  Text(
-                    disc,
-                    style: secondaryTextStyle(color: bmPrimaryColor),
-                  )
-                ],
-              ),
-              // AppButton(
-              //   //padding: EdgeInsets.all(0),
-              //   shapeBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-              //   child: Text('Book Now', style: boldTextStyle(color: Colors.white, size: 12)),
-              //   color: bmPrimaryColor,
-              //   onTap: () {
-              //     // BMCalenderScreen(element: element, isStaffBooking: false).launch(context);
-              //   },
-              // ),
-            ],
-          ).paddingAll(16);
+                titleText(title: name, size: 24),
+                16.height,
+                Image.network(
+                  image,
+                  fit: BoxFit.cover,
+                ),
+                // Text(
+                //   "NULL available",
+                //   style: primaryTextStyle(color:  bmSpecialColorDark),
+                // ),
+                20.height,
+          
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    titleText(
+                        title: "Rs. ${cost.toString()}", size: 16, maxLines: 2),
+                    14.height,
+                    Text(
+                      disc,
+                      style: secondaryTextStyle(color: bmPrimaryColor),
+                    )
+                  ],
+                ),
+                // AppButton(
+                //   //padding: EdgeInsets.all(0),
+                //   shapeBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+                //   child: Text('Book Now', style: boldTextStyle(color: Colors.white, size: 12)),
+                //   color: bmPrimaryColor,
+                //   onTap: () {
+                //     // BMCalenderScreen(element: element, isStaffBooking: false).launch(context);
+                //   },
+                // ),
+              ],
+            ).paddingAll(16),
+          );
         });
       });
 }
