@@ -3,7 +3,23 @@ import '../models/models.dart';
 
 const BaseUrl = 'https://assets.iqonic.design/old-themeforest-images/prokit';
 
+List<BMMasterModel>ServiceList(){
+  List<BMMasterModel> list = [];
 
+  list.add(BMMasterModel(
+    image: 'assets/store.jpeg', name: 'Stores')
+  );
+  list.add(BMMasterModel(
+      image: 'assets/cycle.jpeg', name: 'Services'));
+  list.add(BMMasterModel(
+      image: 'assets/tyre.jpeg', name: 'Tires'));
+  list.add(BMMasterModel(
+      image: 'assets/access.webp', name: 'Accesories'));
+  list.add(BMMasterModel(
+      image: 'assets/bp.png', name: 'Bikes'));
+
+  return list;
+}
 
 List<BMDashboardModel> getDashboardList() {
   List<BMDashboardModel> list = [];

@@ -9,6 +9,7 @@ import '../models/models.dart';
 import '../repositories/stores_repository.dart';
 import '../utils/BMColors.dart';
 import '../utils/BMCommonWidgets.dart';
+import '../utils/BMDataGenerator.dart';
 
 class BMHomeFragment2 extends StatefulWidget {
   final Function(int) onTabChanged;
@@ -22,6 +23,8 @@ class BMHomeFragment2 extends StatefulWidget {
 class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
   Future<List<BMCommonCardModel>> recommendedList =
       StoresRepository.getStoresList();
+
+final List<BMMasterModel> topServiceList = ServiceList();
 
   late double latitude;
   late double longitude;
@@ -89,7 +92,25 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
                 ],
               ).paddingSymmetric(horizontal: 16),
               20.height,
-              BMCategoriesHomeComponent(),
+              HorizontalList(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                spacing: 16,
+                itemCount: topServiceList.length, 
+                itemBuilder:(context, index){
+                  return Column(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.3),
+                            borderRadius: radius(32)),
+                        child: Image.asset(topServiceList[index].image, height: 36 ,),
+                      ),
+                      8.height,
+                      Text(topServiceList[index].name, style: boldTextStyle(size: 14)),
+                    ],
+                  );
+                }),
               20.height,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
