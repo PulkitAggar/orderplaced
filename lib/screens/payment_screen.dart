@@ -132,6 +132,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
       context,
       MaterialPageRoute(
         builder: (context) => LastBookingScreen(
+          paymentdone: true,
           orderModel: widget.orderModel,
           namer: nameR,
           numberr: numberR,
@@ -300,6 +301,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (context) => LastBookingScreen(
+                            paymentdone: false,
                                 orderModel: widget.orderModel,
                                 namer: nameR,
                                 numberr: numberR,

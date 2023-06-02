@@ -7,7 +7,6 @@ class OrderModel {
   double cost;
   String trackOrder;
   String storeUid;
-  bool isCancelled;
 
   List<DocumentSnapshotPlatform> lstOfItems;
 
@@ -18,7 +17,6 @@ class OrderModel {
     required this.trackOrder,
     required this.cost,
     required this.storeUid,
-    required this.isCancelled,
     required this.lstOfItems,
   });
 }

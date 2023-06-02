@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:mycycleclinic/screens/order_detail_screen.dart';
@@ -48,12 +50,14 @@ class _CurrentOrdersState extends State<CurrentOrders> {
                                     OrderDetailScreen(element: e)));
                           },
                           child: Card(
+                            color: Colors.grey.shade200,
                               shape: ContinuousRectangleBorder(
                                   borderRadius: BorderRadius.circular(24)),
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
                               elevation: BorderSide.strokeAlignOutside,
                               child: Container(
                                 // height: 300.0,
-                                decoration: BoxDecoration(color: Colors.white),
+                                decoration: BoxDecoration(color: Colors.grey.shade200),
                                 width: double.infinity,
                                 // padding: EdgeInsets.all(8.0), YOU CAN DO thIS YOU KNOW that RIGHT??????????????????????
                                 child: Padding(
@@ -64,70 +68,66 @@ class _CurrentOrdersState extends State<CurrentOrders> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Row(
+                                      ExpansionTile(
+                                        collapsedIconColor: Colors.black,
+                                        title: Column(
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: [
+                                            Text(e.storeName, style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
+                                            Space(4),
+                                            Container(
+                                              width: double.infinity,
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons.watch_later_outlined, color: Colors.orange, size: 16),
+                                                  Space(2),
+                                                  Text(e.date, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                                                  Space(2),
+                                                  Text("at", style: TextStyle(color: Colors.orange, fontSize: 12)),
+                                                  Space(2),
+                                                  Text(e.time, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                                                  Expanded(child: SizedBox(width: 1,)),
+                                                  Text(
+                                                      e.orderStatus,
+                                                      textAlign: TextAlign.start,
+                                                      style: TextStyle(
+                                                        color: e.orderStatus == "placed" ? Colors.orange : blueColor,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 16,
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                         children: [
-                                          Text(
-                                            'Ordered From: ',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(child: Text(e.storeName))
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Ordered On: ',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(
-                                              child: Text(
-                                                  '${e.date} -- ${e.time}'))
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Ordered Status: ',
-                                            style: TextStyle(
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Expanded(child: Text(e.orderStatus))
-                                        ],
-                                      ),
-                                      ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: e.map.length,
-                                        itemBuilder: (context, index) {
-                                          String key =
-                                              e.map.keys.elementAt(index);
-                                          Map<String, dynamic> item =
-                                              e.map[key];
-                                          double cost = item['cost'];
-                                          int count = item['count'];
-                                          String imageUrl = item['image'];
+                                          ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: e.map.length,
+                                            itemBuilder: (context, index) {
+                                              String key =
+                                                  e.map.keys.elementAt(index);
+                                              Map<String, dynamic> item =
+                                                  e.map[key];
+                                              double cost = item['cost'];
+                                              int count = item['count'];
+                                              String imageUrl = item['image'];
 
-                                          return ListTile(
-                                            leading: Image.network(imageUrl),
-                                            title: Text('Item: $key'),
-                                            subtitle: Text(
-                                                'Cost: $cost, Count: $count'),
-                                          );
-                                        },
-                                      ),
+                                              return ListTile(
+                                                leading: Image.network(imageUrl),
+                                                title: Text('Item: $key'),
+                                                subtitle: Text(
+                                                    'Cost: $cost, Count: $count'),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      )
                                     ],
                                   ),
                                 ),
@@ -145,5 +145,55 @@ class _CurrentOrdersState extends State<CurrentOrders> {
         ),
       ),
     );
+  }
+}
+
+
+
+class Space extends LeafRenderObjectWidget {
+  final double mainAxisExtent;
+
+  Space(this.mainAxisExtent, {Key? key}) : assert(mainAxisExtent >= 0 && mainAxisExtent <= double.infinity), super(key: key);
+
+  @override
+  RenderObject createRenderObject(BuildContext context) {
+    return RenderSpace(mainAxisExtent: mainAxisExtent);
+  }
+
+  @override
+  void updateRenderObject(BuildContext context, RenderSpace renderObject) {
+    renderObject.mainAxisExtent = mainAxisExtent;
+  }
+}
+
+
+class RenderSpace extends RenderBox {
+  double _mainAxisExtent;
+
+  RenderSpace({double? mainAxisExtent}) : _mainAxisExtent = mainAxisExtent!;
+
+  double get mainAxisExtent => _mainAxisExtent;
+
+  set mainAxisExtent(double value) {
+    if (_mainAxisExtent != value) {
+      _mainAxisExtent = value;
+      markNeedsLayout();
+    }
+  }
+
+  @override
+  void performLayout() {
+
+    final AbstractNode flex = parent!;
+
+    if (flex is RenderFlex) {
+      if (flex.direction == Axis.horizontal) {
+        size = constraints.constrain(Size(mainAxisExtent, 0));
+      } else {
+        size = constraints.constrain(Size(0, mainAxisExtent));
+      }
+    } else {
+      throw 'Space widget is not inside flex parent';
+    }
   }
 }

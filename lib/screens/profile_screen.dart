@@ -2,7 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mycycleclinic/screens/cancellationpolicy.dart';
 import 'package:mycycleclinic/screens/current_order_screen.dart';
+import 'package:mycycleclinic/screens/past_order_screen.dart';
+import 'package:mycycleclinic/screens/privacypolicy.dart';
+import 'package:mycycleclinic/screens/termsandcondition.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../screens/screens.dart';
 import '../blocs/blocs.dart';
@@ -68,17 +72,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   "assets/images/profileimage.png",
                   scale: 1.5,
                 ),
-                // Container(
-                //   width: 200,
-                //   height: 200,
-                //   decoration: const BoxDecoration(
-                //     color: Colors.white,
-                //     shape: BoxShape.circle,
-                //     image: DecorationImage(
-                //         image: AssetImage("assets/images/profileimage.png"),
-                //         fit: BoxFit.contain),
-                //   ),
-                // ),
                 Text(
                   "${FirebaseAuth.instance.currentUser!.displayName}",
                   style: const TextStyle(
@@ -128,107 +121,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           )
                         ],
                       ),
-                      const Icon(
-                        Icons.shopping_cart,
-                        color: Colors.white,
+                      GestureDetector(
+                        child: const Icon(
+                          Icons.shopping_cart,
+                          color: Colors.white,
+                        ),
                       ),
                     ],
                   ),
                 ),
-
-                Container(
-                  margin: const EdgeInsets.only(top: 8),
-                  height: 168,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
-                  decoration: const BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.all(Radius.circular(15)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Your orders',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 16),
-                          ),
-                          const Text(
-                            'Latest Order',
-                            style: TextStyle(
-                                color: Color(0xFF797979),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12),
-                          ),
-                          Image.asset(
-                            'assets/images/order.png',
-                            scale: 1.5,
-                          )
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: ((context) => CurrentOrders())));
-                            },
-                            child: Icon(
-                              Icons.arrow_forward_ios_rounded,
-                              color: Colors.white,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 25,
-                          ),
-                          Text(
-                            'FireFox GT 180R',
-                            style: TextStyle(
-                              color: Color(0xFF9ABF00),
-                              fontWeight: FontWeight.w900,
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            'Cleaning',
-                            style: TextStyle(
-                                color: Color(0xFF797979),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 10),
-                          ),
-                          Text(
-                            'Brake Repair',
-                            style: TextStyle(
-                                color: Color(0xFF797979),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 10),
-                          ),
-                          Text(
-                            'Tire Change',
-                            style: TextStyle(
-                                color: Color(0xFF797979),
-                                fontWeight: FontWeight.w500,
-                                fontSize: 10),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                ),
-
                 Container(
                   margin: const EdgeInsets.only(top: 8),
                   height: 100,
+                  width: double.infinity,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 28, vertical: 20),
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                   decoration: const BoxDecoration(
                     color: Colors.black,
                     borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -236,81 +143,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            'Current Order Status',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w900,
-                                fontSize: 16),
-                          ),
-                          Text(
-                            'NO ORDER',
-                            style: TextStyle(
-                                color: Color(0xFF9ABF00),
-                                fontWeight: FontWeight.w900,
-                                fontSize: 12),
-                          ),
-                        ],
+                      Text(
+                        'Current Order Status',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18),
                       ),
+                      Expanded(child: SizedBox(width: 1,)),
+                      IconButton(onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>CurrentOrders()));
+                      }, icon: Icon(Icons.arrow_forward_ios_rounded), color: Colors.white, iconSize: SizeConfig.screenHeight,)
                     ],
                   ),
                 ),
-
-                // Padding(
-                //   padding: const EdgeInsets.only(top: 10),
-                //   child: Container(
-                //     decoration: const BoxDecoration(
-                //       color: Colors.black,
-                //       borderRadius: BorderRadius.all(Radius.circular(15)),
-                //     ),
-                //     height: 75,
-                //     width: MediaQuery.of(context).size.width * 6 / 7,
-                //     //color: Colors.black,
-                //     child: Padding(
-                //       padding:
-                //           const EdgeInsets.only(top: 12, bottom: 8, left: 10),
-                //       child: Row(
-                //         children: [
-                //           Padding(
-                //             padding: const EdgeInsets.only(right: 160),
-                //             child: Column(
-                //               children: const [
-                //                 Text(
-                //                   "Your Cart",
-                //                   style: TextStyle(
-                //                       fontSize: 18, color: Colors.white),
-                //                 ),
-                //                 Padding(
-                //                   padding: EdgeInsets.only(left: 9, top: 4),
-                //                   child: Text(
-                //                     "Wish to Checkout?",
-                //                     style: TextStyle(
-                //                         fontSize: 11, color: Color(0xFF515050)),
-                //                   ),
-                //                 )
-                //               ],
-                //             ),
-                //           ),
-                //           const Icon(
-                //             Icons.shopping_cart,
-                //             color: Colors.white,
-                //           )
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // ),
-
-                //TODO: REDO THIS CODE for report a problem
+                Container(
+                  margin: const EdgeInsets.only(top: 8),
+                  height: 100,
+                  width: double.infinity,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  decoration: const BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Order History',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 18),
+                      ),
+                      Expanded(child: SizedBox(width: 1,)),
+                      IconButton(onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>PastOrders()));
+                      }, icon: Icon(Icons.arrow_forward_ios_rounded), color: Colors.white, iconSize: SizeConfig.screenHeight,)
+                    ],
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Container(
-                    // margin: const EdgeInsets.only(top: 8), YOU CAN DO THIS YOU KNOW THAT RIGHT?
-                    // width: MediaQuery.of(context).size.width * 6 / 7,
                     height: 152,
                     decoration: const BoxDecoration(
                       color: Colors.black,
@@ -338,7 +214,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     Padding(
                                       padding: EdgeInsets.only(left: 0, top: 4),
                                       child: Text(
-                                        "Contact Here",
+                                        "Contact Us",
                                         style: TextStyle(
                                             fontSize: 11,
                                             color: Color(0xFF515050)),
@@ -373,7 +249,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                                 Text(
-                                  "  +91 8295647903",
+                                  "  +91 8395941016",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 12,
@@ -400,7 +276,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                 ),
                                 Text(
-                                  "  mycycleclinic@gmail.com",
+                                  "shashikumarbloda@gmail.com",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 12,
@@ -415,6 +291,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>TermsAndConditionsScreen()));
+                    },
+                    child: Text("Terms and Conditions apply*", style: TextStyle(color: Colors.blue),),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('In adherence to our '),
+                          GestureDetector(child: Text("Privacy Policy ", style: TextStyle(color: Colors.blue),), onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>PrivacyPolicyScreen()));
+                          },),
+                          Text('and'),
+                        ],
+                      ),
+                      GestureDetector(child: Text("Cancellation Policy ", style: TextStyle(color: Colors.blue),), onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>CancellationPolicyScreen()));
+                      },),
+                    ],
+                  ),
+                )
               ],
             ),
           ),
