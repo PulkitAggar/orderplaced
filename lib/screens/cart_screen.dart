@@ -666,7 +666,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                                               builder: (BuildContext context) {
                                                 return Dialog(
                                                   child: Container(
-                                                    height: 250,
+                                                    height: 300,
                                                     width: 500,
                                                     padding:
                                                         const EdgeInsets.all(
@@ -678,7 +678,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                                                           CustomTextField(
                                                               controller:
                                                                   textEditingController,
-                                                              maxLines: 3,
+                                                              maxLines: 2,
                                                               title: 'Address',
                                                               hasTitle: true,
                                                               initialValue: '',
