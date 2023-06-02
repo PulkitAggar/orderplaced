@@ -281,6 +281,7 @@ class _BMServiceComponent2State extends State<BMServiceComponent2> {
 
 void showBookBottomSheet(
     BuildContext context, String image, String disc, String name, int cost) {
+  disc = '\u2022 ' + disc.replaceAll('. ', '.\n\u2022 ');
   showModalBottomSheet(
       context: context,
       isScrollControlled: true,
