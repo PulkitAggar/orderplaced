@@ -499,7 +499,6 @@ class ShoppingCartState extends State<ShoppingCart> {
                                       "${currentDate.day}-${currentDate.month}-${currentDate.year}",
                                   cost: ((total + fee) - discount),
                                   storeUid: storeuid,
-                                  isCancelled: false,
                                   lstOfItems: messages);
                               Navigator.push(
                                 context,

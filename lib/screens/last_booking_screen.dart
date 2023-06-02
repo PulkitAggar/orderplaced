@@ -14,13 +14,16 @@ class LastBookingScreen extends StatefulWidget {
   String namer;
   String numberr;
   String address;
+  bool paymentdone;
 
   LastBookingScreen(
       {Key? key,
       required this.orderModel,
       required this.namer,
       required this.address,
-      required this.numberr})
+      required this.numberr,
+      required this.paymentdone
+      })
       : super(key: key);
 
   @override
@@ -35,7 +38,7 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       String date,
       String weekday,
       String time,
-      bool isCancelled,
+      bool paymentType,
       String storeId,
       String orderStatus,
       String nameR,
@@ -60,20 +63,20 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       "nameR": nameR,
       "addressR": addressR,
       "numberR": numberR,
-      
+      "paymentdone":paymentType
     }, SetOptions(merge: true));
 
     await docUser.set({
       "time": time,
       "date": date,
       "weekday": weekday,
-      "isCancelled": isCancelled,
       "orderStatus": orderStatus,
       "nameR": nameR,
       "addressR": addressR,
       "numberR": numberR,
       "storeuid": storeId,
       "name": name,
+      "paymentdone":paymentType
     }, SetOptions(merge: true));
 
     for (var items in widget.orderModel.lstOfItems) {
@@ -105,7 +108,7 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       widget.orderModel.date,
       widget.orderModel.weekday,
       widget.orderModel.time,
-      widget.orderModel.isCancelled,
+      widget.paymentdone,
       widget.orderModel.storeUid,
       "placed",
       widget.namer,
@@ -167,18 +170,16 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
                 child: Icon(Icons.done, size: 80, color: Colors.black),
               ),
               Space(16),
-              Text(widget.orderModel.isCancelled ? "Cancelled!!" : "Confirmed",
+              Text("Confirmed",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32)),
               Space(32),
               Text(
-                widget.orderModel.isCancelled
-                    ? "Your booking has been cancelled successfully"
-                    : "Your booking has been confirmed for ${widget.orderModel.date}",
+                     "Your booking has been confirmed for ${widget.orderModel.date}",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 14, color: Colors.grey),
               ),
               Visibility(
-                visible: widget.orderModel.isCancelled ? false : true,
+                visible:  true,
                 child: Column(
                   children: [
                     Space(8),
