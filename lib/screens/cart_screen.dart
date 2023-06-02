@@ -406,7 +406,7 @@ class ShoppingCartState extends State<ShoppingCart> {
         stream: localStreamController.stream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(
                 backgroundColor: Colors.lightBlueAccent,
               ),
@@ -433,7 +433,7 @@ class ShoppingCartState extends State<ShoppingCart> {
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               centerTitle: true,
-              title: Text(
+              title: const Text(
                 'Shopping Cart',
                 style: TextStyle(color: Colors.black),
               ),
@@ -453,9 +453,9 @@ class ShoppingCartState extends State<ShoppingCart> {
               enableDrag: false,
               builder: (context) {
                 return Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     height: MediaQuery.of(context).size.height * 0.06,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
@@ -468,7 +468,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                         Text(
                           "\Rs. ${((total + fee) - discount).toStringAsFixed(2)}",
                           // "\Rs. ${totalAmount.toStringAsFixed(2)}",
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
@@ -514,7 +514,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                               );
                             }
                           },
-                          child: Text(
+                          child: const Text(
                             "Proceed to Pay",
                             style: TextStyle(
                               color: Colors.white,
@@ -537,13 +537,13 @@ class ShoppingCartState extends State<ShoppingCart> {
                     Container(
                       height: 300,
                       child: ListView(
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                             horizontal: 10.0, vertical: 20.0),
                         children: messagewidget,
                       ),
                     ),
                   if (empty == 0)
-                    SizedBox(
+                    const SizedBox(
                       height: 300,
                       child: Center(
                         child: Text("Your Cart is empty"),
@@ -561,7 +561,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                         String number = "";
                         String addre = "";
                         if (!innershot.hasData) {
-                          return Center(
+                          return const Center(
                             child: CircularProgressIndicator(
                               backgroundColor: Colors.lightBlueAccent,
                             ),
@@ -579,42 +579,23 @@ class ShoppingCartState extends State<ShoppingCart> {
                           // final addressR = addre;
                           //OrderModel modelOfOrder = OrderModel
                           return Padding(
-                            padding: EdgeInsets.only(left: 15, right: 15),
+                            padding: const EdgeInsets.only(left: 15, right: 15),
                             child: Card(
                               color: Colors.grey.shade200,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
                               child: Padding(
-                                padding: EdgeInsets.all(16),
+                                padding: const EdgeInsets.all(16),
                                 child: Row(
                                   children: [
-                                    Icon(Icons.location_on, size: 20),
-                                    Space(24),
+                                    const Icon(Icons.location_on, size: 20),
+                                    Space(8),
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            "Address",
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w900,
-                                                fontSize: 21),
-                                          ),
-                                          Space(4),
-                                          Text(
-                                            addres.length != 0
-                                                ? "${addres[0]}"
-                                                : "enter your Address",
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                          Space(4),
-                                          Text(
+                                          const Text(
                                             "Name",
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
@@ -624,16 +605,16 @@ class ShoppingCartState extends State<ShoppingCart> {
                                           Space(4),
                                           Text(
                                             addres.length != 0
-                                                ? "${addres[1]}"
-                                                : "enter your name",
+                                                ? "${addres[1]}".toUpperCase()
+                                                : "Please enter your name",
                                             textAlign: TextAlign.start,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.grey,
                                               fontSize: 16,
                                             ),
                                           ),
                                           Space(4),
-                                          Text(
+                                          const Text(
                                             "Number",
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
@@ -644,13 +625,33 @@ class ShoppingCartState extends State<ShoppingCart> {
                                           Text(
                                             addres.length != 0
                                                 ? "${addres[2]}"
-                                                : "enter your number",
+                                                : "Enter your number",
                                             textAlign: TextAlign.start,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.grey,
                                               fontSize: 16,
                                             ),
-                                          )
+                                          ),
+                                          Space(4),
+                                          const Text(
+                                            "Address",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 21),
+                                          ),
+                                          Space(4),
+                                          Text(
+                                            addres.length != 0
+                                                ? "${addres[0]}".toUpperCase()
+                                                : "Enter your pick up address",
+                                            textAlign: TextAlign.start,
+                                            style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          Space(4),
                                         ],
                                       ),
                                     ),
@@ -754,7 +755,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                                                 );
                                               });
                                         },
-                                        icon: Icon(Icons.edit)),
+                                        icon: const Icon(Icons.edit)),
                                   ],
                                 ),
                               ),
@@ -772,12 +773,13 @@ class ShoppingCartState extends State<ShoppingCart> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           child: Padding(
-                            padding: EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(15),
                             child: Row(
                               children: [
-                                Icon(Icons.offline_share_outlined, size: 20),
+                                const Icon(Icons.offline_share_outlined,
+                                    size: 20),
                                 Space(8),
-                                Expanded(
+                                const Expanded(
                                   child: Text(
                                     "Apply Coupon",
                                     textAlign: TextAlign.start,
@@ -788,7 +790,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                                 ),
                                 if (total != 0)
                                   IconButton(
-                                    icon: Icon(Icons.edit),
+                                    icon: const Icon(Icons.edit),
                                     onPressed: () {
                                       // ignore: use_build_context_synchronously
                                       // if (total == 0)
@@ -812,7 +814,8 @@ class ShoppingCartState extends State<ShoppingCart> {
                                                             Navigator.pop(
                                                                 context);
                                                           },
-                                                          child: Text('Apply'))
+                                                          child: const Text(
+                                                              'Apply'))
                                                     ],
                                                   ));
                                                 });
@@ -833,11 +836,11 @@ class ShoppingCartState extends State<ShoppingCart> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           child: Padding(
-                            padding: EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(16),
                             child: Column(
                               children: [
                                 ExpansionTile(
-                                  title: Text(
+                                  title: const Text(
                                     "Detailed Bill",
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
@@ -846,7 +849,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                                   ),
                                   children: [
                                     ListTile(
-                                      title: Text(
+                                      title: const Text(
                                         "Subtotal",
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
@@ -857,10 +860,10 @@ class ShoppingCartState extends State<ShoppingCart> {
                                       trailing: Text(
                                           "\₹${total.toStringAsFixed(2)}",
                                           textAlign: TextAlign.start,
-                                          style: TextStyle(fontSize: 14)),
+                                          style: const TextStyle(fontSize: 14)),
                                     ),
                                     ListTile(
-                                      title: Text(
+                                      title: const Text(
                                         "Coupon Discount",
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
@@ -870,10 +873,10 @@ class ShoppingCartState extends State<ShoppingCart> {
                                       ),
                                       trailing: Text("$discount",
                                           textAlign: TextAlign.start,
-                                          style: TextStyle(fontSize: 14)),
+                                          style: const TextStyle(fontSize: 14)),
                                     ),
                                     ListTile(
-                                      title: Text(
+                                      title: const Text(
                                         "Home Service",
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
@@ -884,14 +887,14 @@ class ShoppingCartState extends State<ShoppingCart> {
                                       trailing: Text(
                                           "\₹${fee.toStringAsFixed(2)}",
                                           textAlign: TextAlign.start,
-                                          style: TextStyle(fontSize: 14)),
+                                          style: const TextStyle(fontSize: 14)),
                                     ),
                                   ],
                                 ),
 
                                 ///Divider(indent: 10, endIndent: 12, color: Colors.grey),
                                 ListTile(
-                                  title: Text("Total",
+                                  title: const Text("Total",
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                           fontWeight: FontWeight.w900,
@@ -899,7 +902,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                                   trailing: Text(
                                     "\₹${((total + fee) - discount.toDouble()).toStringAsFixed(2)}",
                                     textAlign: TextAlign.start,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontWeight: FontWeight.w900,
                                         fontSize: 18),
                                   ),
@@ -953,22 +956,22 @@ class CustomCard extends StatelessWidget {
                 children: [
                   Image.network(imageurl, height: 64, width: 64),
                   //Expanded(child: SizedBox(width: 1)),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   Expanded(
                     child: Text(
                       name,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                   ),
                   //Spacer(),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   IconButton(
-                    icon: Icon(Icons.cancel),
+                    icon: const Icon(Icons.cancel),
                     onPressed: () {
                       Navigator.pushReplacement(
                           context,
@@ -1013,7 +1016,7 @@ class CustomCard extends StatelessWidget {
                 children: [
                   //Spacer(),
                   IconButton(
-                    icon: Icon(Icons.remove),
+                    icon: const Icon(Icons.remove),
                     onPressed: () {
                       // if (list.length == 1) {
                       //   Navigator.pushReplacement(
@@ -1114,7 +1117,7 @@ class CustomCard extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.add),
+                    icon: const Icon(Icons.add),
                     onPressed: () {
                       int countnew = count + 1;
                       _firebase
@@ -1132,10 +1135,11 @@ class CustomCard extends StatelessWidget {
                       });
                     },
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
                     "₹${cost * count}",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 20),
                   )
                 ],
               ),

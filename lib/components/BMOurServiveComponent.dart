@@ -78,7 +78,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                 //print(doc as List);
                 if (snapshot.hasData) {
                   return ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: doc.length,
                       itemBuilder: (context, i) {
@@ -102,6 +102,13 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                             //   ),
                             children: [
                               //SizedBox(height: 10),
+                              n == 'Services'
+                                  ? Image.asset(
+                                      'assets/images/services.jpg',
+                                      scale: 4,
+                                    )
+                                  : const SizedBox(height: 0),
+                              5.height,
                               StreamBuilder<QuerySnapshotPlatform>(
                                   stream: _firebase
                                       .collection("stores")
@@ -232,6 +239,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
         16.height,
         // titleText(title: 'Services', size: 24),
         //16.height,
+
         getbuilder("Services", storeid.toString()),
         //16.height,
         //titleText(title: 'Accessories', size: 24),
