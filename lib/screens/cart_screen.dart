@@ -186,9 +186,9 @@ class ShoppingCartState extends State<ShoppingCart> {
         .collection("cart")
         .get();
     var founddoc = doc1.docs
-        .firstWhereOrNull((element) => element.get("subname") == "geared");
-    var founddoc2 = doc1.docs
-        .firstWhereOrNull((element) => element.get("subname") == "non-geared");
+        .firstWhereOrNull((element) => element.get("subname") == "Geared");
+    var founddoc2 = doc1.docs.firstWhereOrNull(
+        (element) => element.get("subname") == "Single-speed");
     var founddoc3 = doc1.docs
         .firstWhereOrNull((element) => element.get("catname") == "Services");
     setState(() {
@@ -222,7 +222,7 @@ class ShoppingCartState extends State<ShoppingCart> {
         if (value.get("count") % 3 == 0 || value.get("count") == 1) {
           if (founddoc != null) {
             for (int i = 0; i < doc.docs.length; i++) {
-              if (doc.docs[i].get("subname") == "geared") {
+              if (doc.docs[i].get("subname") == "Geared") {
                 setState(() {
                   gearamount.add(doc.docs[i].get("itemPrice"));
                 });
@@ -237,7 +237,7 @@ class ShoppingCartState extends State<ShoppingCart> {
 
           if (founddoc2 != null) {
             for (int i = 0; i < doc.docs.length; i++) {
-              if (doc.docs[i].get("subname") == "non-geared") {
+              if (doc.docs[i].get("subname") == "Single-speed") {
                 setState(() {
                   nonamount.add(doc.docs[i].get("itemPrice"));
                 });
