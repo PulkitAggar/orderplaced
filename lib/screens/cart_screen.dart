@@ -33,7 +33,9 @@ class ShoppingCartState extends State<ShoppingCart> {
   String weekday = '';
   int empty = 0;
   int fee = 0;
-
+  List items = [];
+  List geared = [];
+  List nonGeared = [];
   void getCurrentWeekday() {
     DateTime now = DateTime.now();
     int currentWeekday = now.weekday;
@@ -128,7 +130,6 @@ class ShoppingCartState extends State<ShoppingCart> {
       }
       if (mounted) {
         setState(() {
-          // Your state update code goes here
           total = t;
         });
       }
@@ -190,60 +191,80 @@ class ShoppingCartState extends State<ShoppingCart> {
         .firstWhereOrNull((element) => element.get("subname") == "non-geared");
     var founddoc3 = doc1.docs
         .firstWhereOrNull((element) => element.get("catname") == "Services");
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc("${loggineduser?.uid}")
-        .get()
-        .then((value) {
-      setState(() {
-        c = value.get("count");
+    setState(() {
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc("${loggineduser?.uid}")
+          .get()
+          .then((value) {
+        setState(() {
+          c = value.get("count");
+        });
+        if (value.get("count") % 3 == 0 || value.get("count") == 1) {
+          if (founddoc3 != null) {
+            FirebaseFirestore.instance
+                .collection("coupon")
+                .doc("coupon")
+                .get()
+                .then((value) {
+              setState(() {
+                cop.add(value.get("service")[0]["codename"]);
+              });
+            });
+          }
+        }
       });
-      if (value.get("count") % 3 == 0 || value.get("count") == 1) {
-        if (founddoc3 != null) {
-          FirebaseFirestore.instance
-              .collection("coupon")
-              .doc("coupon")
-              .get()
-              .then((value) {
-            cop.add(value.get("service")[0]["codename"]);
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc("${loggineduser?.uid}")
+          .get()
+          .then((value) {
+        if (value.get("count") % 3 == 0 || value.get("count") == 1) {
+          if (founddoc != null) {
+            for (int i = 0; i < doc.docs.length; i++) {
+              if (doc.docs[i].get("subname") == "geared") {
+                setState(() {
+                  gearamount.add(doc.docs[i].get("itemPrice"));
+                });
+              }
+            }
+            setState(() {
+              int val = gearamount.reduce(
+                  (value, element) => value < element ? value : element);
+              amount.add(val);
+            });
+          }
+
+          if (founddoc2 != null) {
+            for (int i = 0; i < doc.docs.length; i++) {
+              if (doc.docs[i].get("subname") == "non-geared") {
+                setState(() {
+                  nonamount.add(doc.docs[i].get("itemPrice"));
+                });
+              }
+            }
+            setState(() {
+              int val2 = nonamount.reduce(
+                  (value, element) => value < element ? value : element);
+
+              amount.add(val2);
+            });
+          }
+
+          setState(() {
+            if (amount.isEmpty) {
+              setState(() {
+                discount = 0;
+              });
+            } else {
+              int val3 = amount.reduce(
+                  (value, element) => value < element ? value : element);
+
+              discount = val3.toInt();
+            }
           });
         }
-      }
-    });
-
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc("${loggineduser?.uid}")
-        .get()
-        .then((value) {
-      if (value.get("count") % 3 == 0 || value.get("count") == 1) {
-        if (founddoc != null) {
-          for (int i = 0; i < doc.docs.length; i++) {
-            if (doc.docs[i].get("subname") == "geared") {
-              gearamount.add(doc.docs[i].get("itemPrice"));
-            }
-          }
-          int val = gearamount
-              .reduce((value, element) => value < element ? value : element);
-          amount.add(val);
-        }
-        if (founddoc2 != null) {
-          for (int i = 0; i < doc.docs.length; i++) {
-            if (doc.docs[i].get("subname") == "non-geared") {
-              nonamount.add(doc.docs[i].get("itemPrice"));
-            }
-          }
-          int val2 = nonamount
-              .reduce((value, element) => value < element ? value : element);
-
-          amount.add(val2);
-        }
-        int val3 = amount
-            .reduce((value, element) => value < element ? value : element);
-        setState(() {
-          discount = val3.toInt();
-        });
-      }
+      });
     });
   }
 
@@ -257,7 +278,9 @@ class ShoppingCartState extends State<ShoppingCart> {
     if (d.docs.isNotEmpty) {
       List tot = [];
       for (int i = 0; i < d.docs.length; i++) {
-        tot.add(d.docs[i].get("cost") * d.docs[i].get("count"));
+        setState(() {
+          tot.add(d.docs[i].get("cost") * d.docs[i].get("count"));
+        });
       }
       double sum = tot.reduce((value, element) => value + element);
       if (sum < 800.00) {
@@ -348,6 +371,212 @@ class ShoppingCartState extends State<ShoppingCart> {
     });
   }
 
+  Widget CCard(
+    double cost,
+    int count,
+    String imageurl,
+    String name,
+    List list,
+    String subname,
+    String catname,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 5),
+      child: Container(
+        //height: 120,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.grey.shade200,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Image.network(imageurl, height: 64, width: 64),
+                  //Expanded(child: SizedBox(width: 1)),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  Expanded(
+                    child: Text(
+                      name,
+                      style: const TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
+                  ),
+                  //Spacer(),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.cancel),
+                    onPressed: () {
+                      if (list.length == 1) {
+                        _firebase
+                            .collection("cart")
+                            .doc("${loggineduser?.email}")
+                            .collection("cart")
+                            .doc(name)
+                            .delete()
+                            .then((value) {
+                          FirebaseFirestore.instance
+                              .collection("cart")
+                              .doc("${loggineduser?.email}")
+                              .delete()
+                              .then((value) {
+                            FirebaseFirestore.instance
+                                .collection("cart")
+                                .doc("${loggineduser?.email}")
+                                .set({
+                              "storeid": "",
+                            });
+                          });
+                        });
+                      }
+                      _firebase
+                          .collection("cart")
+                          .doc("${loggineduser?.email}")
+                          .collection("cart")
+                          .doc(name)
+                          .delete()
+                          .then((value) {
+                        feeFetch();
+                        couponDiscount2();
+                      });
+                      // onPressed;
+                      // coupon;
+                      // Navigator.pushReplacement(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => ShoppingCart()));
+                    },
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  //Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.remove),
+                    onPressed: () {
+                      if (count > 0) {
+                        int countnew = count - 1;
+                        _firebase
+                            .collection("cart")
+                            .doc("${loggineduser?.email}")
+                            .collection("cart")
+                            .doc("$name")
+                            .set({
+                          'cost': cost,
+                          'count': countnew,
+                          'imageurl': imageurl,
+                          'name': name,
+                          'subname': subname,
+                          'catname': catname,
+                        }).then((value) {
+                          feeFetch();
+                          couponDiscount2();
+                          // onPressed;
+                          // coupon;
+                          // Navigator.pushReplacement(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => ShoppingCart()));
+                        });
+                      }
+                      if (count == 0) {
+                        _firebase
+                            .collection("cart")
+                            .doc("${loggineduser?.email}")
+                            .collection("cart")
+                            .doc(name)
+                            .delete()
+                            .then((value) {
+                          FirebaseFirestore.instance
+                              .collection("cart")
+                              .doc("${loggineduser?.email}")
+                              .delete()
+                              .then((value) {
+                            FirebaseFirestore.instance
+                                .collection("cart")
+                                .doc("${loggineduser?.email}")
+                                .set({
+                              "storeid": "",
+                            });
+                          });
+                        }).then((value) {
+                          feeFetch();
+                          couponDiscount2();
+                          // onPressed;
+                          // coupon;
+                          // Navigator.pushReplacement(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => ShoppingCart()));
+                        });
+                      }
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                    width: 30,
+                    child: Container(
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.black, width: 0.5)),
+                      child: Text(
+                        count.toString(),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      int countnew = count + 1;
+                      _firebase
+                          .collection("cart")
+                          .doc("${loggineduser?.email}")
+                          .collection("cart")
+                          .doc("$name")
+                          .set({
+                        'cost': cost,
+                        'count': countnew,
+                        'imageurl': imageurl,
+                        'name': name,
+                        'subname': subname,
+                        'catname': catname,
+                      }).then((value) {
+                        feeFetch();
+                        couponDiscount2();
+                        // onPressed;
+                        // coupon;
+                        // Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => ShoppingCart()));
+                      });
+                    },
+                  ),
+                  const Spacer(),
+                  Text(
+                    "₹${cost * count}",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 20),
+                  )
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // print(discount);
@@ -362,7 +591,7 @@ class ShoppingCartState extends State<ShoppingCart> {
             );
           }
           final messages = snapshot.data?.docs;
-          List<CustomCard> messagewidget = [];
+          List<Widget> messagewidget = [];
           for (var message in messages!) {
             final double cost = message.get("cost");
             final count = message.get("count");
@@ -370,8 +599,8 @@ class ShoppingCartState extends State<ShoppingCart> {
             final name = message.get("name");
             final subname = message.get("subname");
             final catname = message.get("catname");
-            var mess = CustomCard(cost, count, imageurl, name, messagewidget,
-                subname, catname, updateState, couponDiscount2);
+            var mess = CCard(
+                cost, count, imageurl, name, messagewidget, subname, catname);
             messagewidget.add(mess);
           }
           print(loggineduser?.uid);
@@ -524,10 +753,6 @@ class ShoppingCartState extends State<ShoppingCart> {
                             addres.add(add.get("name"));
                             addres.add(add.get("number"));
                           }
-                          // final nameR = name;
-                          // final numberR = number;
-                          // final addressR = addre;
-                          //OrderModel modelOfOrder = OrderModel
                           return Padding(
                             padding: const EdgeInsets.only(left: 15, right: 15),
                             child: Card(
@@ -741,42 +966,6 @@ class ShoppingCartState extends State<ShoppingCart> {
                                             fontSize: 18),
                                       ),
                                     ),
-
-                                    // if (total != 0)
-                                    //   IconButton(
-                                    //     icon: const Icon(Icons.edit),
-                                    //     onPressed: () {
-                                    //       // ignore: use_build_context_synchronously
-                                    //       // if (total == 0)
-                                    //       showDialog(
-                                    //           context: context,
-                                    //           builder: (BuildContext context) {
-                                    //             return ListView.builder(
-                                    //                 itemCount: cop.length,
-                                    //                 itemBuilder: (context, index) {
-                                    //                   return Card(
-                                    //                       child: Column(
-                                    //                     children: [
-                                    //                       Text(cop[index]),
-                                    //                       TextButton(
-                                    //                           onPressed: () {
-                                    //                             coupon = cop[index];
-                                    //                             setState(() {
-                                    //                               discount = dis;
-                                    //                             });
-                                    //                             print(coupon);
-                                    //                             Navigator.pop(
-                                    //                                 context);
-                                    //                           },
-                                    //                           child: const Text(
-                                    //                               'Apply'))
-                                    //                     ],
-                                    //                   ));
-                                    //                 });
-                                    //           });
-                                    //       print(cop);
-                                    //     },
-                                    //   )
                                   ],
                                 ),
                                 Space(8),
@@ -893,240 +1082,206 @@ class ShoppingCartState extends State<ShoppingCart> {
   }
 }
 
-class CustomCard extends StatelessWidget {
-  CustomCard(this.cost, this.count, this.imageurl, this.name, this.list,
-      this.subname, this.catname, this.onPressed, this.coupon);
-  final double cost;
-  final int count;
-  final String imageurl;
-  final String name;
-  final String subname;
-  final String catname;
-  final List<CustomCard> list;
-  final Function onPressed;
-  final Function coupon;
-
-  @override
-  Widget build(BuildContext context) {
-    final url = 'https://picsum.photos/200/300';
-    return Padding(
-      padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 5),
-      child: Container(
-        //height: 120,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Image.network(imageurl, height: 64, width: 64),
-                  //Expanded(child: SizedBox(width: 1)),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Expanded(
-                    child: Text(
-                      name,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 15),
-                    ),
-                  ),
-                  //Spacer(),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.cancel),
-                    onPressed: () {
-                      if (list.length == 1) {
-                        _firebase
-                            .collection("cart")
-                            .doc("${loggineduser?.email}")
-                            .collection("cart")
-                            .doc(name)
-                            .delete()
-                            .then((value) {
-                          FirebaseFirestore.instance
-                              .collection("cart")
-                              .doc("${loggineduser?.email}")
-                              .delete()
-                              .then((value) {
-                            FirebaseFirestore.instance
-                                .collection("cart")
-                                .doc("${loggineduser?.email}")
-                                .set({
-                              "storeid": "",
-                            });
-                          });
-                        });
-                      }
-                      _firebase
-                          .collection("cart")
-                          .doc("${loggineduser?.email}")
-                          .collection("cart")
-                          .doc(name)
-                          .delete();
-                      // onPressed;
-                      // coupon;
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ShoppingCart()));
-                    },
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  //Spacer(),
-                  IconButton(
-                    icon: const Icon(Icons.remove),
-                    onPressed: () {
-                      // if (list.length == 1) {
-                      //   Navigator.pushReplacement(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (BuildContext context) =>
-                      //               ShoppingCart()));
-                      //   fee = 0;
-                      //   _firebase
-                      //       .collection("cart")
-                      //       .doc("${loggineduser?.email}")
-                      //       .collection("cart")
-                      //       .doc(name)
-                      //       .delete()
-                      //       .then((value) {
-                      //     FirebaseFirestore.instance
-                      //         .collection("cart")
-                      //         .doc("${loggineduser?.email}")
-                      //         .delete()
-                      //         .then((value) {
-                      //       FirebaseFirestore.instance
-                      //           .collection("cart")
-                      //           .doc("${loggineduser?.email}")
-                      //           .set({
-                      //         "storeid": "",
-                      //       });
-                      //     });
-                      //   });
-                      //   _firebase
-                      //       .collection("cart")
-                      //       .doc("${loggineduser?.email}")
-                      //       .collection("cart")
-                      //       .doc(name)
-                      //       .delete();
-                      // }
-                      if (count > 0) {
-                        int countnew = count - 1;
-                        _firebase
-                            .collection("cart")
-                            .doc("${loggineduser?.email}")
-                            .collection("cart")
-                            .doc("$name")
-                            .set({
-                          'cost': cost,
-                          'count': countnew,
-                          'imageurl': imageurl,
-                          'name': name,
-                          'subname': subname,
-                          'catname': catname,
-                        }).then((value) {
-                          // onPressed;
-                          // coupon;
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ShoppingCart()));
-                        });
-                      }
-                      if (count == 0) {
-                        _firebase
-                            .collection("cart")
-                            .doc("${loggineduser?.email}")
-                            .collection("cart")
-                            .doc(name)
-                            .delete()
-                            .then((value) {
-                          FirebaseFirestore.instance
-                              .collection("cart")
-                              .doc("${loggineduser?.email}")
-                              .delete()
-                              .then((value) {
-                            FirebaseFirestore.instance
-                                .collection("cart")
-                                .doc("${loggineduser?.email}")
-                                .set({
-                              "storeid": "",
-                            });
-                          });
-                        }).then((value) {
-                          // onPressed;
-                          // coupon;
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ShoppingCart()));
-                        });
-                      }
-                    },
-                  ),
-                  SizedBox(
-                    height: 20,
-                    width: 30,
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 0.5)),
-                      child: Text(
-                        count.toString(),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.add),
-                    onPressed: () {
-                      int countnew = count + 1;
-                      _firebase
-                          .collection("cart")
-                          .doc("${loggineduser?.email}")
-                          .collection("cart")
-                          .doc("$name")
-                          .set({
-                        'cost': cost,
-                        'count': countnew,
-                        'imageurl': imageurl,
-                        'name': name,
-                        'subname': subname,
-                        'catname': catname,
-                      }).then((value) {
-                        // onPressed;
-                        // coupon;
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ShoppingCart()));
-                      });
-                    },
-                  ),
-                  const Spacer(),
-                  Text(
-                    "₹${cost * count}",
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 20),
-                  )
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+// class CustomCard extends StatelessWidget {
+//   CustomCard(this.cost, this.count, this.imageurl, this.name, this.list,
+//       this.subname, this.catname, this.onPressed, this.coupon);
+//   final double cost;
+//   final int count;
+//   final String imageurl;
+//   final String name;
+//   final String subname;
+//   final String catname;
+//   final List<CustomCard> list;
+//   final Function onPressed;
+//   final Function coupon;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final url = 'https://picsum.photos/200/300';
+//     return Padding(
+//       padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 5),
+//       child: Container(
+//         //height: 120,
+//         width: double.infinity,
+//         decoration: BoxDecoration(
+//           color: Colors.grey.shade200,
+//           borderRadius: BorderRadius.circular(10),
+//         ),
+//         child: Padding(
+//           padding: const EdgeInsets.symmetric(horizontal: 10),
+//           child: Column(
+//             children: [
+//               Row(
+//                 children: [
+//                   Image.network(imageurl, height: 64, width: 64),
+//                   //Expanded(child: SizedBox(width: 1)),
+//                   const SizedBox(
+//                     width: 15,
+//                   ),
+//                   Expanded(
+//                     child: Text(
+//                       name,
+//                       style: const TextStyle(
+//                           fontWeight: FontWeight.bold, fontSize: 15),
+//                     ),
+//                   ),
+//                   //Spacer(),
+//                   const SizedBox(
+//                     width: 15,
+//                   ),
+//                   IconButton(
+//                     icon: const Icon(Icons.cancel),
+//                     onPressed: () {
+//                       if (list.length == 1) {
+//                         _firebase
+//                             .collection("cart")
+//                             .doc("${loggineduser?.email}")
+//                             .collection("cart")
+//                             .doc(name)
+//                             .delete()
+//                             .then((value) {
+//                           FirebaseFirestore.instance
+//                               .collection("cart")
+//                               .doc("${loggineduser?.email}")
+//                               .delete()
+//                               .then((value) {
+//                             FirebaseFirestore.instance
+//                                 .collection("cart")
+//                                 .doc("${loggineduser?.email}")
+//                                 .set({
+//                               "storeid": "",
+//                             });
+//                           });
+//                         });
+//                       }
+//                       _firebase
+//                           .collection("cart")
+//                           .doc("${loggineduser?.email}")
+//                           .collection("cart")
+//                           .doc(name)
+//                           .delete();
+//                       // onPressed;
+//                       // coupon;
+//                       Navigator.pushReplacement(
+//                           context,
+//                           MaterialPageRoute(
+//                               builder: (context) => ShoppingCart()));
+//                     },
+//                   ),
+//                 ],
+//               ),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.start,
+//                 children: [
+//                   //Spacer(),
+//                   IconButton(
+//                     icon: const Icon(Icons.remove),
+//                     onPressed: () {
+//                       if (count > 0) {
+//                         int countnew = count - 1;
+//                         _firebase
+//                             .collection("cart")
+//                             .doc("${loggineduser?.email}")
+//                             .collection("cart")
+//                             .doc("$name")
+//                             .set({
+//                           'cost': cost,
+//                           'count': countnew,
+//                           'imageurl': imageurl,
+//                           'name': name,
+//                           'subname': subname,
+//                           'catname': catname,
+//                         }).then((value) {
+//                           // onPressed;
+//                           // coupon;
+//                           Navigator.pushReplacement(
+//                               context,
+//                               MaterialPageRoute(
+//                                   builder: (context) => ShoppingCart()));
+//                         });
+//                       }
+//                       if (count == 0) {
+//                         _firebase
+//                             .collection("cart")
+//                             .doc("${loggineduser?.email}")
+//                             .collection("cart")
+//                             .doc(name)
+//                             .delete()
+//                             .then((value) {
+//                           FirebaseFirestore.instance
+//                               .collection("cart")
+//                               .doc("${loggineduser?.email}")
+//                               .delete()
+//                               .then((value) {
+//                             FirebaseFirestore.instance
+//                                 .collection("cart")
+//                                 .doc("${loggineduser?.email}")
+//                                 .set({
+//                               "storeid": "",
+//                             });
+//                           });
+//                         }).then((value) {
+//                           // onPressed;
+//                           // coupon;
+//                           Navigator.pushReplacement(
+//                               context,
+//                               MaterialPageRoute(
+//                                   builder: (context) => ShoppingCart()));
+//                         });
+//                       }
+//                     },
+//                   ),
+//                   SizedBox(
+//                     height: 20,
+//                     width: 30,
+//                     child: Container(
+//                       alignment: Alignment.center,
+//                       decoration: BoxDecoration(
+//                           border: Border.all(color: Colors.black, width: 0.5)),
+//                       child: Text(
+//                         count.toString(),
+//                         textAlign: TextAlign.center,
+//                       ),
+//                     ),
+//                   ),
+//                   IconButton(
+//                     icon: const Icon(Icons.add),
+//                     onPressed: () {
+//                       int countnew = count + 1;
+//                       _firebase
+//                           .collection("cart")
+//                           .doc("${loggineduser?.email}")
+//                           .collection("cart")
+//                           .doc("$name")
+//                           .set({
+//                         'cost': cost,
+//                         'count': countnew,
+//                         'imageurl': imageurl,
+//                         'name': name,
+//                         'subname': subname,
+//                         'catname': catname,
+//                       }).then((value) {
+//                         // onPressed;
+//                         // coupon;
+//                         Navigator.pushReplacement(
+//                             context,
+//                             MaterialPageRoute(
+//                                 builder: (context) => ShoppingCart()));
+//                       });
+//                     },
+//                   ),
+//                   const Spacer(),
+//                   Text(
+//                     "₹${cost * count}",
+//                     style: const TextStyle(
+//                         fontWeight: FontWeight.bold, fontSize: 20),
+//                   )
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
