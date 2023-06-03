@@ -43,12 +43,16 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       String orderStatus,
       String nameR,
       String numberR,
-      String addressR) async {
+      String addressR,
+      ) async {
         
     String uuid = _auth.currentUser!.uid;
 
     final doc = await _store.collection('stores').doc(storeId).get();
     final String name = doc.data()!["storeName"];
+    final int numberStore = doc.data()!["phone"];
+    final doc2 = await _store.collection('users').doc(uuid).get();
+    final String numberUser = doc2.data()!["mobile"];
     final docStore =
         _store.collection("stores").doc(storeId).collection("orders").doc();
     final docUser =
@@ -63,7 +67,8 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       "nameR": nameR,
       "addressR": addressR,
       "numberR": numberR,
-      "paymentdone":paymentType
+      "paymentdone":paymentType,
+      "numberUser":numberUser
     }, SetOptions(merge: true));
 
     await docUser.set({
@@ -76,7 +81,8 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       "numberR": numberR,
       "storeuid": storeId,
       "name": name,
-      "paymentdone":paymentType
+      "paymentdone":paymentType,
+      "numberStore":numberStore
     }, SetOptions(merge: true));
 
     for (var items in widget.orderModel.lstOfItems) {

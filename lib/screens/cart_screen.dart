@@ -955,7 +955,15 @@ class ShoppingCartState extends State<ShoppingCart> {
                                 ),
                                 Space(8),
                                 Text(
-                                  "*Get Discount in Your Every 3rd Order",
+                                  "*Get a safety service free in Your Every 3rd Order",
+                                  textAlign: TextAlign.start,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      fontSize: 10),
+                                ),
+                                Space(3),
+                                Text(
+                                  "P.S. The discount will be provided by itself.",
                                   textAlign: TextAlign.start,
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w900,
@@ -1009,13 +1017,13 @@ class ShoppingCartState extends State<ShoppingCart> {
                                             fontWeight: FontWeight.bold,
                                             fontSize: 14),
                                       ),
-                                      trailing: Text("$discount",
+                                      trailing: Text("-₹$discount",
                                           textAlign: TextAlign.start,
                                           style: const TextStyle(fontSize: 14)),
                                     ),
                                     ListTile(
                                       title: const Text(
-                                        "Home Service",
+                                        "Pick and Drop fee",
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
                                             color: Colors.grey,
@@ -1028,7 +1036,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                                           style: const TextStyle(fontSize: 14)),
                                     ),
                                     const Text(
-                                      "*Get Free Home Service on Order Above ₹800",
+                                      "*Get Free Pick and Drop on Order Above ₹800",
                                       style: TextStyle(fontSize: 10),
                                     )
                                   ],

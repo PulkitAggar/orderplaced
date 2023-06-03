@@ -26,5 +26,6 @@ class userOrderModel {
       required this.map,
       required this.addressR,
       required this.nameR,
-      required this.phoneR});
+      required this.phoneR,
+      });
 }

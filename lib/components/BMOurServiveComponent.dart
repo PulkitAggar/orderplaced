@@ -85,6 +85,8 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ExpansionTile(
+                            initiallyExpanded: n=='Services',
+                            //n=='Services'? 
                             collapsedIconColor: bmSpecialColorDark,
                             iconColor: bmSpecialColorDark,
                             //crossAxisAlignment: CrossAxisAlignment.start,
@@ -108,7 +110,8 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                       scale: 4,
                                     )
                                   : const SizedBox(height: 0),
-                              5.height,
+                              15.height,
+                              
                               StreamBuilder<QuerySnapshotPlatform>(
                                   stream: _firebase
                                       .collection("stores")
