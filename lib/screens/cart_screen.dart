@@ -13,6 +13,7 @@ import 'cart_screen.dart';
 import 'screens.dart';
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
 import '../models/order.model.dart';
+import 'home_screen.dart';
 
 final _firebase = FirebaseFirestorePlatform.instance;
 User? loggineduser;
@@ -26,6 +27,8 @@ class ShoppingCartState extends State<ShoppingCart> {
   void updateState() {
     // Update the state of ChatScreen
     setState(() {
+      feeFetch();
+      couponDiscount2();
       // State update logic
     });
   }
@@ -34,6 +37,7 @@ class ShoppingCartState extends State<ShoppingCart> {
   String weekday = '';
   int empty = 0;
   int fee = 0;
+
   void getCurrentWeekday() {
     DateTime now = DateTime.now();
     int currentWeekday = now.weekday;
@@ -446,7 +450,7 @@ class ShoppingCartState extends State<ShoppingCart> {
             final subname = message.get("subname");
             final catname = message.get("catname");
             var mess = CustomCard(cost, count, imageurl, name, messagewidget,
-                subname, catname, feeFetch);
+                subname, catname, updateState, couponDiscount2);
             messagewidget.add(mess);
           }
           print(loggineduser?.uid);
@@ -461,15 +465,18 @@ class ShoppingCartState extends State<ShoppingCart> {
                 style: TextStyle(color: Colors.black),
               ),
               elevation: 0,
-              // leading: IconButton(
-              //   icon: Icon(
-              //     Icons.arrow_back,
-              //     color: Colors.black,
-              //   ),
-              //   onPressed: () {
-              //     Navigator.pop(context);
-              //   },
-              // ),
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DashboardScreen()));
+                },
+              ),
             ),
             bottomSheet: BottomSheet(
               elevation: 10,
@@ -967,7 +974,7 @@ class ShoppingCartState extends State<ShoppingCart> {
 
 class CustomCard extends StatelessWidget {
   CustomCard(this.cost, this.count, this.imageurl, this.name, this.list,
-      this.subname, this.catname, this.onPressed);
+      this.subname, this.catname, this.onPressed, this.coupon);
   final double cost;
   final int count;
   final String imageurl;
@@ -975,7 +982,8 @@ class CustomCard extends StatelessWidget {
   final String subname;
   final String catname;
   final List<CustomCard> list;
-  final VoidCallback onPressed;
+  final Function onPressed;
+  final Function coupon;
 
   @override
   Widget build(BuildContext context) {
@@ -1042,7 +1050,12 @@ class CustomCard extends StatelessWidget {
                           .collection("cart")
                           .doc(name)
                           .delete();
-                      onPressed;
+                      // onPressed;
+                      // coupon;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ShoppingCart()));
                     },
                   ),
                 ],
@@ -1103,7 +1116,12 @@ class CustomCard extends StatelessWidget {
                           'subname': subname,
                           'catname': catname,
                         }).then((value) {
-                          onPressed;
+                          // onPressed;
+                          // coupon;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ShoppingCart()));
                         });
                       }
                       if (count == 0) {
@@ -1127,7 +1145,12 @@ class CustomCard extends StatelessWidget {
                             });
                           });
                         }).then((value) {
-                          onPressed;
+                          // onPressed;
+                          // coupon;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ShoppingCart()));
                         });
                       }
                     },
@@ -1162,7 +1185,12 @@ class CustomCard extends StatelessWidget {
                         'subname': subname,
                         'catname': catname,
                       }).then((value) {
-                        onPressed;
+                        // onPressed;
+                        // coupon;
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ShoppingCart()));
                       });
                     },
                   ),
