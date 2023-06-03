@@ -20,15 +20,6 @@ class ShoppingCart extends StatefulWidget {
 }
 
 class ShoppingCartState extends State<ShoppingCart> {
-  void updateState() {
-    // Update the state of ChatScreen
-    setState(() {
-      feeFetch();
-      couponDiscount2();
-      // State update logic
-    });
-  }
-
   String storeuid = "";
   String weekday = '';
   int empty = 0;
@@ -36,6 +27,19 @@ class ShoppingCartState extends State<ShoppingCart> {
   List items = [];
   List geared = [];
   List nonGeared = [];
+  double total = 0.00;
+  String coupon = '';
+  int discount = 0;
+  int dis = 0;
+  int c = 0;
+  TextEditingController textEditingController = TextEditingController();
+  final AddressBloc addressBloc = AddressBloc();
+  final _auth = FirebaseAuth.instance;
+
+  final StreamController<QuerySnapshotPlatform> localStreamController =
+      StreamController.broadcast();
+  List<dynamic> cop = [];
+  bool exist = false;
   void getCurrentWeekday() {
     DateTime now = DateTime.now();
     int currentWeekday = now.weekday;
@@ -84,20 +88,6 @@ class ShoppingCartState extends State<ShoppingCart> {
     }
   }
 
-  double total = 0.00;
-  String coupon = '';
-  int discount = 0;
-  int dis = 0;
-  int c = 0;
-  TextEditingController textEditingController = TextEditingController();
-  final AddressBloc addressBloc = AddressBloc();
-  final _auth = FirebaseAuth.instance;
-
-  final StreamController<QuerySnapshotPlatform> localStreamController =
-      StreamController.broadcast();
-  List<dynamic> cop = [];
-  bool exist = false;
-
   @override
   void initState() {
     feeFetch();
@@ -112,9 +102,13 @@ class ShoppingCartState extends State<ShoppingCart> {
         .doc("${loggineduser?.email}")
         .get()
         .then((value) {
-      setState(() {
-        storeuid = value.get("storeid");
-      });
+      try {
+        setState(() {
+          storeuid = value.get("storeid");
+        });
+      } catch (e) {
+        print("hello");
+      }
     });
     _firebase
         .collection("cart")
@@ -163,109 +157,117 @@ class ShoppingCartState extends State<ShoppingCart> {
 
   void couponDiscount2() async {
     String storeid = "";
-    await FirebaseFirestore.instance
-        .collection("cart")
-        .doc("${loggineduser?.email}")
-        .get()
-        .then((value) {
-      setState(() {
-        storeid = value.get("storeid");
-      });
-    });
-    List amount = [];
-    List nonamount = [];
-    List gearamount = [];
-    var doc = await FirebaseFirestore.instance
-        .collection("stores")
-        .doc(storeid)
-        .collection("menus")
-        .get();
-    var doc1 = await FirebaseFirestore.instance
-        .collection("cart")
-        .doc("${loggineduser?.email}")
-        .collection("cart")
-        .get();
-    var founddoc = doc1.docs
-        .firstWhereOrNull((element) => element.get("subname") == "Geared");
-    var founddoc2 = doc1.docs.firstWhereOrNull(
-        (element) => element.get("subname") == "Single-speed");
-    var founddoc3 = doc1.docs
-        .firstWhereOrNull((element) => element.get("catname") == "Services");
-    setState(() {
-      FirebaseFirestore.instance
-          .collection("users")
-          .doc("${loggineduser?.uid}")
+    try {
+      await FirebaseFirestore.instance
+          .collection("cart")
+          .doc("${loggineduser?.email}")
           .get()
           .then((value) {
         setState(() {
-          c = value.get("count");
+          storeid = value.get("storeid");
         });
-        if (value.get("count") % 3 == 0 || value.get("count") == 1) {
-          if (founddoc3 != null) {
-            FirebaseFirestore.instance
-                .collection("coupon")
-                .doc("coupon")
-                .get()
-                .then((value) {
-              setState(() {
-                cop.add(value.get("service")[0]["codename"]);
-              });
-            });
-          }
-        }
       });
-      FirebaseFirestore.instance
-          .collection("users")
-          .doc("${loggineduser?.uid}")
-          .get()
-          .then((value) {
-        if (value.get("count") % 3 == 0 || value.get("count") == 1) {
-          if (founddoc != null) {
-            for (int i = 0; i < doc.docs.length; i++) {
-              if (doc.docs[i].get("subname") == "Geared") {
-                setState(() {
-                  gearamount.add(doc.docs[i].get("itemPrice"));
-                });
-              }
-            }
-            setState(() {
-              int val = gearamount.reduce(
-                  (value, element) => value < element ? value : element);
-              amount.add(val);
-            });
-          }
-
-          if (founddoc2 != null) {
-            for (int i = 0; i < doc.docs.length; i++) {
-              if (doc.docs[i].get("subname") == "Single-speed") {
-                setState(() {
-                  nonamount.add(doc.docs[i].get("itemPrice"));
-                });
-              }
-            }
-            setState(() {
-              int val2 = nonamount.reduce(
-                  (value, element) => value < element ? value : element);
-
-              amount.add(val2);
-            });
-          }
-
+    } catch (e) {
+      print("object");
+    }
+    List amount = [];
+    List nonamount = [];
+    List gearamount = [];
+    try {
+      var doc = await FirebaseFirestore.instance
+          .collection("stores")
+          .doc(storeid)
+          .collection("menus")
+          .get();
+      var doc1 = await FirebaseFirestore.instance
+          .collection("cart")
+          .doc("${loggineduser?.email}")
+          .collection("cart")
+          .get();
+      var founddoc = doc1.docs
+          .firstWhereOrNull((element) => element.get("subname") == "Geared");
+      var founddoc2 = doc1.docs.firstWhereOrNull(
+          (element) => element.get("subname") == "Single-speed");
+      var founddoc3 = doc1.docs
+          .firstWhereOrNull((element) => element.get("catname") == "Services");
+      setState(() {
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc("${loggineduser?.uid}")
+            .get()
+            .then((value) {
           setState(() {
-            if (amount.isEmpty) {
-              setState(() {
-                discount = 0;
-              });
-            } else {
-              int val3 = amount.reduce(
-                  (value, element) => value < element ? value : element);
-
-              discount = val3.toInt();
-            }
+            c = value.get("count");
           });
-        }
+          if (value.get("count") % 3 == 0) {
+            if (founddoc3 != null) {
+              FirebaseFirestore.instance
+                  .collection("coupon")
+                  .doc("coupon")
+                  .get()
+                  .then((value) {
+                setState(() {
+                  cop.add(value.get("service")[0]["codename"]);
+                });
+              });
+            }
+          }
+        });
+        FirebaseFirestore.instance
+            .collection("users")
+            .doc("${loggineduser?.uid}")
+            .get()
+            .then((value) {
+          if (value.get("count") % 3 == 0 || value.get("count") == 1) {
+            if (founddoc != null) {
+              for (int i = 0; i < doc.docs.length; i++) {
+                if (doc.docs[i].get("subname") == "Geared") {
+                  setState(() {
+                    gearamount.add(doc.docs[i].get("itemPrice"));
+                  });
+                }
+              }
+              setState(() {
+                int val = gearamount.reduce(
+                    (value, element) => value < element ? value : element);
+                amount.add(val);
+              });
+            }
+
+            if (founddoc2 != null) {
+              for (int i = 0; i < doc.docs.length; i++) {
+                if (doc.docs[i].get("subname") == "Single-speed") {
+                  setState(() {
+                    nonamount.add(doc.docs[i].get("itemPrice"));
+                  });
+                }
+              }
+              setState(() {
+                int val2 = nonamount.reduce(
+                    (value, element) => value < element ? value : element);
+
+                amount.add(val2);
+              });
+            }
+
+            setState(() {
+              if (amount.isEmpty) {
+                setState(() {
+                  discount = 0;
+                });
+              } else {
+                int val3 = amount.reduce(
+                    (value, element) => value < element ? value : element);
+
+                discount = val3.toInt();
+              }
+            });
+          }
+        });
       });
-    });
+    } catch (e) {
+      print("hello");
+    }
   }
 
   void feeFetch() async {
@@ -383,7 +385,6 @@ class ShoppingCartState extends State<ShoppingCart> {
     return Padding(
       padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 5),
       child: Container(
-        //height: 120,
         width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.grey.shade200,
@@ -396,7 +397,6 @@ class ShoppingCartState extends State<ShoppingCart> {
               Row(
                 children: [
                   Image.network(imageurl, height: 64, width: 64),
-                  //Expanded(child: SizedBox(width: 1)),
                   const SizedBox(
                     width: 15,
                   ),
@@ -451,12 +451,6 @@ class ShoppingCartState extends State<ShoppingCart> {
                         feeFetch();
                         couponDiscount2();
                       });
-                      // onPressed;
-                      // coupon;
-                      // Navigator.pushReplacement(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => ShoppingCart()));
                     },
                   ),
                 ],
@@ -485,15 +479,9 @@ class ShoppingCartState extends State<ShoppingCart> {
                         }).then((value) {
                           feeFetch();
                           couponDiscount2();
-                          // onPressed;
-                          // coupon;
-                          // Navigator.pushReplacement(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => ShoppingCart()));
                         });
                       }
-                      if (count == 0) {
+                      if (count == 1) {
                         setState(() {
                           discount = 0;
                           fee = 0;
@@ -520,12 +508,6 @@ class ShoppingCartState extends State<ShoppingCart> {
                         }).then((value) {
                           feeFetch();
                           couponDiscount2();
-                          // onPressed;
-                          // coupon;
-                          // Navigator.pushReplacement(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => ShoppingCart()));
                         });
                       }
                     },
@@ -562,12 +544,6 @@ class ShoppingCartState extends State<ShoppingCart> {
                       }).then((value) {
                         feeFetch();
                         couponDiscount2();
-                        // onPressed;
-                        // coupon;
-                        // Navigator.pushReplacement(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => ShoppingCart()));
                       });
                     },
                   ),
@@ -968,7 +944,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                                     Space(8),
                                     Expanded(
                                       child: Text(
-                                        "This is your $c Order",
+                                        "This is your Order Number : $c",
                                         textAlign: TextAlign.start,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w900,
@@ -1057,8 +1033,6 @@ class ShoppingCartState extends State<ShoppingCart> {
                                     )
                                   ],
                                 ),
-
-                                ///Divider(indent: 10, endIndent: 12, color: Colors.grey),
                                 ListTile(
                                   title: const Text("Total",
                                       textAlign: TextAlign.start,
@@ -1090,207 +1064,3 @@ class ShoppingCartState extends State<ShoppingCart> {
         });
   }
 }
-
-// class CustomCard extends StatelessWidget {
-//   CustomCard(this.cost, this.count, this.imageurl, this.name, this.list,
-//       this.subname, this.catname, this.onPressed, this.coupon);
-//   final double cost;
-//   final int count;
-//   final String imageurl;
-//   final String name;
-//   final String subname;
-//   final String catname;
-//   final List<CustomCard> list;
-//   final Function onPressed;
-//   final Function coupon;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final url = 'https://picsum.photos/200/300';
-//     return Padding(
-//       padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 5),
-//       child: Container(
-//         //height: 120,
-//         width: double.infinity,
-//         decoration: BoxDecoration(
-//           color: Colors.grey.shade200,
-//           borderRadius: BorderRadius.circular(10),
-//         ),
-//         child: Padding(
-//           padding: const EdgeInsets.symmetric(horizontal: 10),
-//           child: Column(
-//             children: [
-//               Row(
-//                 children: [
-//                   Image.network(imageurl, height: 64, width: 64),
-//                   //Expanded(child: SizedBox(width: 1)),
-//                   const SizedBox(
-//                     width: 15,
-//                   ),
-//                   Expanded(
-//                     child: Text(
-//                       name,
-//                       style: const TextStyle(
-//                           fontWeight: FontWeight.bold, fontSize: 15),
-//                     ),
-//                   ),
-//                   //Spacer(),
-//                   const SizedBox(
-//                     width: 15,
-//                   ),
-//                   IconButton(
-//                     icon: const Icon(Icons.cancel),
-//                     onPressed: () {
-//                       if (list.length == 1) {
-//                         _firebase
-//                             .collection("cart")
-//                             .doc("${loggineduser?.email}")
-//                             .collection("cart")
-//                             .doc(name)
-//                             .delete()
-//                             .then((value) {
-//                           FirebaseFirestore.instance
-//                               .collection("cart")
-//                               .doc("${loggineduser?.email}")
-//                               .delete()
-//                               .then((value) {
-//                             FirebaseFirestore.instance
-//                                 .collection("cart")
-//                                 .doc("${loggineduser?.email}")
-//                                 .set({
-//                               "storeid": "",
-//                             });
-//                           });
-//                         });
-//                       }
-//                       _firebase
-//                           .collection("cart")
-//                           .doc("${loggineduser?.email}")
-//                           .collection("cart")
-//                           .doc(name)
-//                           .delete();
-//                       // onPressed;
-//                       // coupon;
-//                       Navigator.pushReplacement(
-//                           context,
-//                           MaterialPageRoute(
-//                               builder: (context) => ShoppingCart()));
-//                     },
-//                   ),
-//                 ],
-//               ),
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 children: [
-//                   //Spacer(),
-//                   IconButton(
-//                     icon: const Icon(Icons.remove),
-//                     onPressed: () {
-//                       if (count > 0) {
-//                         int countnew = count - 1;
-//                         _firebase
-//                             .collection("cart")
-//                             .doc("${loggineduser?.email}")
-//                             .collection("cart")
-//                             .doc("$name")
-//                             .set({
-//                           'cost': cost,
-//                           'count': countnew,
-//                           'imageurl': imageurl,
-//                           'name': name,
-//                           'subname': subname,
-//                           'catname': catname,
-//                         }).then((value) {
-//                           // onPressed;
-//                           // coupon;
-//                           Navigator.pushReplacement(
-//                               context,
-//                               MaterialPageRoute(
-//                                   builder: (context) => ShoppingCart()));
-//                         });
-//                       }
-//                       if (count == 0) {
-//                         _firebase
-//                             .collection("cart")
-//                             .doc("${loggineduser?.email}")
-//                             .collection("cart")
-//                             .doc(name)
-//                             .delete()
-//                             .then((value) {
-//                           FirebaseFirestore.instance
-//                               .collection("cart")
-//                               .doc("${loggineduser?.email}")
-//                               .delete()
-//                               .then((value) {
-//                             FirebaseFirestore.instance
-//                                 .collection("cart")
-//                                 .doc("${loggineduser?.email}")
-//                                 .set({
-//                               "storeid": "",
-//                             });
-//                           });
-//                         }).then((value) {
-//                           // onPressed;
-//                           // coupon;
-//                           Navigator.pushReplacement(
-//                               context,
-//                               MaterialPageRoute(
-//                                   builder: (context) => ShoppingCart()));
-//                         });
-//                       }
-//                     },
-//                   ),
-//                   SizedBox(
-//                     height: 20,
-//                     width: 30,
-//                     child: Container(
-//                       alignment: Alignment.center,
-//                       decoration: BoxDecoration(
-//                           border: Border.all(color: Colors.black, width: 0.5)),
-//                       child: Text(
-//                         count.toString(),
-//                         textAlign: TextAlign.center,
-//                       ),
-//                     ),
-//                   ),
-//                   IconButton(
-//                     icon: const Icon(Icons.add),
-//                     onPressed: () {
-//                       int countnew = count + 1;
-//                       _firebase
-//                           .collection("cart")
-//                           .doc("${loggineduser?.email}")
-//                           .collection("cart")
-//                           .doc("$name")
-//                           .set({
-//                         'cost': cost,
-//                         'count': countnew,
-//                         'imageurl': imageurl,
-//                         'name': name,
-//                         'subname': subname,
-//                         'catname': catname,
-//                       }).then((value) {
-//                         // onPressed;
-//                         // coupon;
-//                         Navigator.pushReplacement(
-//                             context,
-//                             MaterialPageRoute(
-//                                 builder: (context) => ShoppingCart()));
-//                       });
-//                     },
-//                   ),
-//                   const Spacer(),
-//                   Text(
-//                     "₹${cost * count}",
-//                     style: const TextStyle(
-//                         fontWeight: FontWeight.bold, fontSize: 20),
-//                   )
-//                 ],
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
