@@ -415,6 +415,11 @@ class ShoppingCartState extends State<ShoppingCart> {
                     icon: const Icon(Icons.cancel),
                     onPressed: () {
                       if (list.length == 1) {
+                        setState(() {
+                          discount = 0;
+                          fee = 0;
+                        });
+
                         _firebase
                             .collection("cart")
                             .doc("${loggineduser?.email}")
@@ -489,6 +494,10 @@ class ShoppingCartState extends State<ShoppingCart> {
                         });
                       }
                       if (count == 0) {
+                        setState(() {
+                          discount = 0;
+                          fee = 0;
+                        });
                         _firebase
                             .collection("cart")
                             .doc("${loggineduser?.email}")
