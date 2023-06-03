@@ -2,14 +2,10 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:nb_utils/nb_utils.dart';
 import '../blocs/blocs.dart';
 import '../datamodels/models.dart';
 import '../widgets/widgets.dart';
-import 'cart_screen.dart';
-import 'cart_screen.dart';
 import 'screens.dart';
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
 import '../models/order.model.dart';
@@ -103,11 +99,9 @@ class ShoppingCartState extends State<ShoppingCart> {
   @override
   void initState() {
     feeFetch();
-
     super.initState();
     emptyCart();
     couponDiscount2();
-
     xyz();
     getuser();
     getCurrentWeekday();
@@ -127,7 +121,6 @@ class ShoppingCartState extends State<ShoppingCart> {
         .snapshots()
         .listen((QuerySnapshotPlatform querySnapshot) =>
             localStreamController.add(querySnapshot));
-
     localStreamController.stream.listen((event) {
       var t = 0.0;
       for (var doc in event.docs) {
@@ -139,9 +132,6 @@ class ShoppingCartState extends State<ShoppingCart> {
           total = t;
         });
       }
-      // setState(() {
-      //   total = t;
-      // });
     });
   }
 
@@ -169,51 +159,6 @@ class ShoppingCartState extends State<ShoppingCart> {
       });
     }
   }
-
-  // Future fetch() async {
-  //   await _firebase.collection("coupon").doc("coupon").get().then((value) {
-  //     _firebase
-  //         .collection("users")
-  //         .doc("${loggineduser?.uid}")
-  //         .get()
-  //         .then((value2) {
-  //       List<dynamic> cop1 = [];
-  //       for (int i = 0; i < value.get("code").length; i++) {
-  //         if (total > value.get("code")[i]["amount"]) {
-  //           setState(() {
-  //             cop1.add(value.get("code")[i]["codename"]);
-  //           });
-  //         }
-  //       }
-  //       for (int j = 0; j < value2.get("code").length; j++) {
-  //         cop1.remove(value2.get("code")[j]);
-  //       }
-  //       setState(() {
-  //         cop = cop1;
-  //       });
-  //     });
-  //   });
-  //   // DocumentSnapshotPlatform? foundDoc =
-  //   //     doc.docs.firstWhereOrNull((element) => element.get("code") == coupon);
-  // }
-
-  // void codeDiscount(String name) async {
-  //   await _firebase.collection("coupon").doc("coupon").get().then((value) {
-  //     for (int i = 0; i < value.get("code").length; i++) {
-  //       if (value.get("code")[i]["codename"] == name) {
-  //         print(value.get("code")[i]["amount"]);
-  //         setState(() {
-  //           discount = value.get("code")[i]["amount"];
-  //         });
-  //       }
-  //       // else {
-  //       //   setState(() {
-  //       //     discount = 0;
-  //       //   });
-  //       // }
-  //     }
-  //   });
-  // }
 
   void couponDiscount2() async {
     String storeid = "";
@@ -274,47 +219,24 @@ class ShoppingCartState extends State<ShoppingCart> {
       if (value.get("count") % 3 == 0 || value.get("count") == 1) {
         if (founddoc != null) {
           for (int i = 0; i < doc.docs.length; i++) {
-            // print(doc.docs[i].get("catname"));
             if (doc.docs[i].get("subname") == "geared") {
               gearamount.add(doc.docs[i].get("itemPrice"));
             }
-            // if (doc.docs[i].get("subname") == "non-geared") {
-            //   nonamount.add(doc.docs[i].get("itemPrice"));
-            // }
           }
           int val = gearamount
               .reduce((value, element) => value < element ? value : element);
-          // int val2 = nonamount
-          //     .reduce((value, element) => value < element ? value : element);
           amount.add(val);
-          // amount.add(val2);
-          // int val3 = amount
-          //     .reduce((value, element) => value < element ? value : element);
-          // setState(() {
-          //   dis = val3.toInt();
-          // });
         }
         if (founddoc2 != null) {
           for (int i = 0; i < doc.docs.length; i++) {
-            // print(doc.docs[i].get("catname"));
-            // if (doc.docs[i].get("subname") == "geared") {
-            //   gearamount.add(doc.docs[i].get("itemPrice"));
-            // }
             if (doc.docs[i].get("subname") == "non-geared") {
               nonamount.add(doc.docs[i].get("itemPrice"));
             }
           }
-          // int val = gearamount
-          //     .reduce((value, element) => value < element ? value : element);
           int val2 = nonamount
               .reduce((value, element) => value < element ? value : element);
-          // amount.add(val);
+
           amount.add(val2);
-          // int val3 = amount
-          //     .reduce((value, element) => value < element ? value : element);
-          // setState(() {
-          //   dis = val3.toInt();
-          // });
         }
         int val3 = amount
             .reduce((value, element) => value < element ? value : element);
@@ -441,7 +363,6 @@ class ShoppingCartState extends State<ShoppingCart> {
           }
           final messages = snapshot.data?.docs;
           List<CustomCard> messagewidget = [];
-
           for (var message in messages!) {
             final double cost = message.get("cost");
             final count = message.get("count");
@@ -1052,7 +973,7 @@ class CustomCard extends StatelessWidget {
                           .delete();
                       // onPressed;
                       // coupon;
-                      Navigator.push(
+                      Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                               builder: (context) => ShoppingCart()));
@@ -1118,7 +1039,7 @@ class CustomCard extends StatelessWidget {
                         }).then((value) {
                           // onPressed;
                           // coupon;
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ShoppingCart()));
@@ -1147,7 +1068,7 @@ class CustomCard extends StatelessWidget {
                         }).then((value) {
                           // onPressed;
                           // coupon;
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => ShoppingCart()));
@@ -1187,7 +1108,7 @@ class CustomCard extends StatelessWidget {
                       }).then((value) {
                         // onPressed;
                         // coupon;
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ShoppingCart()));
