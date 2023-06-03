@@ -256,7 +256,7 @@ class StoresRepository {
       String addressR = doc.data()['addressR'] ?? '';
       // List<DocumentSnapshotPlatform> list = doc.data()['order'] ?? [];
       Map<String, dynamic> map = doc.data()['order'] ?? [];
-      String storeName = doc.data()['name'] ?? '';
+      String storeName = doc.data()['name'] ?? '';;
 
       userOrderModel orderModel = userOrderModel(
           date: date,
@@ -269,7 +269,8 @@ class StoresRepository {
           nameR: nameR,
           phoneR: phoneR,
           map: map,
-          storeName: storeName);
+          storeName: storeName,
+          );
 
       orders.add(orderModel);
     }
@@ -319,7 +320,8 @@ class StoresRepository {
           nameR: nameR,
           phoneR: phoneR,
           map: map,
-          storeName: storeName);
+          storeName: storeName,)
+          ;
 
       orders.add(orderModel);
     }
