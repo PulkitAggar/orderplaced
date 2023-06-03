@@ -218,7 +218,7 @@ class ShoppingCartState extends State<ShoppingCart> {
             .doc("${loggineduser?.uid}")
             .get()
             .then((value) {
-          if (value.get("count") % 3 == 0 || value.get("count") == 1) {
+          if (value.get("count") % 3 == 0) {
             if (founddoc != null) {
               for (int i = 0; i < doc.docs.length; i++) {
                 if (doc.docs[i].get("subname") == "Geared") {
