@@ -43,7 +43,7 @@ class HomeFragmentHeadComponent extends StatelessWidget {
                       Text('Hi',
                           style: boldTextStyle(color: Colors.white, size: 14)),
                       Text(
-                        userName!.toUpperCase() ?? "Cyclist",
+                        userName!.toUpperCase(),
                         style: boldTextStyle(color: Colors.white, size: 24),
                       ),
                       // Wrap(
