@@ -36,7 +36,7 @@ class ShoppingCartState extends State<ShoppingCart> {
   final AddressBloc addressBloc = AddressBloc();
   final _auth = FirebaseAuth.instance;
 
-  final StreamController<QuerySnapshotPlatform> localStreamController =
+  final StreamController<QuerySnapshotPlatform> _localStreamController =
       StreamController.broadcast();
   List<dynamic> cop = [];
   bool exist = false;
@@ -116,8 +116,8 @@ class ShoppingCartState extends State<ShoppingCart> {
         .collection("cart")
         .snapshots()
         .listen((QuerySnapshotPlatform querySnapshot) =>
-            localStreamController.add(querySnapshot));
-    localStreamController.stream.listen((event) {
+            _localStreamController.add(querySnapshot));
+    _localStreamController.stream.listen((event) {
       var t = 0.0;
       for (var doc in event.docs) {
         t += doc.get("cost") * doc.get("count");
@@ -462,7 +462,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                   IconButton(
                     icon: const Icon(Icons.remove),
                     onPressed: () {
-                      if (count > 0) {
+                      if (count > 1) {
                         int countnew = count - 1;
                         _firebase
                             .collection("cart")
@@ -481,35 +481,35 @@ class ShoppingCartState extends State<ShoppingCart> {
                           couponDiscount2();
                         });
                       }
-                      if (count == 1) {
-                        setState(() {
-                          discount = 0;
-                          fee = 0;
-                        });
-                        _firebase
-                            .collection("cart")
-                            .doc("${loggineduser?.email}")
-                            .collection("cart")
-                            .doc(name)
-                            .delete()
-                            .then((value) {
-                          FirebaseFirestore.instance
-                              .collection("cart")
-                              .doc("${loggineduser?.email}")
-                              .delete()
-                              .then((value) {
-                            FirebaseFirestore.instance
-                                .collection("cart")
-                                .doc("${loggineduser?.email}")
-                                .set({
-                              "storeid": "",
-                            });
-                          });
-                        }).then((value) {
-                          feeFetch();
-                          couponDiscount2();
-                        });
-                      }
+                      // if (count == 1) {
+                      //   setState(() {
+                      //     feeFetch();
+                      //     couponDiscount2();
+                      //   });
+                      //   _firebase
+                      //       .collection("cart")
+                      //       .doc("${loggineduser?.email}")
+                      //       .collection("cart")
+                      //       .doc(name)
+                      //       .delete()
+                      //       .then((value) {
+                      //     FirebaseFirestore.instance
+                      //         .collection("cart")
+                      //         .doc("${loggineduser?.email}")
+                      //         .delete()
+                      //         .then((value) {
+                      //       FirebaseFirestore.instance
+                      //           .collection("cart")
+                      //           .doc("${loggineduser?.email}")
+                      //           .set({
+                      //         "storeid": "",
+                      //       });
+                      //     });
+                      //   }).then((value) {
+                      //     // feeFetch();
+                      //     // couponDiscount2();
+                      //   });
+                      // }
                     },
                   ),
                   SizedBox(
@@ -566,7 +566,7 @@ class ShoppingCartState extends State<ShoppingCart> {
   Widget build(BuildContext context) {
     // print(discount);
     return StreamBuilder<QuerySnapshotPlatform>(
-        stream: localStreamController.stream,
+        stream: _localStreamController.stream,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -582,8 +582,8 @@ class ShoppingCartState extends State<ShoppingCart> {
             final count = message.get("count");
             final imageurl = message.get("imageurl");
             final name = message.get("name");
-            final subname = message.get("subname");
-            final catname = message.get("catname");
+            final subname = message.data()?["subname"] ?? "";
+            final catname = message.data()?["catname"] ?? "";
             var mess = CCard(
                 cost, count, imageurl, name, messagewidget, subname, catname);
             messagewidget.add(mess);
