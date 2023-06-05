@@ -24,21 +24,13 @@ class ShoppingCartState extends State<ShoppingCart> {
   String weekday = '';
   int empty = 0;
   int fee = 0;
-  List items = [];
-  List geared = [];
-  List nonGeared = [];
+  String coupon = "";
   double total = 0.00;
-  String coupon = '';
   int discount = 0;
   int dis = 0;
   int c = 0;
   TextEditingController textEditingController = TextEditingController();
-  final AddressBloc addressBloc = AddressBloc();
   final _auth = FirebaseAuth.instance;
-
-  final StreamController<QuerySnapshotPlatform> _localStreamController =
-      StreamController.broadcast();
-  List<dynamic> cop = [];
   bool exist = false;
   void getCurrentWeekday() {
     DateTime now = DateTime.now();
@@ -90,44 +82,11 @@ class ShoppingCartState extends State<ShoppingCart> {
 
   @override
   void initState() {
-    feeFetch();
     super.initState();
-    emptyCart();
-    couponDiscount2();
     xyz();
+    feeFetch();
     getuser();
     getCurrentWeekday();
-    FirebaseFirestore.instance
-        .collection("cart")
-        .doc("${loggineduser?.email}")
-        .get()
-        .then((value) {
-      try {
-        setState(() {
-          storeuid = value.get("storeid");
-        });
-      } catch (e) {
-        print("hello");
-      }
-    });
-    _firebase
-        .collection("cart")
-        .doc("${loggineduser?.email}")
-        .collection("cart")
-        .snapshots()
-        .listen((QuerySnapshotPlatform querySnapshot) =>
-            _localStreamController.add(querySnapshot));
-    _localStreamController.stream.listen((event) {
-      var t = 0.0;
-      for (var doc in event.docs) {
-        t += doc.get("cost") * doc.get("count");
-      }
-      if (mounted) {
-        setState(() {
-          total = t;
-        });
-      }
-    });
   }
 
   void getuser() async {
@@ -142,6 +101,35 @@ class ShoppingCartState extends State<ShoppingCart> {
     }
   }
 
+  void feeFetch() async {
+    await FirebaseFirestore.instance
+        .collection("cart")
+        .doc("${loggineduser?.email}")
+        .collection("cart")
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        setState(() {
+          empty = 1;
+        });
+        _firebase
+            .collection("cart")
+            .doc("${loggineduser?.email}")
+            .get()
+            .then((value) {
+          setState(() {
+            storeuid = value.get("storeid");
+            couponDiscount2(value.get("storeid"));
+          });
+        });
+      } else {
+        setState(() {
+          empty = 0;
+        });
+      }
+    });
+  }
+
   void emptyCart() async {
     var d = await FirebaseFirestore.instance
         .collection("cart")
@@ -152,31 +140,59 @@ class ShoppingCartState extends State<ShoppingCart> {
       setState(() {
         empty = 1;
       });
+    } else {
+      setState(() {
+        empty = 0;
+      });
     }
   }
 
-  void couponDiscount2() async {
-    String storeid = "";
-    try {
-      await FirebaseFirestore.instance
+  void couponDiscount2(String id) async {
+    if (id != "") {
+      var d = await FirebaseFirestore.instance
           .collection("cart")
           .doc("${loggineduser?.email}")
-          .get()
-          .then((value) {
+          .collection("cart")
+          .get();
+      List tot = [];
+      for (int i = 0; i < d.docs.length; i++) {
         setState(() {
-          storeid = value.get("storeid");
+          tot.add(d.docs[i].get("cost") * d.docs[i].get("count"));
         });
+      }
+      double sum = tot.reduce((value, element) => value + element);
+
+      setState(() {
+        total = sum;
       });
-    } catch (e) {
-      print("object");
-    }
-    List amount = [];
-    List nonamount = [];
-    List gearamount = [];
-    try {
+      if (sum < 800.00) {
+        FirebaseFirestore.instance
+            .collection("cart")
+            .doc("${loggineduser?.email}")
+            .get()
+            .then((value) {
+          FirebaseFirestore.instance
+              .collection("stores")
+              .doc(id)
+              .get()
+              .then((value) {
+            setState(() {
+              fee = value.get("Fee");
+            });
+          });
+        });
+      } else {
+        setState(() {
+          fee = 0;
+        });
+      }
+      List amount = [];
+      List nonamount = [];
+      List gearamount = [];
+
       var doc = await FirebaseFirestore.instance
           .collection("stores")
-          .doc(storeid)
+          .doc(id)
           .collection("menus")
           .get();
       var doc1 = await FirebaseFirestore.instance
@@ -190,122 +206,67 @@ class ShoppingCartState extends State<ShoppingCart> {
           (element) => element.get("subname") == "Single-speed");
       var founddoc3 = doc1.docs
           .firstWhereOrNull((element) => element.get("catname") == "Services");
-      setState(() {
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc("${loggineduser?.uid}")
-            .get()
-            .then((value) {
-          setState(() {
-            c = value.get("count");
-          });
-          if (value.get("count") % 3 == 0) {
-            if (founddoc3 != null) {
-              FirebaseFirestore.instance
-                  .collection("coupon")
-                  .doc("coupon")
-                  .get()
-                  .then((value) {
-                setState(() {
-                  cop.add(value.get("service")[0]["codename"]);
-                });
-              });
-            }
-          }
-        });
-        FirebaseFirestore.instance
-            .collection("users")
-            .doc("${loggineduser?.uid}")
-            .get()
-            .then((value) {
-          if (value.get("count") % 3 == 0) {
-            if (founddoc != null) {
-              for (int i = 0; i < doc.docs.length; i++) {
-                if (doc.docs[i].get("subname") == "Geared") {
-                  setState(() {
-                    gearamount.add(doc.docs[i].get("itemPrice"));
-                  });
-                }
-              }
-              setState(() {
-                int val = gearamount.reduce(
-                    (value, element) => value < element ? value : element);
-                amount.add(val);
-              });
-            }
 
-            if (founddoc2 != null) {
-              for (int i = 0; i < doc.docs.length; i++) {
-                if (doc.docs[i].get("subname") == "Single-speed") {
-                  setState(() {
-                    nonamount.add(doc.docs[i].get("itemPrice"));
-                  });
-                }
-              }
-              setState(() {
-                int val2 = nonamount.reduce(
-                    (value, element) => value < element ? value : element);
-
-                amount.add(val2);
-              });
-            }
-
-            setState(() {
-              if (amount.isEmpty) {
-                setState(() {
-                  discount = 0;
-                });
-              } else {
-                int val3 = amount.reduce(
-                    (value, element) => value < element ? value : element);
-
-                discount = val3.toInt();
-              }
-            });
-          }
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc("${loggineduser?.uid}")
+          .get()
+          .then((value) {
+        setState(() {
+          c = value.get("count");
         });
       });
-    } catch (e) {
-      print("hello");
-    }
-  }
-
-  void feeFetch() async {
-    print("hello");
-    var d = await FirebaseFirestore.instance
-        .collection("cart")
-        .doc("${loggineduser?.email}")
-        .collection("cart")
-        .get();
-    if (d.docs.isNotEmpty) {
-      List tot = [];
-      for (int i = 0; i < d.docs.length; i++) {
-        setState(() {
-          tot.add(d.docs[i].get("cost") * d.docs[i].get("count"));
-        });
-      }
-      double sum = tot.reduce((value, element) => value + element);
-      if (sum < 800.00) {
-        FirebaseFirestore.instance
-            .collection("cart")
-            .doc("${loggineduser?.email}")
-            .get()
-            .then((value) {
-          FirebaseFirestore.instance
-              .collection("stores")
-              .doc(value.get("storeid"))
-              .get()
-              .then((value) {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc("${loggineduser?.uid}")
+          .get()
+          .then((value) {
+        if (value.get("count") % 3 == 0) {
+          if (founddoc != null) {
+            for (int i = 0; i < doc.docs.length; i++) {
+              if (doc.docs[i].get("subname") == "Geared") {
+                setState(() {
+                  gearamount.add(doc.docs[i].get("itemPrice"));
+                });
+              }
+            }
             setState(() {
-              fee = value.get("Fee");
+              int val = gearamount.reduce(
+                  (value, element) => value < element ? value : element);
+              amount.add(val);
             });
+          }
+
+          if (founddoc2 != null) {
+            for (int i = 0; i < doc.docs.length; i++) {
+              if (doc.docs[i].get("subname") == "Single-speed") {
+                setState(() {
+                  nonamount.add(doc.docs[i].get("itemPrice"));
+                });
+              }
+            }
+            setState(() {
+              int val2 = nonamount.reduce(
+                  (value, element) => value < element ? value : element);
+
+              amount.add(val2);
+            });
+          }
+
+          setState(() {
+            if (amount.isEmpty) {
+              setState(() {
+                discount = 0;
+              });
+            } else {
+              int val3 = amount.reduce(
+                  (value, element) => value < element ? value : element);
+
+              discount = val3.toInt();
+            }
           });
-        });
-      } else {
-        setState(() {
-          fee = 0;
-        });
-      }
+        }
+      });
     }
   }
 
@@ -344,20 +305,8 @@ class ShoppingCartState extends State<ShoppingCart> {
 
   @override
   void dispose() {
-    // localStreamController.close();
     textEditingController.dispose();
     super.dispose();
-  }
-
-  late List<ShopItem> cartItems;
-  double totalAmount = 0.00;
-  void calculateTotalAmount(List<ShopItem> list) {
-    double res = 0.00;
-
-    list.forEach((element) {
-      res = res + element.price * element.quantity;
-    });
-    totalAmount = res;
   }
 
   void delete() async {
@@ -413,14 +362,15 @@ class ShoppingCartState extends State<ShoppingCart> {
                   ),
                   IconButton(
                     icon: const Icon(Icons.cancel),
-                    onPressed: () {
+                    onPressed: () async {
                       if (list.length == 1) {
                         setState(() {
+                          total = 0.00;
                           discount = 0;
                           fee = 0;
                         });
 
-                        _firebase
+                        await _firebase
                             .collection("cart")
                             .doc("${loggineduser?.email}")
                             .collection("cart")
@@ -432,6 +382,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                               .doc("${loggineduser?.email}")
                               .delete()
                               .then((value) {
+                            emptyCart();
                             FirebaseFirestore.instance
                                 .collection("cart")
                                 .doc("${loggineduser?.email}")
@@ -441,7 +392,7 @@ class ShoppingCartState extends State<ShoppingCart> {
                           });
                         });
                       }
-                      _firebase
+                      await _firebase
                           .collection("cart")
                           .doc("${loggineduser?.email}")
                           .collection("cart")
@@ -449,7 +400,6 @@ class ShoppingCartState extends State<ShoppingCart> {
                           .delete()
                           .then((value) {
                         feeFetch();
-                        couponDiscount2();
                       });
                     },
                   ),
@@ -478,38 +428,8 @@ class ShoppingCartState extends State<ShoppingCart> {
                           'catname': catname,
                         }).then((value) {
                           feeFetch();
-                          couponDiscount2();
                         });
                       }
-                      // if (count == 1) {
-                      //   setState(() {
-                      //     feeFetch();
-                      //     couponDiscount2();
-                      //   });
-                      //   _firebase
-                      //       .collection("cart")
-                      //       .doc("${loggineduser?.email}")
-                      //       .collection("cart")
-                      //       .doc(name)
-                      //       .delete()
-                      //       .then((value) {
-                      //     FirebaseFirestore.instance
-                      //         .collection("cart")
-                      //         .doc("${loggineduser?.email}")
-                      //         .delete()
-                      //         .then((value) {
-                      //       FirebaseFirestore.instance
-                      //           .collection("cart")
-                      //           .doc("${loggineduser?.email}")
-                      //           .set({
-                      //         "storeid": "",
-                      //       });
-                      //     });
-                      //   }).then((value) {
-                      //     // feeFetch();
-                      //     // couponDiscount2();
-                      //   });
-                      // }
                     },
                   ),
                   SizedBox(
@@ -543,7 +463,6 @@ class ShoppingCartState extends State<ShoppingCart> {
                         'catname': catname,
                       }).then((value) {
                         feeFetch();
-                        couponDiscount2();
                       });
                     },
                   ),
@@ -566,7 +485,11 @@ class ShoppingCartState extends State<ShoppingCart> {
   Widget build(BuildContext context) {
     // print(discount);
     return StreamBuilder<QuerySnapshotPlatform>(
-        stream: _localStreamController.stream,
+        stream: _firebase
+            .collection("cart")
+            .doc("${loggineduser?.email}")
+            .collection("cart")
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -580,12 +503,12 @@ class ShoppingCartState extends State<ShoppingCart> {
           for (var message in messages!) {
             final double cost = message.get("cost");
             final count = message.get("count");
-            final imageurl = message.get("imageurl");
+            final imageUrl = message.get("imageurl");
             final name = message.get("name");
-            final subname = message.data()?["subname"] ?? "";
-            final catname = message.data()?["catname"] ?? "";
+            final subName = message.data()?["subname"] ?? "";
+            final catName = message.data()?["catname"] ?? "";
             var mess = CCard(
-                cost, count, imageurl, name, messagewidget, subname, catname);
+                cost, count, imageUrl, name, messagewidget, subName, catName);
             messagewidget.add(mess);
           }
           print(loggineduser?.uid);
@@ -694,380 +617,405 @@ class ShoppingCartState extends State<ShoppingCart> {
               },
               onClosing: () {},
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  if (empty != 0)
-                    Container(
-                      height: 300,
-                      child: ListView(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10.0, vertical: 20.0),
-                        children: messagewidget,
-                      ),
+            body: empty == 0
+                ? SizedBox(
+                    height: 300,
+                    child: Center(
+                      child: Text("Your Cart is empty"),
                     ),
-                  if (empty == 0)
-                    const SizedBox(
-                      height: 300,
-                      child: Center(
-                        child: Text("Your Cart is empty"),
-                      ),
-                    ),
-                  Space(8),
-                  StreamBuilder<QuerySnapshotPlatform>(
-                      stream: _firebase
-                          .collection("users")
-                          .doc("${loggineduser?.uid}")
-                          .collection("userAddress")
-                          .snapshots(),
-                      builder: (context, innershot) {
-                        String name = "";
-                        String number = "";
-                        String addre = "";
-                        if (!innershot.hasData) {
-                          return const Center(
-                            child: CircularProgressIndicator(
-                              backgroundColor: Colors.lightBlueAccent,
-                            ),
-                          );
-                        } else {
-                          var address = innershot.data?.docs;
-                          List<String> addres = [];
-                          for (var add in address!) {
-                            addres.add(add.get("fullAddress"));
-                            addres.add(add.get("name"));
-                            addres.add(add.get("number"));
-                          }
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 15),
-                            child: Card(
-                              color: Colors.grey.shade200,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Row(
-                                  children: [
-                                    const Icon(Icons.location_on, size: 20),
-                                    Space(8),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                  )
+                : SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 300,
+                          child: ListView(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10.0, vertical: 20.0),
+                            children: messagewidget,
+                          ),
+                        ),
+                        Space(8),
+                        StreamBuilder<QuerySnapshotPlatform>(
+                            stream: _firebase
+                                .collection("users")
+                                .doc("${loggineduser?.uid}")
+                                .collection("userAddress")
+                                .snapshots(),
+                            builder: (context, innershot) {
+                              String name = "";
+                              String number = "";
+                              String addre = "";
+                              if (!innershot.hasData) {
+                                return const Center(
+                                  child: CircularProgressIndicator(
+                                    backgroundColor: Colors.lightBlueAccent,
+                                  ),
+                                );
+                              } else {
+                                var address = innershot.data?.docs;
+                                List<String> addres = [];
+                                for (var add in address!) {
+                                  addres.add(add.get("fullAddress"));
+                                  addres.add(add.get("name"));
+                                  addres.add(add.get("number"));
+                                }
+                                return Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 15),
+                                  child: Card(
+                                    color: Colors.grey.shade200,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16),
+                                      child: Row(
                                         children: [
-                                          const Text(
-                                            "Name",
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w900,
-                                                fontSize: 21),
-                                          ),
-                                          Space(4),
-                                          Text(
-                                            addres.length != 0
-                                                ? "${addres[1]}".toUpperCase()
-                                                : "Please enter your name",
-                                            textAlign: TextAlign.start,
-                                            style: const TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 16,
+                                          const Icon(Icons.location_on,
+                                              size: 20),
+                                          Space(8),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Text(
+                                                  "Name",
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      fontSize: 21),
+                                                ),
+                                                Space(4),
+                                                Text(
+                                                  addres.length != 0
+                                                      ? "${addres[1]}"
+                                                          .toUpperCase()
+                                                      : "Please enter your name",
+                                                  textAlign: TextAlign.start,
+                                                  style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                Space(4),
+                                                const Text(
+                                                  "Number",
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      fontSize: 21),
+                                                ),
+                                                Space(4),
+                                                Text(
+                                                  addres.length != 0
+                                                      ? "${addres[2]}"
+                                                      : "Enter your number",
+                                                  textAlign: TextAlign.start,
+                                                  style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                Space(4),
+                                                const Text(
+                                                  "Address",
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      fontSize: 21),
+                                                ),
+                                                Space(4),
+                                                Text(
+                                                  addres.length != 0
+                                                      ? "${addres[0]}"
+                                                          .toUpperCase()
+                                                      : "Enter your pick up address",
+                                                  textAlign: TextAlign.start,
+                                                  style: const TextStyle(
+                                                    color: Colors.grey,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                                Space(4),
+                                              ],
                                             ),
                                           ),
-                                          Space(4),
-                                          const Text(
-                                            "Number",
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w900,
-                                                fontSize: 21),
-                                          ),
-                                          Space(4),
-                                          Text(
-                                            addres.length != 0
-                                                ? "${addres[2]}"
-                                                : "Enter your number",
-                                            textAlign: TextAlign.start,
-                                            style: const TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                          Space(4),
-                                          const Text(
-                                            "Address",
-                                            textAlign: TextAlign.start,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w900,
-                                                fontSize: 21),
-                                          ),
-                                          Space(4),
-                                          Text(
-                                            addres.length != 0
-                                                ? "${addres[0]}".toUpperCase()
-                                                : "Enter your pick up address",
-                                            textAlign: TextAlign.start,
-                                            style: const TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                          Space(4),
+                                          Space(8),
+                                          IconButton(
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return Dialog(
+                                                        child: Container(
+                                                          height: 300,
+                                                          width: 500,
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(20),
+                                                          child:
+                                                              SingleChildScrollView(
+                                                            child: Column(
+                                                              children: [
+                                                                CustomTextField(
+                                                                    controller:
+                                                                        textEditingController,
+                                                                    maxLines: 2,
+                                                                    title:
+                                                                        'Address',
+                                                                    hasTitle:
+                                                                        true,
+                                                                    initialValue:
+                                                                        '',
+                                                                    onChanged:
+                                                                        (value) {
+                                                                      addre = value
+                                                                          .toString();
+                                                                    }),
+                                                                CustomTextField(
+                                                                    controller:
+                                                                        textEditingController,
+                                                                    maxLines: 1,
+                                                                    title:
+                                                                        'Name',
+                                                                    hasTitle:
+                                                                        true,
+                                                                    initialValue:
+                                                                        '',
+                                                                    onChanged:
+                                                                        (value) {
+                                                                      name = value
+                                                                          .toString();
+                                                                    }),
+                                                                CustomTextField(
+                                                                    controller:
+                                                                        textEditingController,
+                                                                    maxLines: 1,
+                                                                    title:
+                                                                        'Number',
+                                                                    hasTitle:
+                                                                        true,
+                                                                    initialValue:
+                                                                        '',
+                                                                    onChanged:
+                                                                        (value) {
+                                                                      number = value
+                                                                          .toString();
+                                                                    }),
+                                                                ElevatedButton(
+                                                                  style: ElevatedButton.styleFrom(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .white),
+                                                                  onPressed:
+                                                                      () {
+                                                                    _firebase
+                                                                        .collection(
+                                                                            "users")
+                                                                        .doc(
+                                                                            "${loggineduser?.uid}")
+                                                                        .collection(
+                                                                            "userAddress")
+                                                                        .doc(
+                                                                            "${loggineduser?.email}")
+                                                                        .set({
+                                                                      "fullAddress":
+                                                                          addre,
+                                                                      "number":
+                                                                          number,
+                                                                      "name":
+                                                                          name
+                                                                    }).then((value) {
+                                                                      xyz();
+                                                                    });
+
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                  },
+                                                                  child: Text(
+                                                                    'Save',
+                                                                    style: Theme.of(
+                                                                            context)
+                                                                        .textTheme
+                                                                        .headline5!
+                                                                        .copyWith(
+                                                                            color:
+                                                                                Colors.black),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                              icon: const Icon(Icons.edit)),
                                         ],
                                       ),
                                     ),
-                                    Space(8),
-                                    IconButton(
-                                        onPressed: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Dialog(
-                                                  child: Container(
-                                                    height: 300,
-                                                    width: 500,
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            20),
-                                                    child:
-                                                        SingleChildScrollView(
-                                                      child: Column(
-                                                        children: [
-                                                          CustomTextField(
-                                                              controller:
-                                                                  textEditingController,
-                                                              maxLines: 2,
-                                                              title: 'Address',
-                                                              hasTitle: true,
-                                                              initialValue: '',
-                                                              onChanged:
-                                                                  (value) {
-                                                                addre = value
-                                                                    .toString();
-                                                              }),
-                                                          CustomTextField(
-                                                              controller:
-                                                                  textEditingController,
-                                                              maxLines: 1,
-                                                              title: 'Name',
-                                                              hasTitle: true,
-                                                              initialValue: '',
-                                                              onChanged:
-                                                                  (value) {
-                                                                name = value
-                                                                    .toString();
-                                                              }),
-                                                          CustomTextField(
-                                                              controller:
-                                                                  textEditingController,
-                                                              maxLines: 1,
-                                                              title: 'Number',
-                                                              hasTitle: true,
-                                                              initialValue: '',
-                                                              onChanged:
-                                                                  (value) {
-                                                                number = value
-                                                                    .toString();
-                                                              }),
-                                                          ElevatedButton(
-                                                            style: ElevatedButton
-                                                                .styleFrom(
-                                                                    backgroundColor:
-                                                                        Colors
-                                                                            .white),
-                                                            onPressed: () {
-                                                              _firebase
-                                                                  .collection(
-                                                                      "users")
-                                                                  .doc(
-                                                                      "${loggineduser?.uid}")
-                                                                  .collection(
-                                                                      "userAddress")
-                                                                  .doc(
-                                                                      "${loggineduser?.email}")
-                                                                  .set({
-                                                                "fullAddress":
-                                                                    addre,
-                                                                "number":
-                                                                    number,
-                                                                "name": name
-                                                              }).then((value) {
-                                                                xyz();
-                                                              });
-
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child: Text(
-                                                              'Save',
-                                                              style: Theme.of(
-                                                                      context)
-                                                                  .textTheme
-                                                                  .headline5!
-                                                                  .copyWith(
-                                                                      color: Colors
-                                                                          .black),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
-                                              });
-                                        },
-                                        icon: const Icon(Icons.edit)),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-                      }),
-                  Space(8),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15, right: 15),
-                        child: Card(
-                          color: Colors.grey.shade200,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    const Icon(Icons.offline_share_outlined,
-                                        size: 20),
-                                    Space(8),
-                                    Expanded(
-                                      child: Text(
-                                        "This is your Order Number : $c",
+                                  ),
+                                );
+                              }
+                            }),
+                        Space(8),
+                        Column(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 15, right: 15),
+                              child: Card(
+                                color: Colors.grey.shade200,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Icon(
+                                              Icons.offline_share_outlined,
+                                              size: 20),
+                                          Space(8),
+                                          Expanded(
+                                            child: Text(
+                                              "This is your Order Number : $c",
+                                              textAlign: TextAlign.start,
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.w900,
+                                                  fontSize: 18),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Space(8),
+                                      Text(
+                                        "*Get a safety service free in Your Every 3rd Order",
                                         textAlign: TextAlign.start,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w900,
-                                            fontSize: 18),
+                                            fontSize: 10),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                Space(8),
-                                Text(
-                                  "*Get a safety service free in Your Every 3rd Order",
-                                  textAlign: TextAlign.start,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 10),
-                                ),
-                                Space(3),
-                                Text(
-                                  "P.S. The discount will be provided by itself.",
-                                  textAlign: TextAlign.start,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      fontSize: 10),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      Space(8),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15, right: 15),
-                        child: Card(
-                          color: Colors.grey.shade200,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(16),
-                            child: Column(
-                              children: [
-                                ExpansionTile(
-                                  title: const Text(
-                                    "Detailed Bill",
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 18),
+                                      Space(3),
+                                      Text(
+                                        "P.S. The discount will be provided by itself.",
+                                        textAlign: TextAlign.start,
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w900,
+                                            fontSize: 10),
+                                      ),
+                                    ],
                                   ),
-                                  children: [
-                                    ListTile(
-                                      title: const Text(
-                                        "Subtotal",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14),
-                                      ),
-                                      trailing: Text(
-                                          "\₹${total.toStringAsFixed(2)}",
-                                          textAlign: TextAlign.start,
-                                          style: const TextStyle(fontSize: 14)),
-                                    ),
-                                    ListTile(
-                                      title: const Text(
-                                        "Coupon Discount",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14),
-                                      ),
-                                      trailing: Text("-₹$discount",
-                                          textAlign: TextAlign.start,
-                                          style: const TextStyle(fontSize: 14)),
-                                    ),
-                                    ListTile(
-                                      title: const Text(
-                                        "Pick and Drop fee",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14),
-                                      ),
-                                      trailing: Text(
-                                          "\₹${fee.toStringAsFixed(2)}",
-                                          textAlign: TextAlign.start,
-                                          style: const TextStyle(fontSize: 14)),
-                                    ),
-                                    const Text(
-                                      "*Get Free Pick and Drop on Order Above ₹800",
-                                      style: TextStyle(fontSize: 10),
-                                    )
-                                  ],
                                 ),
-                                ListTile(
-                                  title: const Text("Total",
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w900,
-                                          fontSize: 18)),
-                                  trailing: Text(
-                                    "\₹${((total + fee) - discount.toDouble()).toStringAsFixed(2)}",
-                                    textAlign: TextAlign.start,
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 18),
-                                  ),
-                                )
-                              ],
+                              ),
                             ),
-                          ),
+                            Space(8),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 15, right: 15),
+                              child: Card(
+                                color: Colors.grey.shade200,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Column(
+                                    children: [
+                                      ExpansionTile(
+                                        title: const Text(
+                                          "Detailed Bill",
+                                          textAlign: TextAlign.start,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                              fontSize: 18),
+                                        ),
+                                        children: [
+                                          ListTile(
+                                            title: const Text(
+                                              "Subtotal",
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 14),
+                                            ),
+                                            trailing: Text(
+                                                "\₹${total.toStringAsFixed(2)}",
+                                                textAlign: TextAlign.start,
+                                                style: const TextStyle(
+                                                    fontSize: 14)),
+                                          ),
+                                          ListTile(
+                                            title: const Text(
+                                              "Coupon Discount",
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 14),
+                                            ),
+                                            trailing: Text("-₹$discount",
+                                                textAlign: TextAlign.start,
+                                                style: const TextStyle(
+                                                    fontSize: 14)),
+                                          ),
+                                          ListTile(
+                                            title: const Text(
+                                              "Pick and Drop fee",
+                                              textAlign: TextAlign.start,
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 14),
+                                            ),
+                                            trailing: Text(
+                                                "\₹${fee.toStringAsFixed(2)}",
+                                                textAlign: TextAlign.start,
+                                                style: const TextStyle(
+                                                    fontSize: 14)),
+                                          ),
+                                          const Text(
+                                            "*Get Free Pick and Drop on Order Above ₹800",
+                                            style: TextStyle(fontSize: 10),
+                                          )
+                                        ],
+                                      ),
+                                      ListTile(
+                                        title: const Text("Total",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w900,
+                                                fontSize: 18)),
+                                        trailing: Text(
+                                          "\₹${((total + fee) - discount.toDouble()).toStringAsFixed(2)}",
+                                          textAlign: TextAlign.start,
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                              fontSize: 18),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.09,
+                        )
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.09,
-                  )
-                ],
-              ),
-            ),
           );
         });
   }
