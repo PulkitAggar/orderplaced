@@ -85,10 +85,9 @@ class ShoppingCartState extends State<ShoppingCart> {
 
   @override
   void initState() {
-    feeFetch();
     super.initState();
     xyz();
-
+    feeFetch();
     getuser();
     getCurrentWeekday();
   }
@@ -277,6 +276,10 @@ class ShoppingCartState extends State<ShoppingCart> {
         setState(() {
           _isRunning = false;
         });
+      });
+    } else {
+      setState(() {
+        _isRunning = false;
       });
     }
   }
