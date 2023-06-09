@@ -7,7 +7,4 @@ export 'profile_screen.dart';
 export 'cart_screen.dart';
 export 'last_booking_screen.dart';
 export 'payment_screen.dart';
-export 'product_detail.dart';
-export 'product_item.dart';
-export 'product_page.dart';
 export 'password_reset_screen.dart';

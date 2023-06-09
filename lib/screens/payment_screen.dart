@@ -134,8 +134,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
     delete();
     // Do something when payment succeeds
     details();
-    Navigator.push(
-      context,
+    Navigator.of(context)
+        .pushAndRemoveUntil(
       MaterialPageRoute(
         builder: (context) => LastBookingScreen(
           paymentdone: true,
@@ -150,8 +150,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
           // time: widget.list[0].time,
         ),
       ),
-    ).then((value) {
-      _firebase.collection("cart").doc("${_loggineduser?.email}").delete();
+      (Route<dynamic> route) => false,
+    )
+        .then((value) {
+      // _firebase.collection("cart").doc("${_loggineduser?.email}").delete();
     });
     print(response);
     verifySignature(
