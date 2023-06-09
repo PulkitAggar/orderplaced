@@ -1,5 +1,7 @@
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
 
+import 'BMShoppingModel.dart';
+
 class OrderModel {
   String time;
   String weekday;
@@ -8,7 +10,7 @@ class OrderModel {
   String trackOrder;
   String storeUid;
 
-  List<DocumentSnapshotPlatform> lstOfItems;
+  List<BMShoppingModel> lstOfItems;
 
   OrderModel({
     required this.time,

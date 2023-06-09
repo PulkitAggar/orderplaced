@@ -86,22 +86,23 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
     }, SetOptions(merge: true));
 
     for (var items in widget.orderModel.lstOfItems) {
+      
       await docUser.set({
         "order": {
-          items.get("name"): {
-            "cost": items.get("cost"),
-            "count": items.get("count"),
-            "image": items.get("imageurl")
+          items.name: {
+            "cost": items.cost,
+            "count": items.count,
+            "image": items.imageUrl,
           },
         }
       }, SetOptions(merge: true));
 
       await docStore.set({
         "order": {
-          items.get("name"): {
-            "cost": items.get("cost"),
-            "count": items.get("count"),
-            "image": items.get("imageurl")
+          items.name: {
+            "cost": items.cost,
+            "count": items.count,
+            "image": items.imageUrl
           },
         }
       }, SetOptions(merge: true));

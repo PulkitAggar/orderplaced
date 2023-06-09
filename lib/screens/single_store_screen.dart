@@ -29,13 +29,13 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
       backgroundColor: bmLightScaffoldBackgroundColor,
       body: NestedScrollView(
         floatHeaderSlivers: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
             SliverAppBar(
               backgroundColor: bmLightScaffoldBackgroundColor,
               leading: IconButton(
-                icon: Icon(Icons.arrow_back, color: bmPrimaryColor),
+                icon: const Icon(Icons.arrow_back, color: bmPrimaryColor),
                 onPressed: () {
                   finish(context);
                 },
@@ -44,7 +44,7 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
                   .visible(innerBoxIsScrolled),
               actions: [
                 IconButton(
-                  icon: Icon(Icons.subdirectory_arrow_right,
+                  icon: const Icon(Icons.subdirectory_arrow_right,
                       color: bmPrimaryColor),
                   onPressed: () {
                     // BMSingleImageScreen(element: widget.element).launch(context);
@@ -65,7 +65,7 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
               elevation: 0.5,
               expandedHeight: 400,
               flexibleSpace: FlexibleSpaceBar(
-                titlePadding: EdgeInsets.only(bottom: 66, left: 30, right: 50),
+                titlePadding: const EdgeInsets.only(bottom: 66, left: 30, right: 50),
                 collapseMode: CollapseMode.parallax,
                 background: Column(
                   children: [
@@ -81,28 +81,28 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Container(
-                              child:
-                                  Icon(Icons.arrow_back, color: bmPrimaryColor),
                               decoration: BoxDecoration(
                                 borderRadius: radius(100),
                                 color: context.cardColor,
                               ),
-                              padding: EdgeInsets.all(8),
-                              margin: EdgeInsets.only(left: 16, top: 30),
+                              padding: const EdgeInsets.all(8),
+                              margin: const EdgeInsets.only(left: 16, top: 30),
+                              child:
+                                  const Icon(Icons.arrow_back, color: bmPrimaryColor),
                             ).onTap(() {
                               finish(context);
                             }, borderRadius: radius(100)),
                             Row(
                               children: [
                                 Container(
-                                  child:
-                                      Icon(Icons.close, color: bmPrimaryColor),
                                   decoration: BoxDecoration(
                                     borderRadius: radius(100),
                                     color: context.cardColor,
                                   ),
-                                  padding: EdgeInsets.all(8),
-                                  margin: EdgeInsets.only(right: 16, top: 30),
+                                  padding: const EdgeInsets.all(8),
+                                  margin: const EdgeInsets.only(right: 16, top: 30),
+                                  child:
+                                      const Icon(Icons.close, color: bmPrimaryColor),
                                 ).onTap(() {
                                   finish(context);
                                 }, borderRadius: radius(100)),
@@ -113,7 +113,7 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
                       ],
                     ),
                     Container(
-                      padding: EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(16),
                       color: bmLightScaffoldBackgroundColor,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

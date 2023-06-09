@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import '../components/BMCommonCardComponent.dart';
 import '../components/BMHomeFragmentHeadComponent.dart';
 import '../components/BMTopServiceHomeComponent.dart';
@@ -10,6 +12,21 @@ import '../repositories/stores_repository.dart';
 import '../utils/BMColors.dart';
 import '../utils/BMCommonWidgets.dart';
 import '../utils/BMDataGenerator.dart';
+
+class OffersModel {
+  String imageUrl;
+
+  OffersModel({required this.imageUrl});
+}
+
+List<OffersModel> getOffers() {
+  List<OffersModel> list = [];
+
+  list.add(OffersModel(imageUrl: "assets/Offer1.png"));
+  list.add(OffersModel(imageUrl: "assets/Offer2.png"));
+
+  return list;
+}
 
 class BMHomeFragment2 extends StatefulWidget {
   final Function(int) onTabChanged;
@@ -24,7 +41,8 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
   Future<List<BMCommonCardModel>> recommendedList =
       StoresRepository.getStoresList();
 
-final List<BMMasterModel> topServiceList = ServiceList();
+  final List<BMMasterModel> topServiceList = ServiceList();
+  final List<OffersModel> offers = getOffers();
 
   late double latitude;
   late double longitude;
@@ -70,8 +88,11 @@ final List<BMMasterModel> topServiceList = ServiceList();
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HomeFragmentHeadComponent(onButtonPressed: widget.onTabChanged,),
-              20.height,
+              HomeFragmentHeadComponent(
+                onButtonPressed: widget.onTabChanged,
+              ),
+
+              11.height,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -91,31 +112,89 @@ final List<BMMasterModel> topServiceList = ServiceList();
                   )
                 ],
               ).paddingSymmetric(horizontal: 16),
-              20.height,
+              2.height,
               HorizontalList(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                spacing: 16,
-                itemCount: topServiceList.length, 
-                itemBuilder:(context, index){
-                  return Column(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.3),
-                            borderRadius: radius(32)),
-                        child: Image.asset(topServiceList[index].image, height: 36 ,),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  spacing: 16,
+                  itemCount: topServiceList.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      height: 110,
+                      width: 100,
+                      child: Stack(
+                        children: [
+                          Image.asset(
+                            topServiceList[index].image,
+                            fit: BoxFit.cover,
+                          ).cornerRadiusWithClipRRect(16),
+                          Container(
+                            height: 110,
+                            decoration: BoxDecoration(
+                              borderRadius: radius(16),
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.black.withOpacity(
+                                      1), // Starting color at the bottom
+                                  Colors.black.withOpacity(
+                                      0), // Fading color towards the top
+                                ],
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.center,
+                              ),
+                            ),
+                          ),
+                          // Container(
+                          //   // width: 40,
+                          //   // height: 36,
+                          //   // padding: const EdgeInsets.all(20),
+                          //   decoration: BoxDecoration(
+                          //       color: Colors.grey.withOpacity(0.3),
+                          //       borderRadius: radius(32)),
+                          //   child:
+                          // ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                85.height,
+                                Text(topServiceList[index].name,
+                                        style: boldTextStyle(
+                                            size: 14, color: Colors.white))
+                                    .paddingSymmetric(),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
-                      8.height,
-                      Text(topServiceList[index].name, style: boldTextStyle(size: 14)),
-                    ],
+                    );
+                  }),
+              16.height,
+
+              CarouselSlider(
+                options: CarouselOptions(height: 257.0),
+                items: offers.map((e) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(color: Color(0xFF181E00)),
+                            child: Image.asset(
+                              e.imageUrl,
+                              fit: BoxFit.cover,
+                            )).cornerRadiusWithClipRRect(20),
+                      );
+                    },
                   );
-                }),
-              20.height,
+                }).toList(),
+              ),
+              16.height,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  titleText(title: 'Our Stores'),
+                  titleText(title: 'Our Stores', size: 26),
                   Row(
                     children: [
                       TextButton(
@@ -164,9 +243,7 @@ final List<BMMasterModel> topServiceList = ServiceList();
                                       return Column(
                                         children: snapshot.data!.map((e) {
                                           return GestureDetector(
-                                            onTap: () {
-                                              // BMSingleComponentScreen(element: e).launch(context);
-                                            },
+                                            onTap: () {},
                                             child: BMCommonCardComponent(
                                               latitude: latitude,
                                               longitude: longitude,
@@ -182,15 +259,13 @@ final List<BMMasterModel> topServiceList = ServiceList();
                                       return Text('Error: ${snapshot.error}');
                                     } else {
                                       // Data is still loading
-                                      return const Center(
-                                          child: CircularProgressIndicator());
+                                      return shimmerWidget();
                                     }
                                   },
                                 );
                               } else {
                                 // Data is still loading
-                                return const Center(
-                                    child: CircularProgressIndicator());
+                                return shimmerWidget();
                               }
                             }),
                         2.height,
@@ -205,4 +280,17 @@ final List<BMMasterModel> topServiceList = ServiceList();
       ),
     );
   }
+}
+
+Widget shimmerWidget() {
+  return Center(
+    child: Container(
+      width: double.maxFinite,
+      height: 400,
+      child: SpinKitFoldingCube(
+        color: Colors.redAccent,
+        size: 50.0,
+      ),
+    ),
+  );
 }

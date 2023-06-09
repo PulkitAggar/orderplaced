@@ -20,12 +20,12 @@ User? _loggineduser;
 class PaymentScreen extends StatefulWidget {
   OrderModel orderModel;
   double totsamount;
-  String code;
+  
   PaymentScreen(
       {Key? key,
       required this.orderModel,
       required this.totsamount,
-      required this.code})
+     })
       : super(key: key);
 
   @override
@@ -83,16 +83,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void count() {
     FirebaseFirestore.instance
         .collection("users")
-        .doc("${loggineduser?.uid}")
+        .doc("${_loggineduser?.uid}")
         .update({"count": FieldValue.increment(1)});
   }
 
   void details() {
     FirebaseFirestore.instance
         .collection("users")
-        .doc("${loggineduser?.uid}")
+        .doc("${_loggineduser?.uid}")
         .collection("userAddress")
-        .doc("${loggineduser?.email}")
+        .doc("${_loggineduser?.email}")
         .get()
         .then((value) {
       setState(() {
@@ -106,7 +106,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void delete() async {
     FirebaseFirestore.instance
         .collection("cart")
-        .doc("${loggineduser?.email}")
+        .doc("${_loggineduser?.email}")
         .collection("cart")
         .get()
         .then((snapshot) {
@@ -116,7 +116,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }).then((value) {
       FirebaseFirestore.instance
           .collection("cart")
-          .doc("${loggineduser?.email}")
+          .doc("${_loggineduser?.email}")
           .set({
         "storeid": "",
       });
@@ -269,7 +269,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         centerTitle: true,
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: Text(
+        title: const Text(
           "Payment",
           textAlign: TextAlign.center,
           style: TextStyle(

@@ -33,7 +33,8 @@ class _BMCommonCardComponentState extends State<BMCommonCardComponent> {
   @override
   void initState() {
     distance = Geolocator.distanceBetween(widget.latitude, widget.longitude,
-        widget.element.latitude, widget.element.longitude) / 1000;
+            widget.element.latitude, widget.element.longitude) /
+        1000;
     distanceinKM = distance.floor();
     super.initState();
   }
@@ -43,84 +44,80 @@ class _BMCommonCardComponentState extends State<BMCommonCardComponent> {
     return Container(
       width: widget.fullScreenComponent ? context.width() - 32 : 250,
       decoration:
-          BoxDecoration(color: context.cardColor, borderRadius: radius(32)),
+          BoxDecoration(color: Colors.transparent, borderRadius: radius(32)),
       child: Stack(
         children: [
+          bmCommonCachedNetworkImage(
+            widget.element.image,
+            width: widget.fullScreenComponent ? context.width() - 32 : 250,
+            height: 300,
+            fit: BoxFit.cover,
+          ).cornerRadiusWithClipRRectOnly(
+              topLeft: 32, topRight: 32, bottomLeft: 32, bottomRight: 32),
+          Container(
+            height: 300,
+            decoration: BoxDecoration(
+              borderRadius: radius(32),
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black.withOpacity(1), // Starting color at the bottom
+                  Colors.black.withOpacity(0), // Fading color towards the top
+                ],
+                begin: Alignment.bottomCenter,
+                end: Alignment.center,
+              ),
+            ),
+          ),
           Column(
+            mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              bmCommonCachedNetworkImage(
-                widget.element.image,
-                width: widget.fullScreenComponent ? context.width() - 32 : 250,
-                height: 150,
-                fit: BoxFit.cover,
-              ).cornerRadiusWithClipRRectOnly(topLeft: 32, topRight: 32),
-              widget.element.saveTag
-                  ? Container(
-                      color: bmTextColorDarkMode.shade400,
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                      child: Row(
-                        children: [
-                          Icon(Icons.local_offer_rounded,
-                              color: Color(0xff808080), size: 16),
-                          2.width,
-                          Text(
-                            'Save up to 20% for next booking!',
-                            style: secondaryTextStyle(color: Color(0xff636161)),
-                          ).expand(),
-                        ],
-                      ),
-                    )
-                  : Offstage(),
-              8.height,
+              // Offstage(),
+              210.height,
               Text(widget.element.title,
-                      style: boldTextStyle(size: 18, color: bmSpecialColorDark))
-                  .paddingSymmetric(horizontal: 8),
+                      style: boldTextStyle(
+                          size: 22,
+                          color: Color(0xFFE2FF6D))) // bmSpecialColorDark
+                  .paddingSymmetric(horizontal: 12),
               4.height,
               Text(widget.element.subtitle!,
-                      style:
-                          secondaryTextStyle(color: bmPrimaryColor, size: 12))
-                  .paddingSymmetric(horizontal: 8),
+                      style: secondaryTextStyle(
+                          color: Colors.white,
+                          size: 12,
+                          wordSpacing: 2,
+                          height: 1.5)) //bmPrimaryColor
+                  .paddingSymmetric(horizontal: 14),
               4.height,
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  // Row(
-                  //   children: [
-                  //     Icon(
-                  //       Icons.star,
-                  //       color: Colors.amber,
-                  //     ),
-                  //     4.width,
-                  //     Text(widget.element.rating!, style: boldTextStyle()),
-                  //     2.width,
-                  //     Text('(${widget.element.comments!})',
-                  //         style: secondaryTextStyle(color: bmPrimaryColor)),
-                  //   ],
-                  // ),
-                  Text("${distanceinKM} Km",
-                      style: secondaryTextStyle(color: bmPrimaryColor)),
+                  const Icon(
+                    Icons.location_on_outlined,
+                    color: Colors.white,
+                  ),
+                  Text("$distanceinKM km away",
+                      style: secondaryTextStyle(color: Colors.white)),
                 ],
-              ).paddingSymmetric(horizontal: 8),
-              16.height,
+              ).paddingSymmetric(horizontal: 18),
+              12.height,
             ],
           ),
-          Positioned(
-            top: 15,
-            right: 15,
-            child: Icon(
-              Icons.favorite,
-              color: Colors.transparent,
-              // color: widget.element.liked! ? Colors.amber : bmTextColorDarkMode,
-              size: 24,
-            ).onTap(() {
-              widget.element.liked = !widget.element.liked.validate();
-              if (widget.isFavList) {
-                favList.remove(widget.element);
-              }
-              setState(() {});
-            }),
-          )
+          // Positioned(
+          //   top: 15,
+          //   right: 15,
+          //   child: const Icon(
+          //     Icons.favorite,
+          //     color: Colors.transparent,
+          //     // color: widget.element.liked! ? Colors.amber : bmTextColorDarkMode,
+          //     size: 24,
+          //   ).onTap(() {
+          //     // widget.element.liked = !widget.element.liked.validate();
+          //     // if (widget.isFavList) {
+          //     //   favList.remove(widget.element);
+          //     // }
+          //     // setState(() {});
+          //   }),
+          // ),
         ],
       ),
     ).onTap(() {

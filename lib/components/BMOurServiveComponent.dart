@@ -37,32 +37,10 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
     servicesList = StoresRepository.getServicesList(storeid);
     accessoriesList =
         StoresRepository.getAccessoriesList(storeid, "Accessories");
-    // bikepartsList = StoresRepository.getBikepartsList(storeid);
-    // bikesList = StoresRepository.getBikesList(storeid);
+    
   }
 
-  // Future<String>
-  // getList(String name, String id) async {
-  //   List sbname = [];
-  //   var doc = await _firebase
-  //       .collection("stores")
-  //       .doc(id)
-  //       .collection("menus")
-  //       .doc("Subnames")
-  //       .collection("name")
-  //       .doc(name)
-  //       .get()
-  //       .then((value) {
-  //     for (int i = 0; i < value.get("types").length; i++) {
-  //       sbname.add(value.get("types")[i]);
-  //     }
-  //   });
-  //   print(sbname);
-  //   return FutureBuilder(
-  //     future: sbname,
-  //     builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {},
-  //   );
-  // }
+
   bool collapse = true;
 
   getbuilder(String n, String id) {
@@ -91,17 +69,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                             iconColor: bmSpecialColorDark,
                             //crossAxisAlignment: CrossAxisAlignment.start,
                             title: titleText(title: '${doc[i]}', size: 22),
-                            //  Row(
-                            //     children: [
-                            //       Text(
-                            //         "${doc[i]}",
-                            //         style: TextStyle(
-                            //             fontSize: 20,
-                            //             color: Colors.black,
-                            //             fontWeight: FontWeight.bold),
-                            //       ),
-                            //     ],
-                            //   ),
+                        
                             children: [
                               //SizedBox(height: 10),
                               n == 'Services'
@@ -135,15 +103,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                           final disc = message
                                                   .data()?["itemDescription"] ??
                                               "";
-                                          // final dis = message.get("itemDescription");
-
-                                          //   messagewidget.add({
-                                          //     "name": name1,
-                                          //     "cost": cost,
-                                          //     "imageurl": imageurl,
-                                          //     "subname": subname
-                                          //   });
-                                          // }
+                                         
                                           print(name);
                                           if (subname == doc[i]) {
                                             messagewidget
@@ -234,43 +194,24 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
 
   @override
   Widget build(BuildContext context) {
-    // getList("Accessories", "Jw05mBpXnk9ydGaJh0p0");
     print(storeid);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         16.height,
-        // titleText(title: 'Services', size: 24),
-        //16.height,
-
+        
         getbuilder("Services", storeid.toString()),
-        //16.height,
-        //titleText(title: 'Accessories', size: 24),
+       
 
         getbuilder("Accessories", storeid.toString()),
-        // getList("Accessories", "Jw05mBpXnk9ydGaJh0p0"),
-        //16.height,
-        //titleText(title: 'Bike parts', size: 24),
-        //5.height,
+       
         getbuilder("Bikeparts", storeid.toString()),
-        // getbuilder(bikepartsList),
-        //16.height,
+      
         getbuilder("Bikes", storeid.toString())
-        //titleText(title: 'Bikes', size: 24),
-        //16.height,
-        // getbuilder(bikesList),
+       
       ],
     ).paddingSymmetric(horizontal: 16);
   }
 }
 
-// getName(String name, String id) {
-//
-//   return FutureBuilder(builder: (context,sna))
-// }
-// _firebase
-//     .collection("stores")
-// .doc(id)
-// .collection("menus")
-// .doc("Subnames")
-// .collection("name").doc(name)
+

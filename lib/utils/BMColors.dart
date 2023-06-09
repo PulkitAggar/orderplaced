@@ -14,6 +14,6 @@ const bmGreyColor = Color(0xFF8D8C8C);
 const bmLightScaffoldBackgroundColor = Color(0xfff7f5f9);
 const bmPrimaryColor = Color(0xff515151);
 const bmSpecialColor = Color.fromARGB(255, 0, 0, 0);
-const bmSpecialColorDark = Color.fromARGB(255, 11, 91, 16);
+const bmSpecialColorDark = Color.fromARGB(255, 13, 118, 20);
 const bmSecondBackgroundColorDark = Color(0xff454444);
 const bmSecondBackgroundColorLight = Color(0xfffff7f7);

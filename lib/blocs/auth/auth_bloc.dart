@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../repositories/auth_repository.dart';
@@ -28,7 +30,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(Loading());
       try {
         await authRepository.signUp(
-            email: event.email, password: event.password, mobile: event.mobile, name: event.name);
+            email: event.email,
+            password: event.password,
+            mobile: event.mobile,
+            name: event.name);
+        await initialAddress();
         emit(Authenticated());
       } catch (e) {
         emit(AuthError(e.toString()));
@@ -55,6 +61,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       }
     });
   }
+}
+
+Future<void> initialAddress() async {
+  var doc = FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .collection('userAddress')
+      .doc(FirebaseAuth.instance.currentUser?.email);
+
+  await doc.set({
+    'fullname': '',
+    'address': '',
+    'pincode': '',
+    'city': '',
+    'mobileno': '',
+    'state': '',
+  }, SetOptions(merge: true));
 }
 
 // class PasswordResetBloc extends Bloc<PasswordResetEvent, PasswordResetState> {
