@@ -314,6 +314,7 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
                             ),
                             ListTile(
                               title: const Text(
+                                //TODO: On every third order logic?
                                 "Coupon Discount",
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
@@ -377,7 +378,7 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
         return Scaffold(
             body: Center(
                 child: Text(
-                    'Not again, there was an unexpected error. Please contact team Mycycleclinic')));
+                    'Not again!, there was an unexpected error. Please contact team Mycycleclinic')));
       }
     });
   }

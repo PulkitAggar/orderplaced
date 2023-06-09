@@ -20,13 +20,12 @@ User? _loggineduser;
 class PaymentScreen extends StatefulWidget {
   OrderModel orderModel;
   double totsamount;
-  
-  PaymentScreen(
-      {Key? key,
-      required this.orderModel,
-      required this.totsamount,
-     })
-      : super(key: key);
+
+  PaymentScreen({
+    Key? key,
+    required this.orderModel,
+    required this.totsamount,
+  }) : super(key: key);
 
   @override
   State<PaymentScreen> createState() => _PaymentScreenState();
@@ -51,6 +50,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
   String nameR = '';
   String numberR = '';
   String addressR = '';
+  String cityR = '';
+  String stateR = '';
+  String pincodeR = '';
 
   //double amount= widget.totsamount;
 
@@ -98,7 +100,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
       setState(() {
         nameR = value.get("name");
         numberR = value.get("number");
-        addressR = value.get("fullAddress");
+        addressR = value.get("address");
+        cityR = value.get('city');
+        stateR = value.get('state');
+        pincodeR = value.get('pincode');
       });
     });
   }
@@ -128,6 +133,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     //ADD cart clear func
     delete();
     // Do something when payment succeeds
+    details();
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -137,6 +143,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
           namer: nameR,
           numberr: numberR,
           address: addressR,
+          city: cityR,
+          state: stateR,
+          pincode: pincodeR,
           // date: widget.list[0].date,
           // time: widget.list[0].time,
         ),
@@ -296,16 +305,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     createOrder();
                   } else if (selectedValue == 2) {
                     count();
+                    details();
                     //ADD cart clear func
                     delete();
                     Navigator.of(context).pushAndRemoveUntil(
                       MaterialPageRoute(
                           builder: (context) => LastBookingScreen(
-                            paymentdone: false,
+                                paymentdone: false,
                                 orderModel: widget.orderModel,
                                 namer: nameR,
                                 numberr: numberR,
                                 address: addressR,
+                                city: cityR,
+                                state: stateR,
+                                pincode: pincodeR,
                               )),
                       (Route<dynamic> route) => false,
                     );

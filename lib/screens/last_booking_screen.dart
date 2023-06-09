@@ -14,6 +14,9 @@ class LastBookingScreen extends StatefulWidget {
   String namer;
   String numberr;
   String address;
+  String city;
+  String state;
+  String pincode;
   bool paymentdone;
 
   LastBookingScreen(
@@ -21,6 +24,9 @@ class LastBookingScreen extends StatefulWidget {
       required this.orderModel,
       required this.namer,
       required this.address,
+      required this.city,
+      required this.state,
+      required this.pincode,
       required this.numberr,
       required this.paymentdone
       })
@@ -44,6 +50,9 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       String nameR,
       String numberR,
       String addressR,
+      String city,
+      String state,
+      String pincode,
       ) async {
         
     String uuid = _auth.currentUser!.uid;
@@ -66,6 +75,9 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       "orderStatus": orderStatus,
       "nameR": nameR,
       "addressR": addressR,
+      "city": city,
+      "state": state,
+      "pincode": pincode,
       "numberR": numberR,
       "paymentdone":paymentType,
       "numberUser":numberUser
@@ -79,6 +91,9 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       "nameR": nameR,
       "addressR": addressR,
       "numberR": numberR,
+      "city": city,
+      "state": state,
+      "pincode": pincode,
       "storeuid": storeId,
       "name": name,
       "paymentdone":paymentType,
@@ -121,6 +136,9 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       widget.namer,
       widget.numberr,
       widget.address,
+      widget.city,
+      widget.state,
+      widget.pincode,
       //TODO: add address ,name,number from payment screen
     );
     super.initState();

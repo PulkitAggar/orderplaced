@@ -37,20 +37,32 @@ class _CurrentOrdersState extends State<CurrentOrders> {
               future: recommendedList,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
+                  if (snapshot.data!.isEmpty) {
+                    return Container(
+                        height: MediaQuery.of(context).size.height,
+                        child: const Center(
+                          child: Text(
+                            'You do not have any active orders',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        ));
+                  }
                   return Column(
                       mainAxisSize: MainAxisSize.max,
                       children: snapshot.data!.map((e) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Card(
-                            color: Colors.grey.shade200,
+                              color: Colors.grey.shade200,
                               shape: ContinuousRectangleBorder(
                                   borderRadius: BorderRadius.circular(24)),
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
                               elevation: BorderSide.strokeAlignOutside,
                               child: Container(
                                 // height: 300.0,
-                                decoration: BoxDecoration(color: Colors.grey.shade200),
+                                decoration:
+                                    BoxDecoration(color: Colors.grey.shade200),
                                 width: double.infinity,
                                 // padding: EdgeInsets.all(8.0), YOU CAN DO thIS YOU KNOW that RIGHT??????????????????????
                                 child: Padding(
@@ -65,34 +77,63 @@ class _CurrentOrdersState extends State<CurrentOrders> {
                                         collapsedIconColor: Colors.black,
                                         title: Column(
                                           mainAxisSize: MainAxisSize.max,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            Text(e.storeName, style: TextStyle(fontWeight: FontWeight.w900, fontSize: 18)),
+                                            Text(e.storeName,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w900,
+                                                    fontSize: 18)),
                                             Space(4),
                                             Container(
                                               width: double.infinity,
                                               child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
                                                 children: [
-                                                  Icon(Icons.watch_later_outlined, color: Colors.orange, size: 16),
+                                                  Icon(
+                                                      Icons
+                                                          .watch_later_outlined,
+                                                      color: Colors.orange,
+                                                      size: 16),
                                                   Space(2),
-                                                  Text(e.date, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                                                  Space(2),
-                                                  Text("at", style: TextStyle(color: Colors.orange, fontSize: 12)),
-                                                  Space(2),
-                                                  Text(e.time, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                                                  Expanded(child: SizedBox(width: 1,)),
-                                                  Text(
-                                                      e.orderStatus,
-                                                      textAlign: TextAlign.start,
+                                                  Text(e.date,
                                                       style: TextStyle(
-                                                        color: e.orderStatus == "placed" ? Colors.orange : blueColor,
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: 16,
-                                                      ),
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 14)),
+                                                  Space(2),
+                                                  Text("at",
+                                                      style: TextStyle(
+                                                          color: Colors.orange,
+                                                          fontSize: 12)),
+                                                  Space(2),
+                                                  Text(e.time,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 14)),
+                                                  Expanded(
+                                                      child: SizedBox(
+                                                    width: 1,
+                                                  )),
+                                                  Text(
+                                                    e.orderStatus,
+                                                    textAlign: TextAlign.start,
+                                                    style: TextStyle(
+                                                      color: e.orderStatus ==
+                                                              "placed"
+                                                          ? Colors.orange
+                                                          : blueColor,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 16,
                                                     ),
+                                                  ),
                                                 ],
                                               ),
                                             )
@@ -110,9 +151,10 @@ class _CurrentOrdersState extends State<CurrentOrders> {
                                               double cost = item['cost'];
                                               int count = item['count'];
                                               String imageUrl = item['image'];
-                        
+
                                               return ListTile(
-                                                leading: Image.network(imageUrl),
+                                                leading:
+                                                    Image.network(imageUrl),
                                                 title: Text('Item: $key'),
                                                 subtitle: Text(
                                                     'Cost: $cost, Count: $count'),
@@ -130,7 +172,9 @@ class _CurrentOrdersState extends State<CurrentOrders> {
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {
-                  return CircularProgressIndicator();
+                  return Container(
+                      height: MediaQuery.of(context).size.height,
+                      child: Center(child: CircularProgressIndicator()));
                 }
               },
             )
@@ -141,12 +185,12 @@ class _CurrentOrdersState extends State<CurrentOrders> {
   }
 }
 
-
-
 class Space extends LeafRenderObjectWidget {
   final double mainAxisExtent;
 
-  Space(this.mainAxisExtent, {Key? key}) : assert(mainAxisExtent >= 0 && mainAxisExtent <= double.infinity), super(key: key);
+  Space(this.mainAxisExtent, {Key? key})
+      : assert(mainAxisExtent >= 0 && mainAxisExtent <= double.infinity),
+        super(key: key);
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -158,7 +202,6 @@ class Space extends LeafRenderObjectWidget {
     renderObject.mainAxisExtent = mainAxisExtent;
   }
 }
-
 
 class RenderSpace extends RenderBox {
   double _mainAxisExtent;
@@ -176,7 +219,6 @@ class RenderSpace extends RenderBox {
 
   @override
   void performLayout() {
-
     final AbstractNode flex = parent!;
 
     if (flex is RenderFlex) {
