@@ -37,18 +37,24 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
     servicesList = StoresRepository.getServicesList(storeid);
     accessoriesList =
         StoresRepository.getAccessoriesList(storeid, "Accessories");
-    
   }
-
 
   bool collapse = true;
 
   getbuilder(String n, String id) {
     return ExpansionTile(
+        // expandedCrossAxisAlignment: CrossAxisAlignment.start,
+        shape: Border(),
+        initiallyExpanded: n == 'Services',
+        // collapsedBackgroundColor: Colors.black12,
+        // backgroundColor: Colors.black12,
         collapsedIconColor: bmSpecialColorDark,
         iconColor: bmSpecialColorDark,
         title: titleText(title: n, size: 24),
         children: [
+          n == 'Services'
+              ? Image.asset('assets/images/services.jpg', scale: 4.5)
+              : const SizedBox(height: 0),
           StreamBuilder(
               stream: _firebase.collection("subnames").doc(n).snapshots(),
               builder: (context, snapshot) {
@@ -63,23 +69,19 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ExpansionTile(
-                            initiallyExpanded: n=='Services',
-                            //n=='Services'? 
+                            shape: Border(),
+                            initiallyExpanded: n == 'Services',
+                            //n=='Services'?
                             collapsedIconColor: bmSpecialColorDark,
                             iconColor: bmSpecialColorDark,
                             //crossAxisAlignment: CrossAxisAlignment.start,
                             title: titleText(title: '${doc[i]}', size: 22),
-                        
+
                             children: [
                               //SizedBox(height: 10),
-                              n == 'Services'
-                                  ? Image.asset(
-                                      'assets/images/services.jpg',
-                                      scale: 4,
-                                    )
-                                  : const SizedBox(height: 0),
-                              15.height,
-                              
+
+                              8.height,
+
                               StreamBuilder<QuerySnapshotPlatform>(
                                   stream: _firebase
                                       .collection("stores")
@@ -103,7 +105,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                           final disc = message
                                                   .data()?["itemDescription"] ??
                                               "";
-                                         
+
                                           print(name);
                                           if (subname == doc[i]) {
                                             messagewidget
@@ -161,36 +163,36 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                   );
                 }
               }),
-        ]);
+        ]).cornerRadiusWithClipRRect(32);
   }
 
-  getbuilder2(list, String name) {
-    return FutureBuilder<List<BMServiceListModel>>(
-      future:
-          list, // Assuming recommendedList is of type Future<List<BMCommonCardModel>>
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          // Data is available, map and display the list
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            //title: titleText(title: name, size: 24),
-            children: snapshot.data!.map((e) {
-              return BMServiceComponent2(
-                element: e,
-                storeid: widget.storeUid,
-              );
-            }).toList(),
-          );
-        } else if (snapshot.hasError) {
-          // Error occurred while fetching data
-          return Text('Error: ${snapshot.error}');
-        } else {
-          // Data is still loading
-          return const Center(child: CircularProgressIndicator());
-        }
-      },
-    );
-  }
+  // getbuilder2(list, String name) {
+  //   return FutureBuilder<List<BMServiceListModel>>(
+  //     future:
+  //         list, // Assuming recommendedList is of type Future<List<BMCommonCardModel>>
+  //     builder: (context, snapshot) {
+  //       if (snapshot.hasData) {
+  //         // Data is available, map and display the list
+  //         return Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           //title: titleText(title: name, size: 24),
+  //           children: snapshot.data!.map((e) {
+  //             return BMServiceComponent2(
+  //               element: e,
+  //               storeid: widget.storeUid,
+  //             );
+  //           }).toList(),
+  //         );
+  //       } else if (snapshot.hasError) {
+  //         // Error occurred while fetching data
+  //         return Text('Error: ${snapshot.error}');
+  //       } else {
+  //         // Data is still loading
+  //         return const Center(child: CircularProgressIndicator());
+  //       }
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -198,20 +200,15 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        16.height,
-        
+        // 8.height,
         getbuilder("Services", storeid.toString()),
-       
-
+        10.height,
         getbuilder("Accessories", storeid.toString()),
-       
+        10.height,
         getbuilder("Bikeparts", storeid.toString()),
-      
+        10.height,
         getbuilder("Bikes", storeid.toString())
-       
       ],
-    ).paddingSymmetric(horizontal: 16);
+    );
   }
 }
-
-

@@ -28,6 +28,8 @@ class StoresRepository {
 
       double longitude = double.parse(doc.data()['lng'] ?? 0);
 
+      int number = doc.data()['phone'] ?? 0;
+
       // double distance = doc['distance'].toDouble();
       String distance = "0.00";
 
@@ -42,6 +44,7 @@ class StoresRepository {
         saveTag: saveTag,
         latitude: latitude,
         longitude: longitude,
+        number: number,
       );
 
       storesList.add(cardModel);
@@ -259,18 +262,18 @@ class StoresRepository {
       String storeName = doc.data()['name'] ?? '';
 
       userOrderModel orderModel = userOrderModel(
-          date: date,
-          weekday: weekday,
-          time: time,
-          storeUid: storeid,
-          isCancelled: paymentType,
-          orderStatus: orderStatus,
-          addressR: addressR,
-          nameR: nameR,
-          phoneR: phoneR,
-          map: map,
-          storeName: storeName,
-          );
+        date: date,
+        weekday: weekday,
+        time: time,
+        storeUid: storeid,
+        isCancelled: paymentType,
+        orderStatus: orderStatus,
+        addressR: addressR,
+        nameR: nameR,
+        phoneR: phoneR,
+        map: map,
+        storeName: storeName,
+      );
 
       orders.add(orderModel);
     }
@@ -310,18 +313,18 @@ class StoresRepository {
       String storeName = doc.data()['name'] ?? '';
 
       userOrderModel orderModel = userOrderModel(
-          date: date,
-          weekday: weekday,
-          time: time,
-          storeUid: storeid,
-          isCancelled: paymentType,
-          orderStatus: orderStatus,
-          addressR: addressR,
-          nameR: nameR,
-          phoneR: phoneR,
-          map: map,
-          storeName: storeName,)
-          ;
+        date: date,
+        weekday: weekday,
+        time: time,
+        storeUid: storeid,
+        isCancelled: paymentType,
+        orderStatus: orderStatus,
+        addressR: addressR,
+        nameR: nameR,
+        phoneR: phoneR,
+        map: map,
+        storeName: storeName,
+      );
 
       orders.add(orderModel);
     }

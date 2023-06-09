@@ -4,6 +4,7 @@ class BMCommonCardModel {
   String storeUid;
   String image;
   String title;
+  int number;
   String? subtitle;
   String? rating;
   String? likes;
@@ -18,6 +19,7 @@ class BMCommonCardModel {
       required this.title,
       required this.latitude,
       required this.longitude,
+      required this.number,
       this.subtitle,
       this.comments,
       this.distance,

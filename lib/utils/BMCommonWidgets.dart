@@ -52,6 +52,7 @@ Widget titleText({required String title, int? size, int? maxLines}) {
         size: size != null ? size : 20, color: bmSpecialColorDark),
     maxLines: maxLines != null ? maxLines : 1,
     overflow: TextOverflow.ellipsis,
+    
   );
 }
 

@@ -129,8 +129,7 @@ class BMServiceComponentState extends State<BMServiceComponent> {
       builder: (context, state) {
         return Container(
           decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(45)),
+              color: Colors.black, borderRadius: BorderRadius.circular(32)),
           margin: const EdgeInsets.only(bottom: 10),
           padding:
               const EdgeInsets.only(left: 20, top: 10, bottom: 10, right: 15),
@@ -141,7 +140,13 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  titleText(title: widget.name, size: 14, maxLines: 2),
+                  Text(
+                    widget.name,
+                    style: TextStyle(fontSize: 14, color: Color(0xFFE2FF6D)),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  // titleText(title: widget.name, size: 14, maxLines: 2),
                   12.height,
                   Row(
                     mainAxisSize: MainAxisSize.min,
@@ -149,7 +154,8 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                       Text(
                         'RS.${widget.cost}',
                         style: secondaryTextStyle(
-                          color: bmPrimaryColor,
+                          // color: bmPrimaryColor,
+                          color: Colors.white,
                           size: 12,
                         ),
                       ),
@@ -169,17 +175,23 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: bmPrimaryColor.withAlpha(50),
+                      // color: bmPrimaryColor.withAlpha(50),
+                      color: Colors.white,
                       borderRadius: radius(100),
                       border: Border.all(color: bmPrimaryColor),
                     ),
-                    padding: const EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(4),
                     child: GestureDetector(
-                        onTap: () {
-                          showBookBottomSheet(context, widget.imageurl,
-                              widget.disc, widget.name, widget.cost);
-                        },
-                        child: const Icon(Icons.info, color: bmPrimaryColor)),
+                      onTap: () {
+                        showBookBottomSheet(context, widget.imageurl,
+                            widget.disc, widget.name, widget.cost);
+                      },
+                      child: const Icon(
+                        Icons.info,
+                        // color: bmPrimaryColor,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                   8.width,
                   if (isAdded == false)
@@ -188,7 +200,9 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                       padding: const EdgeInsets.all(0),
                       shapeBorder: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(32)),
-                      color: bmPrimaryColor,
+                      // color: bmPrimaryColor,
+                      color: Colors.white,
+
                       onTap: () {
                         if (currentid == widget.storeid || currentid == "") {
                           var snackBar = const SnackBar(
@@ -235,7 +249,7 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                         }
                       },
                       child: Text('ADD',
-                          style: boldTextStyle(color: Colors.white, size: 12)),
+                          style: boldTextStyle(color: Colors.black, size: 12)),
                     ),
                   if (isAdded == true)
                     AppButton(
@@ -243,7 +257,8 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                       padding: const EdgeInsets.all(0),
                       shapeBorder: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(32)),
-                      color: bmPrimaryColor,
+                      // color: bmPrimaryColor,
+                      color: Colors.black12,
                       onTap: () {
                         var snackBar = const SnackBar(
                           dismissDirection: DismissDirection.down,
@@ -262,8 +277,78 @@ class BMServiceComponentState extends State<BMServiceComponent> {
               )
             ],
           ).paddingSymmetric(vertical: 8),
-        );
+        ).paddingSymmetric(horizontal: 16);
       },
     );
   }
+}
+
+void showBookBottomSheet(
+    BuildContext context, String image, String disc, String name, int cost) {
+  disc = '\u2022 ' + disc.replaceAll('. ', '.\n\u2022 ');
+  showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      enableDrag: true,
+      isDismissible: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: radiusOnly(topLeft: 30, topRight: 30)),
+      builder: (context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () {
+                      finish(context);
+                    },
+                    icon: const Icon(Icons.cancel_rounded,
+                        color: bmTextColorDarkMode),
+                  ),
+                ),
+                titleText(title: name, size: 24),
+                16.height,
+                bmCommonCachedNetworkImage(image, fit: BoxFit.cover),
+                // Image.network(
+                //   image,
+                //   fit: BoxFit.cover,
+                // ),
+                // Text(
+                //   "NULL available",
+                //   style: primaryTextStyle(color:  bmSpecialColorDark),
+                // ),
+                20.height,
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    titleText(
+                        title: "Rs. ${cost.toString()}", size: 16, maxLines: 2),
+                    14.height,
+                    Text(
+                      disc,
+                      style: secondaryTextStyle(color: bmPrimaryColor),
+                    )
+                  ],
+                ),
+                // AppButton(
+                //   //padding: EdgeInsets.all(0),
+                //   shapeBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+                //   child: Text('Book Now', style: boldTextStyle(color: Colors.white, size: 12)),
+                //   color: bmPrimaryColor,
+                //   onTap: () {
+                //     // BMCalenderScreen(element: element, isStaffBooking: false).launch(context);
+                //   },
+                // ),
+              ],
+            ).paddingAll(16),
+          );
+        });
+      });
 }

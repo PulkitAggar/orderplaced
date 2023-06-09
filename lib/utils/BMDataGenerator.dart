@@ -103,131 +103,131 @@ List<BMMasterModel> getTopServicesHomeList() {
 //   return list;
 // }
 
-List<BMCommonCardModel> getFavList() {
-  List<BMCommonCardModel> list = [];
+// List<BMCommonCardModel> getFavList() {
+//   List<BMCommonCardModel> list = [];
 
-  list.add(BMCommonCardModel(
-    latitude: 23.22,
-    longitude: 23.22,
-    storeUid: 'none',
-    title: 'Fly Trim Hair Studio',
-    image: '$BaseUrl/images/beauty_master/salon_one.jpg',
-    saveTag: false,
-    subtitle: '131-18 Merrick Blvd, Jamaica,Ny 11434',
-    rating: '5.0',
-    comments: '240',
-    distance: '0.5 mil',
-    liked: true,
-  ));
-  list.add(BMCommonCardModel(
-    latitude: 23.22,
-    longitude: 23.22,
-    storeUid: 'none',
-    title: 'Paul Cuts',
-    image: '$BaseUrl/images/beauty_master/salon_two.jpg',
-    saveTag: false,
-    subtitle: '131-18 Merrick Blvd, Jamaica,Ny 11434',
-    rating: '4.9',
-    comments: '192 reviews',
-    distance: '0.7 mil',
-    liked: true,
-  ));
+//   list.add(BMCommonCardModel(
+//     latitude: 23.22,
+//     longitude: 23.22,
+//     storeUid: 'none',
+//     title: 'Fly Trim Hair Studio',
+//     image: '$BaseUrl/images/beauty_master/salon_one.jpg',
+//     saveTag: false,
+//     subtitle: '131-18 Merrick Blvd, Jamaica,Ny 11434',
+//     rating: '5.0',
+//     comments: '240',
+//     distance: '0.5 mil',
+//     liked: true,
+//   ));
+//   list.add(BMCommonCardModel(
+//     latitude: 23.22,
+//     longitude: 23.22,
+//     storeUid: 'none',
+//     title: 'Paul Cuts',
+//     image: '$BaseUrl/images/beauty_master/salon_two.jpg',
+//     saveTag: false,
+//     subtitle: '131-18 Merrick Blvd, Jamaica,Ny 11434',
+//     rating: '4.9',
+//     comments: '192 reviews',
+//     distance: '0.7 mil',
+//     liked: true,
+//   ));
 
-  list.add(BMCommonCardModel(
-    latitude: 23.22,
-    longitude: 23.22,
-    storeUid: 'none',
-    title: 'Bio Pinky Nail Salon',
-    image: '$BaseUrl/images/beauty_master/salon_four.jpg',
-    saveTag: false,
-    subtitle: '1159w Madison street, 1, Chicago',
-    rating: '5.0',
-    comments: '240',
-    distance: '0.5 mil',
-    liked: true,
-  ));
-  list.add(BMCommonCardModel(
-    latitude: 23.22,
-    longitude: 23.22,
-    storeUid: 'none',
-    title: 'Savanna',
-    image: '$BaseUrl/images/beauty_master/salon_three.jpg',
-    saveTag: false,
-    subtitle: '2701 Black Rd, Joliet, II, 60435',
-    rating: '4.8',
-    comments: '1.2k reviews',
-    distance: '0.5 mil',
-    liked: true,
-  ));
+//   list.add(BMCommonCardModel(
+//     latitude: 23.22,
+//     longitude: 23.22,
+//     storeUid: 'none',
+//     title: 'Bio Pinky Nail Salon',
+//     image: '$BaseUrl/images/beauty_master/salon_four.jpg',
+//     saveTag: false,
+//     subtitle: '1159w Madison street, 1, Chicago',
+//     rating: '5.0',
+//     comments: '240',
+//     distance: '0.5 mil',
+//     liked: true,
+//   ));
+//   list.add(BMCommonCardModel(
+//     latitude: 23.22,
+//     longitude: 23.22,
+//     storeUid: 'none',
+//     title: 'Savanna',
+//     image: '$BaseUrl/images/beauty_master/salon_three.jpg',
+//     saveTag: false,
+//     subtitle: '2701 Black Rd, Joliet, II, 60435',
+//     rating: '4.8',
+//     comments: '1.2k reviews',
+//     distance: '0.5 mil',
+//     liked: true,
+//   ));
 
-  list.shuffle();
+//   list.shuffle();
 
-  return list;
-}
+//   return list;
+// }
 
-List<BMCommonCardModel> getRecommendedList() {
-  List<BMCommonCardModel> list = [];
+// List<BMCommonCardModel> getRecommendedList() {
+//   List<BMCommonCardModel> list = [];
 
-  list.add(BMCommonCardModel(
-    latitude: 23.22,
-    longitude: 23.22,
-    storeUid: 'none',
-    title: 'Savanna',
-    image: '$BaseUrl/images/beauty_master/salon_three.jpg',
-    saveTag: false,
-    subtitle: '2701 Black Rd, Joliet, II, 60435',
-    rating: '4.8',
-    comments: '1.2k',
-    distance: '0.5 mil',
-    liked: false,
-    likes: '124',
-  ));
-  list.add(BMCommonCardModel(
-    latitude: 23.22,
-    longitude: 23.22,
-    storeUid: 'none',
-    title: 'Bio Pinky Nail Salon',
-    image: '$BaseUrl/images/beauty_master/salon_four.jpg',
-    saveTag: false,
-    subtitle: '1159w Madison street, 1, Chicago',
-    rating: '5.0',
-    comments: '240',
-    distance: '0.5 mil',
-    liked: true,
-    likes: '23',
-  ));
+//   list.add(BMCommonCardModel(
+//     latitude: 23.22,
+//     longitude: 23.22,
+//     storeUid: 'none',
+//     title: 'Savanna',
+//     image: '$BaseUrl/images/beauty_master/salon_three.jpg',
+//     saveTag: false,
+//     subtitle: '2701 Black Rd, Joliet, II, 60435',
+//     rating: '4.8',
+//     comments: '1.2k',
+//     distance: '0.5 mil',
+//     liked: false,
+//     likes: '124',
+//   ));
+//   list.add(BMCommonCardModel(
+//     latitude: 23.22,
+//     longitude: 23.22,
+//     storeUid: 'none',
+//     title: 'Bio Pinky Nail Salon',
+//     image: '$BaseUrl/images/beauty_master/salon_four.jpg',
+//     saveTag: false,
+//     subtitle: '1159w Madison street, 1, Chicago',
+//     rating: '5.0',
+//     comments: '240',
+//     distance: '0.5 mil',
+//     liked: true,
+//     likes: '23',
+//   ));
 
-  list.add(BMCommonCardModel(
-    latitude: 23.22,
-    longitude: 23.22,
-    storeUid: 'none',
-    title: 'Fly Trim Hair Studio',
-    image: '$BaseUrl/images/beauty_master/salon_one.jpg',
-    saveTag: false,
-    subtitle: '131-18 Merrick Blvd, Jamaica,Ny 11434',
-    rating: '5.0',
-    comments: '240',
-    distance: '0.5 mil',
-    liked: true,
-    likes: '258',
-  ));
-  list.add(BMCommonCardModel(
-    latitude: 23.22,
-    longitude: 23.22,
-    storeUid: 'none',
-    title: 'Paul Cuts',
-    image: '$BaseUrl/images/beauty_master/salon_two.jpg',
-    saveTag: false,
-    subtitle: '131-18 Merrick Blvd, Jamaica,Ny 11434',
-    rating: '4.9',
-    comments: '192',
-    distance: '0.7 mil',
-    liked: false,
-    likes: '501',
-  ));
+//   list.add(BMCommonCardModel(
+//     latitude: 23.22,
+//     longitude: 23.22,
+//     storeUid: 'none',
+//     title: 'Fly Trim Hair Studio',
+//     image: '$BaseUrl/images/beauty_master/salon_one.jpg',
+//     saveTag: false,
+//     subtitle: '131-18 Merrick Blvd, Jamaica,Ny 11434',
+//     rating: '5.0',
+//     comments: '240',
+//     distance: '0.5 mil',
+//     liked: true,
+//     likes: '258',
+//   ));
+//   list.add(BMCommonCardModel(
+//     latitude: 23.22,
+//     longitude: 23.22,
+//     storeUid: 'none',
+//     title: 'Paul Cuts',
+//     image: '$BaseUrl/images/beauty_master/salon_two.jpg',
+//     saveTag: false,
+//     subtitle: '131-18 Merrick Blvd, Jamaica,Ny 11434',
+//     rating: '4.9',
+//     comments: '192',
+//     distance: '0.7 mil',
+//     liked: false,
+//     likes: '501',
+//   ));
 
-  return list;
-}
+//   return list;
+// }
 
 // List<BMServiceListModel> getPopularServiceList() {
 //   List<BMServiceListModel> list = [];

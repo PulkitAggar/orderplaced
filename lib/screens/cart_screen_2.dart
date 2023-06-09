@@ -159,8 +159,8 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
                                           },
                                           child: Text(
                                               state.address == ''
-                                                  ? 'Change'
-                                                  : 'Enter',
+                                                  ? 'Enter'
+                                                  : 'Change',
                                               style: primaryTextStyle(
                                                   color: Color(0xFF3B8BEA))),
                                         ),
