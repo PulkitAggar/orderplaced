@@ -329,59 +329,72 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         SnackBar(content: Text("Choose one of the options")));
                   }
                 },
-                child: Text(
-                  "Pay Rs.${widget.totsamount}",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                child: const Text(
+                    "Complete Payment",
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white)
+                )
               ),
             ),
           );
         },
         onClosing: () {},
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Space(75),
-            //PaymentContainer(title: "Net Banking", icon: Icons.food_bank),
-
-            ListTile(
-              title: const Text('Net Banking'),
-              leading: Radio<int>(
-                fillColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black),
-                focusColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black),
-                value: 1,
-                groupValue: selectedValue,
-                onChanged: (value) {
-                  setState(() {
-                    selectedValue = value!;
-                  });
-                },
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Space(75),
+              //PaymentContainer(title: "Net Banking", icon: Icons.food_bank),
+              
+              ListTile(
+                title: const Text('Net Banking'),
+                leading: Radio<int>(
+                  fillColor:
+                      MaterialStateColor.resolveWith((states) => Colors.black),
+                  focusColor:
+                      MaterialStateColor.resolveWith((states) => Colors.black),
+                  value: 1,
+                  groupValue: selectedValue,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedValue = value!;
+                    });
+                  },
+                ),
               ),
-            ),
-            ListTile(
-              title: const Text('Cash Delivery'),
-              leading: Radio<int>(
-                fillColor:
-                    MaterialStateColor.resolveWith((states) => Colors.black),
-                value: 2,
-                groupValue: selectedValue,
-                onChanged: (value) {
-                  setState(() {
-                    selectedValue = value!;
-                  });
-                },
+              ListTile(
+                title: const Text('Cash Delivery'),
+                leading: Radio<int>(
+                  fillColor:
+                      MaterialStateColor.resolveWith((states) => Colors.black),
+                  value: 2,
+                  groupValue: selectedValue,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedValue = value!;
+                    });
+                  },
+                ),
               ),
-            ),
-
-            Space(75),
-          ],
+              Expanded(child: SizedBox(height: 1,), flex: 5,),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      Text('Total', style: TextStyle(color: Colors.black, fontSize: 22),),
+                      Expanded(child: SizedBox(width: 1,)),
+                      Text('Rs.${widget.totsamount.toString()}', style: TextStyle(color: Colors.black, fontSize: 22))
+                    ],
+                  ),
+                ),
+              ),
+              Expanded(child: SizedBox(height: 1,), flex: 1,),
+            ],
+          ),
         ),
       ),
     );
@@ -396,3 +409,7 @@ class MyHttpOverrides extends HttpOverrides {
           (X509Certificate cert, String host, int port) => true;
   }
 }
+
+  Expanded _getAdress(String address){
+    return Expanded(child: Text(address, style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),), flex: 9,);
+  }
