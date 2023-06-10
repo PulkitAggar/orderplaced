@@ -2,8 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../../datamodels/shop.dart';
 import '../../models/BMShoppingModel.dart';
 
 part 'cart_event.dart';
@@ -17,8 +15,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         List<BMShoppingModel> list = [];
         int deliveryFee = 0;
         list = await getCartList();
+        await toCalculateDiscount();
         deliveryFee = await getDeliveryFee();
-        emit(CartLoadedState(list, deliveryFee, storeId));
+        emit(CartLoadedState(list, deliveryFee, storeId, calculateDiscount));
       } catch (e) {
         emit(CartErrorState(e.toString()));
       }
@@ -39,14 +38,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             .update({'count': newCount});
         list = await getCartList();
         deliveryFee = await getDeliveryFee();
-        emit(CartLoadedState(list, deliveryFee, storeId));
+        emit(CartLoadedState(list, deliveryFee, storeId, calculateDiscount));
       } catch (e) {
         emit(CartErrorState(e.toString()));
       }
     });
     on<DecrementItem>((event, emit) async {
-
-
       emit(CartNonInteractiveState());
       try {
         var newCount = event.element.count;
@@ -60,7 +57,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             .update({'count': newCount});
         list = await getCartList();
         deliveryFee = await getDeliveryFee();
-        emit(CartLoadedState(list, deliveryFee, storeId));
+        emit(CartLoadedState(list, deliveryFee, storeId, calculateDiscount));
       } catch (e) {
         emit(CartErrorState(e.toString()));
       }
@@ -80,7 +77,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
         list = await getCartList();
         deliveryFee = await getDeliveryFee();
-        emit(CartLoadedState(list, deliveryFee, storeId));
+        emit(CartLoadedState(list, deliveryFee, storeId, calculateDiscount));
       } catch (e) {
         emit(CartErrorState(e.toString()));
       }
@@ -127,11 +124,27 @@ Future<List<BMShoppingModel>> getCartList() async {
 
 String storeId = '';
 
+bool calculateDiscount = false;
+
+Future<void> toCalculateDiscount() async {
+  var doc = await FirebaseFirestore.instance
+      .collection('users')
+      .doc(FirebaseAuth.instance.currentUser?.uid)
+      .get();
+
+  int count = doc.data()!['count'];
+
+  if (count.remainder(3) == 0) {
+    calculateDiscount = true;
+  }
+}
+
 Future<int> getDeliveryFee() async {
   var doc = await FirebaseFirestore.instance
       .collection('cart')
       .doc(FirebaseAuth.instance.currentUser?.email)
       .get();
+
   storeId = doc.data()!['storeid'];
 
   if (storeId == '') {
@@ -146,7 +159,6 @@ Future<int> getDeliveryFee() async {
     return fee;
   }
 }
-
 
 // feeFetch() async {
 

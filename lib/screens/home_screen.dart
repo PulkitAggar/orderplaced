@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mycycleclinic/screens/current_order_screen.dart';
 import 'package:mycycleclinic/screens/roadside_ass_screen.dart';
 import '../fragments/BMHomeFragment2.dart';
 import 'cart_screen_2.dart';
@@ -122,7 +121,8 @@ List<DashboardModel> getDashboardList() {
   list.add(DashboardModel(
       selectedIcon: Icons.home_filled, unSelectedIcon: Icons.home_outlined));
   list.add(DashboardModel(
-      selectedIcon: Icons.emergency, unSelectedIcon: Icons.emergency_outlined));
+      selectedIcon: Icons.health_and_safety,
+      unSelectedIcon: Icons.health_and_safety_outlined));
   list.add(DashboardModel(
       selectedIcon: Icons.shopping_cart,
       unSelectedIcon: Icons.shopping_cart_outlined));

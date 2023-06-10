@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mycycleclinic/blocs/auth/auth_bloc.dart';
 import 'package:mycycleclinic/fragments/BMHomeFragment2.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -82,9 +83,14 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
         }
 
         // will get a boolean on whether to calculate or not which we will send from bloc
-        double calculateDiscount(List<BMShoppingModel> shoppingList) {
+        double calculateDiscount(
+            List<BMShoppingModel> shoppingList, bool calculateDiscount) {
           double discount = 0.0;
           bool hasServices = false;
+
+          if (!calculateDiscount) {
+            return 0.0;
+          }
 
           for (var item in shoppingList) {
             if (item.catName == 'Services') {
@@ -98,7 +104,8 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
           return discount;
         }
 
-        double discount = calculateDiscount(state.list);
+        double discount =
+            calculateDiscount(state.list, state.calculateDiscount);
         double subTotal = calculateTotalCost(state.list);
         double fee = state.deliveryFee.toDouble();
         if (subTotal > 800.00) {
@@ -115,7 +122,7 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
             title: titleText(title: 'Cart', size: 32),
           ),
           bottomSheet: BottomSheet(
-            constraints: BoxConstraints(maxHeight: 148),
+            constraints: BoxConstraints(maxHeight: 150),
             elevation: 10,
             enableDrag: false,
             builder: (context) {
@@ -123,6 +130,12 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
                 children: [
                   BlocBuilder<AddressBloc, AddressState>(
                     builder: (context, state) {
+                      if (state is AddressErrorState) {
+                        return Container(
+                          height: 20,
+                          child: Text(state.error),
+                        );
+                      }
                       if (state is AddressLoadedState) {
                         ADDRESSCHECK = state.address;
                         return Container(
@@ -185,7 +198,7 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
                           ),
                         );
                       } else {
-                        return Container();
+                        return 40.height;
                       }
                     },
                   ),

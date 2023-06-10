@@ -1,18 +1,12 @@
-import 'package:collection/collection.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../models/BMServiceListModel.dart';
 import '../repositories/stores_repository.dart';
 import '../utils/BMColors.dart';
 import '../utils/BMCommonWidgets.dart';
-import '../utils/BMDataGenerator.dart';
 import 'BMServiceComponent.dart';
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/models.dart';
-import 'BMServiceComponent2.dart';
 
 final _firebase = FirebaseFirestorePlatform.instance;
 
@@ -75,7 +69,11 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                             collapsedIconColor: bmSpecialColorDark,
                             iconColor: bmSpecialColorDark,
                             //crossAxisAlignment: CrossAxisAlignment.start,
-                            title: titleText(title: '${doc[i]}', size: 22),
+                            title: Text(
+                              '${doc[i]}',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 22),
+                            ),
 
                             children: [
                               //SizedBox(height: 10),

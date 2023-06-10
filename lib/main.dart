@@ -34,9 +34,6 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
-            create: (context) => ShopBloc(),
-          ),
-          BlocProvider(
             create: (context) => AddressBloc(),
           ),
           BlocProvider(

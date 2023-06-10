@@ -15,9 +15,9 @@ class CartLoadedState extends CartState {
   final List<BMShoppingModel> list;
   final int deliveryFee;
   final String storUid;
-  
+  final bool calculateDiscount;
 
-  CartLoadedState(this.list, this.deliveryFee, this.storUid);
+  CartLoadedState(this.list, this.deliveryFee, this.storUid, this.calculateDiscount);
 }
 
 class CartErrorState extends CartState {

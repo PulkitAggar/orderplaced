@@ -5,14 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../blocs/cart/cart_bloc.dart';
-import '../models/BMServiceListModel.dart';
-import '../utils/BMBottomSheet.dart';
 import '../utils/BMColors.dart';
 import '../utils/BMCommonWidgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:collection/collection.dart';
 
-import 'BMServiceComponent2.dart';
 
 class BMServiceComponent extends StatefulWidget {
   BMServiceComponent(

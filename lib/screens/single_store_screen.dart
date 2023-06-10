@@ -76,12 +76,12 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
                       children: [
                         bmCommonCachedNetworkImage(
                           widget.element.image,
-                          height: 390,
+                          height: 360,
                           width: context.width(),
                           fit: BoxFit.cover,
                         ),
                         Container(
-                          height: 390,
+                          height: 360,
                           decoration: BoxDecoration(
                             // borderRadius: radius(32),
                             gradient: LinearGradient(
@@ -138,6 +138,7 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
                           ],
                         ),
                         Positioned(
+                          left: 1,
                           bottom: 5,
                           child: Container(
                             padding: const EdgeInsets.all(16),
@@ -153,7 +154,7 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
                                 ),
                                 // titleText(
                                 //     title: widget.element.title, size: 28),
-                                8.height,
+                                6.height,
                                 Text(
                                   widget.element.subtitle!,
                                   style: secondaryTextStyle(
