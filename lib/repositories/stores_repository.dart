@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import '../models/BMRoadListModel.dart';
 import '../models/models.dart';
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
@@ -332,3 +333,337 @@ class StoresRepository {
     return orders;
   }
 }
+
+
+List<Container> carouselItems = [
+  Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(24.0),
+      color: Color(0xFFE2FF6D),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.5),
+          spreadRadius: 2,
+          blurRadius: 5,
+          offset: Offset(0, 3), // changes the position of the shadow
+        ),
+      ],
+    ),
+    padding: EdgeInsets.all(8.0),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 10,),
+        Row(
+          children: [
+            Expanded(child: SizedBox(width: 1,),),
+            Text('Safety Service', style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),),
+            Expanded(child: SizedBox(width: 1,),),
+          ],
+        ),
+        SizedBox(height: 10,),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Expanded(child: SizedBox(width: 1,),),
+              Card(
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0),
+                ),
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Rs.500', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 26),),
+                  ),
+                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(24.0),),
+                ),
+              ),
+              Expanded(child: SizedBox(width: 1,),),
+            ],
+          ),
+        ),
+        SizedBox(height: 20,),
+        Text('\u2022Frame alignment check and visual damage inspection'),
+        Text('\u2022Botton bracket check and adjustment'),
+        Text('\u2022Check and adjust wedge nut'),
+        Text('\u2022Wheel truing and spoke tensioned'),
+        Text('\u2022Tyre condition and pressure check'),
+        Text('\u2022Axle and quick release check'),
+        Text('\u2022Hub bearing check and adjustment'),
+        Text('\u2022Chain set removal and clean'),
+        Text('\u2022Bike cleaning'),
+        Text('\u2022Lubrication of drive trains and pivot points'),
+        Text('\u2022Bolt torque check'),
+        Text('\u2022Road test ride'),
+        Text('\u2022Suspension advisory'),
+        Text('\u2022Full workshop report including future advices'),
+        Stack(
+          children: [
+            Text('\u2022Headset stripped, cleaned and greased', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022BB removed, cleaned, re-greased and torqued', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022Hub striped, cleaned and greased', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022Removal and re-grease of seat-post', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022Pedal removed, thread cleaned, re-greased and torqued', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022Brakes and Gear - Inner Cable(free replacement)', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022All cables lubricated', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022Adjustment for better cycling comfort', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022Frame and fork polish', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022Hydraulic brake fluid changed', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022All bolts cleaned, greased and torqued', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022Any frame facing required', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022Bicycle care advised', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+      ],
+    ),
+  ),
+  Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(24.0),
+      color: Colors.greenAccent,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.5),
+          spreadRadius: 2,
+          blurRadius: 5,
+          offset: Offset(0, 3), // changes the position of the shadow
+        ),
+      ],
+    ),
+    padding: EdgeInsets.all(8.0),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 10,),
+        Row(
+          children: [
+            Expanded(child: SizedBox(width: 1,),),
+            Text('General Service', style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),),
+            Expanded(child: SizedBox(width: 1,),),
+          ],
+        ),
+        SizedBox(height: 10,),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Expanded(child: SizedBox(width: 1,),),
+              Card(
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0),
+                ),
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Rs.1000', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 26),),
+                  ),
+                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(24.0),),
+                ),
+              ),
+              Expanded(child: SizedBox(width: 1,),),
+            ],
+          ),
+        ),
+        SizedBox(height: 20,),
+        Text('\u2022Frame alignment check and visual damage inspection'),
+        Text('\u2022Botton bracket check and adjustment'),
+        Text('\u2022Check and adjust wedge nut'),
+        Text('\u2022Wheel truing and spoke tensioned'),
+        Text('\u2022Tyre condition and pressure check'),
+        Text('\u2022Axle and quick release check'),
+        Text('\u2022Hub bearing check and adjustment'),
+        Text('\u2022Chain set removal and clean'),
+        Text('\u2022Bike cleaning'),
+        Text('\u2022Lubrication of drive trains and pivot points'),
+        Text('\u2022Bolt torque check'),
+        Text('\u2022Road test ride'),
+        Text('\u2022Suspension advisory'),
+        Text('\u2022Full workshop report including future advices'),
+        Text('\u2022Headset stripped, cleaned and greased'),
+        Text('\u2022BB removed, cleaned, re-greased and torqued'),
+        Text('\u2022Hub striped, cleaned and greased'),
+        Text('\u2022Removal and re-grease of seat-post'),
+        Text('\u2022Pedal removed, thread cleaned, re-greased and torqued'),
+        Text('\u2022Brakes and Gear - Inner Cable(free replacement)'),
+        Text('\u2022All cables lubricated'),
+        Text('\u2022Adjustment for better cycling comfort'),
+        Stack(
+          children: [
+            Text('\u2022Frame and fork polish', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022Hydraulic brake fluid changed', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022All bolts cleaned, greased and torqued', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022Any frame facing required', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+        Stack(
+          children: [
+            Text('\u2022Bicycle care advised', style: TextStyle(color: Colors.grey),),
+            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+          ],
+        ),
+      ],
+    ),
+  ),
+  Container(
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(24.0),
+      color: Colors.red,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.5),
+          spreadRadius: 2,
+          blurRadius: 5,
+          offset: Offset(0, 3), // changes the position of the shadow
+        ),
+      ],
+    ),
+    padding: EdgeInsets.all(8.0),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 10,),
+        Row(
+          children: [
+            Expanded(child: SizedBox(width: 1,),),
+            Text('Overhaul Service', style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),),
+            Expanded(child: SizedBox(width: 1,),),
+          ],
+        ),
+        SizedBox(height: 10,),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              Expanded(child: SizedBox(width: 1,),),
+              Card(
+                elevation: 10,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24.0),
+                ),
+                child: Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('Rs.1500', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 26),),
+                  ),
+                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(24.0),),
+                ),
+              ),
+              Expanded(child: SizedBox(width: 1,),),
+            ],
+          ),
+        ),
+        SizedBox(height: 20,),
+        Text('\u2022Frame alignment check and visual damage inspection'),
+        Text('\u2022Botton bracket check and adjustment'),
+        Text('\u2022Check and adjust wedge nut'),
+        Text('\u2022Wheel truing and spoke tensioned'),
+        Text('\u2022Tyre condition and pressure check'),
+        Text('\u2022Axle and quick release check'),
+        Text('\u2022Hub bearing check and adjustment'),
+        Text('\u2022Chain set removal and clean'),
+        Text('\u2022Bike cleaning'),
+        Text('\u2022Lubrication of drive trains and pivot points'),
+        Text('\u2022Bolt torque check'),
+        Text('\u2022Road test ride'),
+        Text('\u2022Suspension advisory'),
+        Text('\u2022Full workshop report including future advices'),
+        Text('\u2022Headset stripped, cleaned and greased'),
+        Text('\u2022BB removed, cleaned, re-greased and torqued'),
+        Text('\u2022Hub striped, cleaned and greased'),
+        Text('\u2022Removal and re-grease of seat-post'),
+        Text('\u2022Pedal removed, thread cleaned, re-greased and torqued'),
+        Text('\u2022Brakes and Gear - Inner Cable(free replacement)'),
+        Text('\u2022All cables lubricated'),
+        Text('\u2022Adjustment for better cycling comfort'),
+        Text('\u2022Frame and fork polish'),
+        Text('\u2022Hydraulic brake fluid changed'),
+        Text('\u2022All bolts cleaned, greased and torqued'),
+        Text('\u2022Any frame facing required'),
+        Text('\u2022Bicycle care advised'),
+      ],
+    ),
+  ),
+];

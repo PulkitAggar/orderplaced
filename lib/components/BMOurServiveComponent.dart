@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../models/BMServiceListModel.dart';
@@ -47,8 +48,23 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
         title: titleText(title: n, size: 24),
         children: [
           n == 'Services'
-              ? Image.asset('assets/images/services.jpg', scale: 4.5)
-              : const SizedBox(height: 0),
+              ? CarouselSlider(
+                  options: CarouselOptions(
+                    height: 665.0,
+                    enableInfiniteScroll: true,
+                    autoPlay: true,
+                  ),
+                  items: carouselItems.map((item) {
+                    return Builder(
+                      builder: (BuildContext context) {
+                        return Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.symmetric(horizontal: 15.0),
+                          child: item,
+                        );
+                      },
+                    );
+                  }).toList() ):  SizedBox(height: 0),
           StreamBuilder(
               stream: _firebase.collection("subnames").doc(n).snapshots(),
               builder: (context, snapshot) {
