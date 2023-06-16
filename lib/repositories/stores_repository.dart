@@ -334,7 +334,6 @@ class StoresRepository {
   }
 }
 
-
 List<Container> carouselItems = [
   Container(
     decoration: BoxDecoration(
@@ -354,20 +353,42 @@ List<Container> carouselItems = [
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Row(
           children: [
-            Expanded(child: SizedBox(width: 1,),),
-            Text('Safety Service', style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),),
-            Expanded(child: SizedBox(width: 1,),),
+            Expanded(
+              child: SizedBox(
+                width: 1,
+              ),
+            ),
+            Text(
+              'Safety Service',
+              style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
+            ),
+            Expanded(
+              child: SizedBox(
+                width: 1,
+              ),
+            ),
           ],
         ),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              Expanded(child: SizedBox(width: 1,),),
+              Expanded(
+                child: SizedBox(
+                  width: 1,
+                ),
+              ),
               Card(
                 elevation: 10,
                 shape: RoundedRectangleBorder(
@@ -376,16 +397,31 @@ List<Container> carouselItems = [
                 child: Container(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Rs.500', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 26),),
+                    child: Text(
+                      'Rs.500',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 26),
+                    ),
                   ),
-                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(24.0),),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(24.0),
+                  ),
                 ),
               ),
-              Expanded(child: SizedBox(width: 1,),),
+              Expanded(
+                child: SizedBox(
+                  width: 1,
+                ),
+              ),
             ],
           ),
         ),
-        SizedBox(height: 20,),
+        SizedBox(
+          height: 20,
+        ),
         Text('\u2022Frame alignment check and visual damage inspection'),
         Text('\u2022Botton bracket check and adjustment'),
         Text('\u2022Check and adjust wedge nut'),
@@ -402,80 +438,236 @@ List<Container> carouselItems = [
         Text('\u2022Full workshop report including future advices'),
         Stack(
           children: [
-            Text('\u2022Headset stripped, cleaned and greased', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Headset stripped, cleaned and greased',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022BB removed, cleaned, re-greased and torqued', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022BB removed, cleaned, re-greased and torqued',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022Hub striped, cleaned and greased', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Hub striped, cleaned and greased',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022Removal and re-grease of seat-post', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Removal and re-grease of seat-post',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022Pedal removed, thread cleaned, re-greased and torqued', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Pedal removed, thread cleaned, re-greased and torqued',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022Brakes and Gear - Inner Cable(free replacement)', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Brakes and Gear - Inner Cable(free replacement)',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022All cables lubricated', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022All cables lubricated',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022Adjustment for better cycling comfort', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Adjustment for better cycling comfort',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022Frame and fork polish', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Frame and fork polish',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022Hydraulic brake fluid changed', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Hydraulic brake fluid changed',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022All bolts cleaned, greased and torqued', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022All bolts cleaned, greased and torqued',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022Any frame facing required', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Any frame facing required',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022Bicycle care advised', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Bicycle care advised',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
       ],
@@ -499,20 +691,42 @@ List<Container> carouselItems = [
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Row(
           children: [
-            Expanded(child: SizedBox(width: 1,),),
-            Text('General Service', style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),),
-            Expanded(child: SizedBox(width: 1,),),
+            Expanded(
+              child: SizedBox(
+                width: 1,
+              ),
+            ),
+            Text(
+              'General Service',
+              style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
+            ),
+            Expanded(
+              child: SizedBox(
+                width: 1,
+              ),
+            ),
           ],
         ),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              Expanded(child: SizedBox(width: 1,),),
+              Expanded(
+                child: SizedBox(
+                  width: 1,
+                ),
+              ),
               Card(
                 elevation: 10,
                 shape: RoundedRectangleBorder(
@@ -521,16 +735,31 @@ List<Container> carouselItems = [
                 child: Container(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Rs.1000', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 26),),
+                    child: Text(
+                      'Rs.1000',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 26),
+                    ),
                   ),
-                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(24.0),),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(24.0),
+                  ),
                 ),
               ),
-              Expanded(child: SizedBox(width: 1,),),
+              Expanded(
+                child: SizedBox(
+                  width: 1,
+                ),
+              ),
             ],
           ),
         ),
-        SizedBox(height: 20,),
+        SizedBox(
+          height: 20,
+        ),
         Text('\u2022Frame alignment check and visual damage inspection'),
         Text('\u2022Botton bracket check and adjustment'),
         Text('\u2022Check and adjust wedge nut'),
@@ -555,32 +784,92 @@ List<Container> carouselItems = [
         Text('\u2022Adjustment for better cycling comfort'),
         Stack(
           children: [
-            Text('\u2022Frame and fork polish', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Frame and fork polish',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022Hydraulic brake fluid changed', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Hydraulic brake fluid changed',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022All bolts cleaned, greased and torqued', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022All bolts cleaned, greased and torqued',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022Any frame facing required', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Any frame facing required',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
         Stack(
           children: [
-            Text('\u2022Bicycle care advised', style: TextStyle(color: Colors.grey),),
-            Positioned(child: Divider(color: Colors.grey, height: 1.0, thickness: 1.0,), left: 0, right: 0, top: 8,)
+            Text(
+              '\u2022Bicycle care advised',
+              style: TextStyle(color: Colors.grey),
+            ),
+            Positioned(
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0,
+                thickness: 1.0,
+              ),
+              left: 0,
+              right: 0,
+              top: 8,
+            )
           ],
         ),
       ],
@@ -604,20 +893,42 @@ List<Container> carouselItems = [
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Row(
           children: [
-            Expanded(child: SizedBox(width: 1,),),
-            Text('Overhaul Service', style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),),
-            Expanded(child: SizedBox(width: 1,),),
+            Expanded(
+              child: SizedBox(
+                width: 1,
+              ),
+            ),
+            Text(
+              'Overhaul Service',
+              style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold),
+            ),
+            Expanded(
+              child: SizedBox(
+                width: 1,
+              ),
+            ),
           ],
         ),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              Expanded(child: SizedBox(width: 1,),),
+              Expanded(
+                child: SizedBox(
+                  width: 1,
+                ),
+              ),
               Card(
                 elevation: 10,
                 shape: RoundedRectangleBorder(
@@ -626,16 +937,31 @@ List<Container> carouselItems = [
                 child: Container(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text('Rs.1500', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 26),),
+                    child: Text(
+                      'Rs.1500',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 26),
+                    ),
                   ),
-                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(24.0),),
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(24.0),
+                  ),
                 ),
               ),
-              Expanded(child: SizedBox(width: 1,),),
+              Expanded(
+                child: SizedBox(
+                  width: 1,
+                ),
+              ),
             ],
           ),
         ),
-        SizedBox(height: 20,),
+        SizedBox(
+          height: 20,
+        ),
         Text('\u2022Frame alignment check and visual damage inspection'),
         Text('\u2022Botton bracket check and adjustment'),
         Text('\u2022Check and adjust wedge nut'),
@@ -667,3 +993,5 @@ List<Container> carouselItems = [
     ),
   ),
 ];
+
+//
