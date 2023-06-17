@@ -422,252 +422,742 @@ List<Container> carouselItems = [
         SizedBox(
           height: 20,
         ),
-        Text('\u2022Frame alignment check and visual damage inspection'),
-        Text('\u2022Botton bracket check and adjustment'),
-        Text('\u2022Check and adjust wedge nut'),
-        Text('\u2022Wheel truing and spoke tensioned'),
-        Text('\u2022Tyre condition and pressure check'),
-        Text('\u2022Axle and quick release check'),
-        Text('\u2022Hub bearing check and adjustment'),
-        Text('\u2022Chain set removal and clean'),
-        Text('\u2022Bike cleaning'),
-        Text('\u2022Lubrication of drive trains and pivot points'),
-        Text('\u2022Bolt torque check'),
-        Text('\u2022Road test ride'),
-        Text('\u2022Suspension advisory'),
-        Text('\u2022Full workshop report including future advices'),
-        Stack(
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              '\u2022Headset stripped, cleaned and greased',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Frame alignment check and visual damage inspection',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Botton bracket check and adjustment',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Check and adjust wedge nut',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Wheel truing and spoke tensioned',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Tyre condition and pressure check',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Axle and quick release check',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Hub bearing check and adjustment',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Chain set removal and clean',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Bike cleaning',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Lubrication of drive trains and pivot points',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Bolt torque check',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Road test ride',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Suspension advisory',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Full workshop report including future advices',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
           ],
         ),
-        Stack(
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              '\u2022BB removed, cleaned, re-greased and torqued',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Headset stripped, cleaned and greased',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022Hub striped, cleaned and greased',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'BB removed, cleaned, re-greased and torqued',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022Removal and re-grease of seat-post',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Chain and cassette - removed, degreased and torqued',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022Pedal removed, thread cleaned, re-greased and torqued',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Hub striped, cleaned and greased',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022Brakes and Gear - Inner Cable(free replacement)',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Removal and re-grease of seat-post',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022All cables lubricated',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Pedal removed, thread cleaned, re-greased and torqued',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022Adjustment for better cycling comfort',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Brakes and Gear - Inner Cable(free replacement)',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022Frame and fork polish',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'All cables lubricated',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022Hydraulic brake fluid changed',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Adjustment for better cycling comfort',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022All bolts cleaned, greased and torqued',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Frame and fork polish',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022Any frame facing required',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Hydraulic brake fluid changed',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022Bicycle care advised',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'All bolts cleaned, greased and torqued',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Any frame facing required',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Bicycle care advised',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
           ],
         ),
       ],
@@ -760,116 +1250,742 @@ List<Container> carouselItems = [
         SizedBox(
           height: 20,
         ),
-        Text('\u2022Frame alignment check and visual damage inspection'),
-        Text('\u2022Botton bracket check and adjustment'),
-        Text('\u2022Check and adjust wedge nut'),
-        Text('\u2022Wheel truing and spoke tensioned'),
-        Text('\u2022Tyre condition and pressure check'),
-        Text('\u2022Axle and quick release check'),
-        Text('\u2022Hub bearing check and adjustment'),
-        Text('\u2022Chain set removal and clean'),
-        Text('\u2022Bike cleaning'),
-        Text('\u2022Lubrication of drive trains and pivot points'),
-        Text('\u2022Bolt torque check'),
-        Text('\u2022Road test ride'),
-        Text('\u2022Suspension advisory'),
-        Text('\u2022Full workshop report including future advices'),
-        Text('\u2022Headset stripped, cleaned and greased'),
-        Text('\u2022BB removed, cleaned, re-greased and torqued'),
-        Text('\u2022Hub striped, cleaned and greased'),
-        Text('\u2022Removal and re-grease of seat-post'),
-        Text('\u2022Pedal removed, thread cleaned, re-greased and torqued'),
-        Text('\u2022Brakes and Gear - Inner Cable(free replacement)'),
-        Text('\u2022All cables lubricated'),
-        Text('\u2022Adjustment for better cycling comfort'),
-        Stack(
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              '\u2022Frame and fork polish',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Frame alignment check and visual damage inspection',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Botton bracket check and adjustment',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Check and adjust wedge nut',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Wheel truing and spoke tensioned',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Tyre condition and pressure check',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Axle and quick release check',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Hub bearing check and adjustment',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Chain set removal and clean',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Bike cleaning',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Lubrication of drive trains and pivot points',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Bolt torque check',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Road test ride',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Suspension advisory',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Full workshop report including future advices',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Headset stripped, cleaned and greased',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'BB removed, cleaned, re-greased and torqued',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Chain and cassette - removed, degreased and torqued',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Hub striped, cleaned and greased',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Removal and re-grease of seat-post',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Pedal removed, thread cleaned, re-greased and torqued',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Brakes and Gear - Inner Cable(free replacement)',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'All cables lubricated',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Adjustment for better cycling comfort',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
           ],
         ),
-        Stack(
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text(
-              '\u2022Hydraulic brake fluid changed',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Frame and fork polish',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022All bolts cleaned, greased and torqued',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Hydraulic brake fluid changed',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022Any frame facing required',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'All bolts cleaned, greased and torqued',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
-          ],
-        ),
-        Stack(
-          children: [
-            Text(
-              '\u2022Bicycle care advised',
-              style: TextStyle(color: Colors.grey),
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Any frame facing required',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
             ),
-            Positioned(
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0,
-                thickness: 1.0,
-              ),
-              left: 0,
-              right: 0,
-              top: 8,
-            )
+            Row(
+              children: [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Bicycle care advised',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
           ],
         ),
       ],
@@ -962,36 +2078,740 @@ List<Container> carouselItems = [
         SizedBox(
           height: 20,
         ),
-        Text('\u2022Frame alignment check and visual damage inspection'),
-        Text('\u2022Botton bracket check and adjustment'),
-        Text('\u2022Check and adjust wedge nut'),
-        Text('\u2022Wheel truing and spoke tensioned'),
-        Text('\u2022Tyre condition and pressure check'),
-        Text('\u2022Axle and quick release check'),
-        Text('\u2022Hub bearing check and adjustment'),
-        Text('\u2022Chain set removal and clean'),
-        Text('\u2022Bike cleaning'),
-        Text('\u2022Lubrication of drive trains and pivot points'),
-        Text('\u2022Bolt torque check'),
-        Text('\u2022Road test ride'),
-        Text('\u2022Suspension advisory'),
-        Text('\u2022Full workshop report including future advices'),
-        Text('\u2022Headset stripped, cleaned and greased'),
-        Text('\u2022BB removed, cleaned, re-greased and torqued'),
-        Text('\u2022Hub striped, cleaned and greased'),
-        Text('\u2022Removal and re-grease of seat-post'),
-        Text('\u2022Pedal removed, thread cleaned, re-greased and torqued'),
-        Text('\u2022Brakes and Gear - Inner Cable(free replacement)'),
-        Text('\u2022All cables lubricated'),
-        Text('\u2022Adjustment for better cycling comfort'),
-        Text('\u2022Frame and fork polish'),
-        Text('\u2022Hydraulic brake fluid changed'),
-        Text('\u2022All bolts cleaned, greased and torqued'),
-        Text('\u2022Any frame facing required'),
-        Text('\u2022Bicycle care advised'),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Frame alignment check and visual damage inspection',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Botton bracket check and adjustment',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Check and adjust wedge nut',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Wheel truing and spoke tensioned',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Tyre condition and pressure check',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Axle and quick release check',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Hub bearing check and adjustment',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Chain set removal and clean',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Bike cleaning',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Lubrication of drive trains and pivot points',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Bolt torque check',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Road test ride',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Suspension advisory',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Full workshop report including future advices',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Headset stripped, cleaned and greased',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'BB removed, cleaned, re-greased and torqued',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Chain and cassette - removed, degreased and torqued',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Hub striped, cleaned and greased',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Removal and re-grease of seat-post',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Pedal removed, thread cleaned, re-greased and torqued',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Brakes and Gear - Inner Cable(free replacement)',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'All cables lubricated',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Adjustment for better cycling comfort',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Frame and fork polish',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Hydraulic brake fluid changed',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'All bolts cleaned, greased and torqued',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Any frame facing required',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Icon(
+                  Icons.check_circle,
+                  color: Colors.green,
+                  size: 18,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  child: Text(
+                    'Bicycle care advised',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  flex: 7,
+                ),
+                Expanded(
+                  child: SizedBox(
+                    width: 1,
+                  ),
+                  flex: 1,
+                ),
+              ],
+            ),
+          ],
+        ),
       ],
     ),
   ),
 ];
-
-//

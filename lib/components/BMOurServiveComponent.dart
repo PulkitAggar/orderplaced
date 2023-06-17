@@ -119,8 +119,6 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                           final disc = message
                                                   .data()?["itemDescription"] ??
                                               "";
-
-                                          print(name);
                                           if (subname == doc[i]) {
                                             messagewidget
                                                 .add(BMServiceComponent(
