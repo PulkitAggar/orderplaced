@@ -77,6 +77,31 @@ class StoresRepository {
     return storesList;
   }
 
+  static Future<List<ServiceCardModel>> getServiceCardList(
+      String storeUid) async {
+    List<ServiceCardModel> servicelist = [];
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('stores')
+        .doc(storeUid)
+        .collection('service_cards')
+        .get();
+
+    for (var doc in querySnapshot.docs) {
+      String name = doc.data()['name'] ?? '';
+      String price = doc.data()['price'] ?? '';
+      List<dynamic> valid = doc.data()['valid'] ?? '';
+      List<dynamic> invalid = doc.data()['invalid'] ?? '';
+
+      ServiceCardModel serviceCardModel = ServiceCardModel(
+          name: name, price: price, valid: valid, invalid: invalid);
+
+      servicelist.add(serviceCardModel);
+    }
+
+    return servicelist;
+  }
+
   // StreamBuilder<QuerySnapshot>(
   //           stream: FirebaseFirestore.instance
   //               .collection("sellers")
