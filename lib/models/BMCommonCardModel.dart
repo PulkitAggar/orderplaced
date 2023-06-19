@@ -28,3 +28,16 @@ class BMCommonCardModel {
       required this.saveTag,
       this.liked});
 }
+
+class ServiceCardModel {
+  String name;
+  String price;
+  List<dynamic> valid;
+  List<dynamic> invalid;
+
+  ServiceCardModel(
+      {required this.name,
+      required this.price,
+      required this.valid,
+      required this.invalid});
+}

@@ -1,4 +1,7 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:mycycleclinic/blocs/cart/cart_bloc.dart';
+import 'package:mycycleclinic/datamodels/service_model.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../models/BMServiceListModel.dart';
 import '../repositories/stores_repository.dart';
@@ -23,11 +26,13 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
   late String storeid;
   late Future<List<BMServiceListModel>> servicesList;
   late Future<List<dynamic>> accessoriesList;
+  late Future<List<ServiceCardModel>> serviceCardList;
 
   @override
   void initState() {
     super.initState();
     storeid = widget.storeUid;
+    serviceCardList = StoresRepository.getServiceCardList(widget.storeUid);
     servicesList = StoresRepository.getServicesList(storeid);
     accessoriesList =
         StoresRepository.getAccessoriesList(storeid, "Accessories");
@@ -47,8 +52,207 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
         title: titleText(title: n, size: 24),
         children: [
           n == 'Services'
-              ? Image.asset('assets/images/services.jpg', scale: 4.5)
-              : const SizedBox(height: 0),
+              ? FutureBuilder<List<ServiceCardModel>>(
+                  future: serviceCardList,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return CarouselSlider(
+                          options: CarouselOptions(
+                            height: 400,
+                            autoPlay: true,
+                            enlargeCenterPage: true,
+                          ),
+                          items: snapshot.data!.map((e) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(24.0),
+                                color: Color(0xFFE2FF6D),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 2,
+                                    blurRadius: 5,
+                                    offset: Offset(0,
+                                        3), // changes the position of the shadow
+                                  ),
+                                ],
+                              ),
+                              padding: EdgeInsets.all(8.0),
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: SizedBox(
+                                            width: 1,
+                                          ),
+                                        ),
+                                        Text(
+                                          e.name,
+                                          style: TextStyle(
+                                              fontSize: 22,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Expanded(
+                                          child: SizedBox(
+                                            width: 1,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    // SizedBox(
+                                    //   height: 10,
+                                    // ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: SizedBox(
+                                              width: 1,
+                                            ),
+                                          ),
+                                          Card(
+                                            elevation: 10,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(24.0),
+                                            ),
+                                            child: Container(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  'Rs.${e.price}',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 26),
+                                                ),
+                                              ),
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                borderRadius:
+                                                    BorderRadius.circular(24.0),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: SizedBox(
+                                              width: 1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // SizedBox(
+                                    //   height: 10,
+                                    // ),
+                                    ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: e.valid.length,
+                                        itemBuilder: (context, index) {
+                                          return Row(
+                                            children: [
+                                              Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green,
+                                                size: 18,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  e.valid[index],
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                flex: 7,
+                                              ),
+                                              Expanded(
+                                                child: SizedBox(
+                                                  width: 1,
+                                                ),
+                                                flex: 1,
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                    ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: e.invalid.length,
+                                        itemBuilder: (context, index) {
+                                          return Row(
+                                            children: [
+                                              Icon(
+                                                Icons.cancel,
+                                                color: Colors.red,
+                                                size: 18,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  e.invalid[index],
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                flex: 7,
+                                              ),
+                                              Expanded(
+                                                child: SizedBox(
+                                                  width: 1,
+                                                ),
+                                                flex: 1,
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }).toList());
+                    } else if (snapshot.hasError) {
+                      print(snapshot.error);
+                      return Text('Error: ${snapshot.error}');
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                )
+              // ? CarouselSlider(
+              //     options: CarouselOptions(
+              //       height: 665.0,
+              //       enableInfiniteScroll: true,
+              //       autoPlay: true,
+              //     ),
+              //     items: carouselItems.map((item) {
+              //       return Builder(
+              //         builder: (BuildContext context) {
+              //           return Container(
+              //             width: MediaQuery.of(context).size.width,
+              //             margin: EdgeInsets.symmetric(horizontal: 15.0),
+              //             child: item,
+              //           );
+              //         },
+              //       );
+              //     }).toList() )
+              : SizedBox(height: 0),
           StreamBuilder(
               stream: _firebase.collection("subnames").doc(n).snapshots(),
               builder: (context, snapshot) {
@@ -103,8 +307,6 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                           final disc = message
                                                   .data()?["itemDescription"] ??
                                               "";
-
-                                          print(name);
                                           if (subname == doc[i]) {
                                             messagewidget
                                                 .add(BMServiceComponent(
