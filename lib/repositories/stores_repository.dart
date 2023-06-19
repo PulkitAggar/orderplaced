@@ -11,8 +11,11 @@ class StoresRepository {
     List<BMCommonCardModel> storesList = [];
 
     // Fetch data from Firestore
-    QuerySnapshot<Map<String, dynamic>> querySnapshot =
-        await FirebaseFirestore.instance.collection('stores').get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
+        .instance
+        .collection('stores')
+        .where("city", isEqualTo: "hisar")
+        .get();
 
     // Process each document in the query snapshot
     querySnapshot.docs.forEach((doc) {

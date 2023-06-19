@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mycycleclinic/screens/select_city.dart';
 import '../blocs/blocs.dart';
 import 'screens.dart';
 
@@ -28,7 +29,7 @@ class _SigninScreenState extends State<SigninScreen> {
           if (state is Authenticated) {
             // Navigating to the dashboard screen if the user is authenticated
             Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => DashboardScreen()));
+                MaterialPageRoute(builder: (context) => SelectCityScreen()));
           }
           if (state is AuthError) {
             // Showing the error message if the user has entered invalid credentials

@@ -10,7 +10,6 @@ import '../utils/BMCommonWidgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:collection/collection.dart';
 
-
 class BMServiceComponent extends StatefulWidget {
   BMServiceComponent(
       {required this.name,
@@ -170,26 +169,43 @@ class BMServiceComponentState extends State<BMServiceComponent> {
               ).expand(),
               Row(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      // color: bmPrimaryColor.withAlpha(50),
-                      color: Colors.white,
-                      borderRadius: radius(100),
-                      border: Border.all(color: bmPrimaryColor),
+                  AppButton(
+                    width: 60,
+                    splashColor: Colors.white,
+                    padding: const EdgeInsets.all(0),
+
+                    shapeBorder: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32),
                     ),
-                    padding: const EdgeInsets.all(4),
-                    child: GestureDetector(
-                      onTap: () {
-                        showBookBottomSheet(context, widget.imageurl,
-                            widget.disc, widget.name, widget.cost);
-                      },
-                      child: const Icon(
-                        Icons.info,
-                        // color: bmPrimaryColor,
-                        color: Colors.black,
-                      ),
-                    ),
+                    // color: bmPrimaryColor,
+                    color: Colors.black,
+                    onTap: () {
+                      showBookBottomSheet(context, widget.imageurl, widget.disc,
+                          widget.name, widget.cost);
+                    },
+                    child: Text('INFO',
+                        style: boldTextStyle(color: Colors.white, size: 12)),
                   ),
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     // color: bmPrimaryColor.withAlpha(50),
+                  //     color: Colors.white,
+                  //     borderRadius: radius(100),
+                  //     border: Border.all(color: bmPrimaryColor),
+                  //   ),
+                  //   padding: const EdgeInsets.all(4),
+                  //   child: GestureDetector(
+                  //     onTap: () {
+                  //       showBookBottomSheet(context, widget.imageurl,
+                  //           widget.disc, widget.name, widget.cost);
+                  //     },
+                  //     child: const Text(
+                  //       "INFO",
+                  //       // color: bmPrimaryColor,
+                  //       style: TextStyle(color: Colors.black),
+                  //     ),
+                  //   ),
+                  // ),
                   8.width,
                   if (isAdded == false)
                     AppButton(

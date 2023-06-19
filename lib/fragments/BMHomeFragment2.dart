@@ -194,7 +194,7 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  titleText(title: 'Our Stores', size: 26),
+                  titleText(title: 'Our Stores in HISAR', size: 26),
                   Row(
                     children: [
                       TextButton(
