@@ -89,7 +89,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         fontSize: 12),
                   ),
                 ),
-
                 Container(
                   height: 90,
                   padding:
@@ -122,6 +121,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                       GestureDetector(
+                        onTap: () {},
                         child: const Icon(
                           Icons.shopping_cart,
                           color: Colors.white,
@@ -150,10 +150,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             fontWeight: FontWeight.w900,
                             fontSize: 18),
                       ),
-                      Expanded(child: SizedBox(width: 1,)),
-                      IconButton(onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>CurrentOrders()));
-                      }, icon: Icon(Icons.arrow_forward_ios_rounded), color: Colors.white, iconSize: SizeConfig.screenHeight,)
+                      Expanded(
+                          child: SizedBox(
+                        width: 1,
+                      )),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CurrentOrders()));
+                        },
+                        icon: Icon(Icons.arrow_forward_ios_rounded),
+                        color: Colors.white,
+                        iconSize: SizeConfig.screenHeight,
+                      )
                     ],
                   ),
                 ),
@@ -177,10 +188,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             fontWeight: FontWeight.w900,
                             fontSize: 18),
                       ),
-                      Expanded(child: SizedBox(width: 1,)),
-                      IconButton(onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>PastOrders()));
-                      }, icon: Icon(Icons.arrow_forward_ios_rounded), color: Colors.white, iconSize: SizeConfig.screenHeight,)
+                      Expanded(
+                          child: SizedBox(
+                        width: 1,
+                      )),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PastOrders()));
+                        },
+                        icon: Icon(Icons.arrow_forward_ios_rounded),
+                        color: Colors.white,
+                        iconSize: SizeConfig.screenHeight,
+                      )
                     ],
                   ),
                 ),
@@ -295,9 +317,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   padding: const EdgeInsets.only(top: 8.0),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>TermsAndConditionsScreen()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  TermsAndConditionsScreen()));
                     },
-                    child: Text("Terms and Conditions apply*", style: TextStyle(color: Colors.blue),),
+                    child: Text(
+                      "Terms and Conditions apply*",
+                      style: TextStyle(color: Colors.blue),
+                    ),
                   ),
                 ),
                 Padding(
@@ -310,15 +339,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text('In adherence to our '),
-                          GestureDetector(child: Text("Privacy Policy ", style: TextStyle(color: Colors.blue),), onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>PrivacyPolicyScreen()));
-                          },),
+                          GestureDetector(
+                            child: Text(
+                              "Privacy Policy ",
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          PrivacyPolicyScreen()));
+                            },
+                          ),
                           Text('and'),
                         ],
                       ),
-                      GestureDetector(child: Text("Cancellation Policy ", style: TextStyle(color: Colors.blue),), onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>CancellationPolicyScreen()));
-                      },),
+                      GestureDetector(
+                        child: Text(
+                          "Cancellation Policy ",
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CancellationPolicyScreen()));
+                        },
+                      ),
                     ],
                   ),
                 )

@@ -76,6 +76,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             .delete();
 
         list = await getCartList();
+
+        if (list.isEmpty) {
+          await FirebaseFirestore.instance
+              .collection('cart')
+              .doc(FirebaseAuth.instance.currentUser?.email)
+              .set({'storeid': ''}, SetOptions(merge: true));
+        }
         deliveryFee = await getDeliveryFee();
         emit(CartLoadedState(list, deliveryFee, storeId, calculateDiscount));
       } catch (e) {
