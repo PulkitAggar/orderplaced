@@ -30,20 +30,18 @@ List<OffersModel> getOffers() {
 
 class BMHomeFragment2 extends StatefulWidget {
   final Function(int) onTabChanged;
+  String city;
 
-  BMHomeFragment2({required this.onTabChanged});
+  BMHomeFragment2({required this.onTabChanged, required this.city});
 
   @override
   State<BMHomeFragment2> createState() => _BMHomeFragmentState2();
 }
 
 class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
-  Future<List<BMCommonCardModel>> recommendedList =
-      StoresRepository.getStoresList();
-
   final List<BMMasterModel> topServiceList = ServiceList();
   final List<OffersModel> offers = getOffers();
-
+  // late String city1;
   late double latitude;
   late double longitude;
   // late Future<List<BMServiceListModel>> bikepartsList;
@@ -76,11 +74,15 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
   @override
   void initState() {
     setStatusBarColor(Colors.black);
+    // city1 = widget.city;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    Future<List<BMCommonCardModel>> recommendedList =
+        StoresRepository.getStoresList(widget.city);
+
     return Scaffold(
       backgroundColor: bmLightScaffoldBackgroundColor,
       body: LayoutBuilder(
@@ -194,7 +196,9 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  titleText(title: 'Our Stores in HISAR', size: 26),
+                  titleText(
+                      title: 'Our Stores in ${widget.city.toUpperCase()}',
+                      size: 26),
                   Row(
                     children: [
                       TextButton(

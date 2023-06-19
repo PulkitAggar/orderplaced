@@ -41,7 +41,9 @@ class MyApp extends StatelessWidget {
               create: (context) => AuthBloc(
                     authRepository: context.read<AuthRepository>(),
                   )),
-          BlocProvider(create: ((context) => CartBloc()),) 
+          BlocProvider(
+            create: ((context) => CartBloc()),
+          )
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

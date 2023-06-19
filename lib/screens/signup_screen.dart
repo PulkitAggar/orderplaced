@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mycycleclinic/screens/select_city.dart';
 import '../blocs/blocs.dart';
 import 'screens.dart';
 
@@ -51,7 +52,7 @@ class _SignupScreenState extends State<SignupScreen> {
             // Navigating to the dashboard screen if the user is authenticated
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (context) => DashboardScreen(),
+                builder: (context) => SelectCityScreen(),
               ),
             );
           }

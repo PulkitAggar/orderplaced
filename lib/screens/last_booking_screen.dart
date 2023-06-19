@@ -6,6 +6,7 @@ import 'package:http/http.dart';
 import 'package:mycycleclinic/models/order.model.dart';
 import 'package:mycycleclinic/screens/landing_screen.dart';
 import 'package:mycycleclinic/screens/screens.dart';
+import 'package:mycycleclinic/screens/select_city.dart';
 
 import '../widgets/widgets.dart';
 
@@ -28,8 +29,7 @@ class LastBookingScreen extends StatefulWidget {
       required this.state,
       required this.pincode,
       required this.numberr,
-      required this.paymentdone
-      })
+      required this.paymentdone})
       : super(key: key);
 
   @override
@@ -41,20 +41,19 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
   final FirebaseFirestore _store = FirebaseFirestore.instance;
 
   _updatingOrderINtoFirebase(
-      String date,
-      String weekday,
-      String time,
-      bool paymentType,
-      String storeId,
-      String orderStatus,
-      String nameR,
-      String numberR,
-      String addressR,
-      String city,
-      String state,
-      String pincode,
-      ) async {
-        
+    String date,
+    String weekday,
+    String time,
+    bool paymentType,
+    String storeId,
+    String orderStatus,
+    String nameR,
+    String numberR,
+    String addressR,
+    String city,
+    String state,
+    String pincode,
+  ) async {
     String uuid = _auth.currentUser!.uid;
 
     final doc = await _store.collection('stores').doc(storeId).get();
@@ -79,8 +78,8 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       "state": state,
       "pincode": pincode,
       "numberR": numberR,
-      "paymentdone":paymentType,
-      "numberUser":numberUser
+      "paymentdone": paymentType,
+      "numberUser": numberUser
     }, SetOptions(merge: true));
 
     await docUser.set({
@@ -96,12 +95,11 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
       "pincode": pincode,
       "storeuid": storeId,
       "name": name,
-      "paymentdone":paymentType,
-      "numberStore":numberStore
+      "paymentdone": paymentType,
+      "numberStore": numberStore
     }, SetOptions(merge: true));
 
     for (var items in widget.orderModel.lstOfItems) {
-      
       await docUser.set({
         "order": {
           items.name: {
@@ -148,7 +146,9 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => DashboardScreen()), (route) => false);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => SelectCityScreen()),
+            (route) => false);
         return false;
       },
       child: Scaffold(
@@ -171,7 +171,8 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
                 ),
                 onPressed: () {
                   Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => DashboardScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => SelectCityScreen()),
                       (Route<dynamic> route) => false);
                 },
               ),
@@ -201,15 +202,16 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
                 ),
                 Space(16),
                 Text("Confirmed",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32)),
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 32)),
                 Space(32),
                 Text(
-                       "Your booking has been confirmed for ${widget.orderModel.date}",
+                  "Your booking has been confirmed for ${widget.orderModel.date}",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 14, color: Colors.grey),
                 ),
                 Visibility(
-                  visible:  true,
+                  visible: true,
                   child: Column(
                     children: [
                       Space(8),
@@ -230,7 +232,8 @@ class _LastBookingScreenState extends State<LastBookingScreen> {
                                   fontWeight: FontWeight.bold, fontSize: 17)),
                           Space(4),
                           Text("on",
-                              style: TextStyle(color: Colors.grey, fontSize: 13)),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 13)),
                           Space(4),
                           Text(widget.orderModel.weekday,
                               style: TextStyle(

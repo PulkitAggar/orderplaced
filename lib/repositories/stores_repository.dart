@@ -8,14 +8,14 @@ import '../models/order.model.dart';
 import '../models/userordermodel.dart';
 
 class StoresRepository {
-  static Future<List<BMCommonCardModel>> getStoresList() async {
+  static Future<List<BMCommonCardModel>> getStoresList(String city) async {
     List<BMCommonCardModel> storesList = [];
 
     // Fetch data from Firestore
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
         .instance
         .collection('stores')
-        .where("city", isEqualTo: "hisar")
+        .where("city", isEqualTo: city.toLowerCase())
         .get();
 
     // Process each document in the query snapshot

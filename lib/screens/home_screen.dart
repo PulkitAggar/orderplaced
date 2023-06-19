@@ -8,9 +8,9 @@ import '../fragments/fragments.dart';
 import '../utils/BMColors.dart';
 
 class DashboardScreen extends StatefulWidget {
-  // bool flag;
+  String city;
 
-  DashboardScreen();
+  DashboardScreen(this.city);
 
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
@@ -30,6 +30,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget getFragment() {
     if (selectedTab == 0) {
       return BMHomeFragment2(
+        city: widget.city,
         onTabChanged: updateSelectedTab,
       );
     } else if (selectedTab == 1) {

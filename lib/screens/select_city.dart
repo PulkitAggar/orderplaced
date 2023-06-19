@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mycycleclinic/fragments/BMHomeFragment2.dart';
 import 'package:mycycleclinic/screens/home_screen.dart';
 import 'package:mycycleclinic/utils/BMColors.dart';
+import 'package:mycycleclinic/utils/BMCommonWidgets.dart';
 import 'package:nb_utils/nb_utils.dart';
-
-import '../utils/BMCommonWidgets.dart';
 
 class SelectCityScreen extends StatefulWidget {
   SelectCityScreen({super.key});
@@ -13,7 +14,7 @@ class SelectCityScreen extends StatefulWidget {
 }
 
 class _SelectCityScreenState extends State<SelectCityScreen> {
-  List<RoomFinderModel> locationListData = locationList();
+  Future<List<RoomFinderModel>> locationListData = locationList();
 
   @override
   void initState() {
@@ -37,17 +38,20 @@ class _SelectCityScreenState extends State<SelectCityScreen> {
                       fontWeight: FontWeight.bold,
                       color: bmPrimaryColor)),
               16.height,
-              Wrap(
-                spacing: 16,
-                runSpacing: 16,
-                children: List.generate(
-                  locationListData.length,
-                  (index) {
-                    return RFLocationComponent(
-                        locationData: locationListData[index]);
-                  },
-                ),
-              ),
+              FutureBuilder<List<RoomFinderModel>>(
+                  future: locationListData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Wrap(
+                          spacing: 16,
+                          runSpacing: 16,
+                          children: snapshot.data!.map((e) {
+                            return RFLocationComponent(locationData: e);
+                          }).toList());
+                    } else {
+                      return shimmerWidget();
+                    }
+                  }),
             ],
           ),
         ),
@@ -66,12 +70,15 @@ class RFLocationComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => DashboardScreen()));
+        if (locationData.price == 'Coming soon...') {
+        } else {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => DashboardScreen(locationData.location)));
+        }
       },
       child: Stack(
         children: [
-          Image.asset(
+          bmCommonCachedNetworkImage(
             locationData.img.validate(),
             fit: BoxFit.cover,
             height: 170,
@@ -125,53 +132,41 @@ class RFLocationComponent extends StatelessWidget {
   }
 }
 
-List<RoomFinderModel> locationList() {
+Future<List<RoomFinderModel>> locationList() async {
   List<RoomFinderModel> locationListData = [];
-  locationListData.add(
-      RoomFinderModel(img: rf_location1, price: "1 Found", location: "Hisar"));
-  locationListData.add(
-      RoomFinderModel(img: rf_location2, price: "4 Found", location: "Imadol"));
-  locationListData.add(RoomFinderModel(
-      img: rf_location3, price: "12 Found", location: "Kupondole"));
-  locationListData.add(RoomFinderModel(
-      img: rf_location4, price: "16 Found", location: " Lalitpur"));
-  locationListData.add(RoomFinderModel(
-      img: rf_location5, price: "20 Found", location: "Mahalaxmi"));
-  locationListData.add(RoomFinderModel(
-      img: rf_location6, price: "25 Found", location: "Koteshwor"));
-  locationListData.add(RoomFinderModel(
-      img: rf_location1, price: "10 Found", location: "Lalitpur"));
-  locationListData.add(
-      RoomFinderModel(img: rf_location2, price: "4 Found", location: "Imadol"));
+
+  QuerySnapshot<Map<String, dynamic>> querySnapshot =
+      await FirebaseFirestore.instance.collection('cities').get();
+
+  querySnapshot.docs.forEach((doc) {
+    String img = doc.data()['img'] ?? '';
+
+    String location = doc.data()['name'] ?? '';
+
+    String price = doc.data()['stores'] ?? '';
+
+    RoomFinderModel model = RoomFinderModel(
+      img: img,
+      location: location,
+      price: price,
+    );
+
+    locationListData.add(model);
+  });
 
   return locationListData;
 }
 
 class RoomFinderModel {
   String? img;
-  String? roomCategoryName;
-  String? description;
-  String? address;
   String? price;
-  String? rentDuration;
-  String? location;
-  String? views;
-  bool? unReadNotification;
-  Widget? newScreenWidget;
-  Color? color;
+  String location;
 
-  RoomFinderModel(
-      {this.img,
-      this.roomCategoryName,
-      this.description,
-      this.color,
-      this.address,
-      this.price,
-      this.rentDuration,
-      this.location,
-      this.views,
-      this.unReadNotification,
-      this.newScreenWidget});
+  RoomFinderModel({
+    this.img,
+    this.price,
+    required this.location,
+  });
 }
 
 const rf_location1 = "assets/images/rf_location1.jpg";

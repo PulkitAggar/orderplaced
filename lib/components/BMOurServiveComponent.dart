@@ -156,39 +156,27 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                     // SizedBox(
                                     //   height: 10,
                                     // ),
-                                    ListView.builder(
-                                        shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: e.valid.length,
-                                        itemBuilder: (context, index) {
-                                          return Row(
-                                            children: [
-                                              Icon(
-                                                Icons.check_circle,
-                                                color: Colors.green,
-                                                size: 18,
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Expanded(
-                                                child: Text(
-                                                  e.valid[index],
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                                flex: 7,
-                                              ),
-                                              Expanded(
-                                                child: SizedBox(
-                                                  width: 1,
-                                                ),
-                                                flex: 1,
-                                              ),
-                                            ],
-                                          );
-                                        }),
+                                    // Row(
+                                    //   children: [
+                                    //     // Expanded(
+                                    //     //   child: SizedBox(
+                                    //     //     width: 1,
+                                    //     //   ),
+                                    //     // ),
+                                    //     Text(
+                                    //       'Services Not Included',
+                                    //       style: TextStyle(
+                                    //           fontSize: 22,
+                                    //           color: Colors.black,
+                                    //           fontWeight: FontWeight.bold),
+                                    //     ),
+                                    //     // Expanded(
+                                    //     //   child: SizedBox(
+                                    //     //     width: 1,
+                                    //     //   ),
+                                    //     // ),
+                                    //   ],
+                                    // ),
                                     ListView.builder(
                                         shrinkWrap: true,
                                         physics: NeverScrollableScrollPhysics(),
@@ -222,6 +210,72 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                             ],
                                           );
                                         }),
+                                    ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: e.valid.length,
+                                        itemBuilder: (context, index) {
+                                          return Row(
+                                            children: [
+                                              Icon(
+                                                Icons.check_circle,
+                                                color: Colors.green,
+                                                size: 18,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  e.valid[index],
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                flex: 7,
+                                              ),
+                                              Expanded(
+                                                child: SizedBox(
+                                                  width: 1,
+                                                ),
+                                                flex: 1,
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                    //   ListView.builder(
+                                    //       shrinkWrap: true,
+                                    //       physics: NeverScrollableScrollPhysics(),
+                                    //       itemCount: e.invalid.length,
+                                    //       itemBuilder: (context, index) {
+                                    //         return Row(
+                                    //           children: [
+                                    //             Icon(
+                                    //               Icons.cancel,
+                                    //               color: Colors.red,
+                                    //               size: 18,
+                                    //             ),
+                                    //             SizedBox(
+                                    //               width: 5,
+                                    //             ),
+                                    //             Expanded(
+                                    //               child: Text(
+                                    //                 e.invalid[index],
+                                    //                 maxLines: 1,
+                                    //                 overflow:
+                                    //                     TextOverflow.ellipsis,
+                                    //               ),
+                                    //               flex: 7,
+                                    //             ),
+                                    //             Expanded(
+                                    //               child: SizedBox(
+                                    //                 width: 1,
+                                    //               ),
+                                    //               flex: 1,
+                                    //             ),
+                                    //           ],
+                                    //         );
+                                    //       }),
                                   ],
                                 ),
                               ),
