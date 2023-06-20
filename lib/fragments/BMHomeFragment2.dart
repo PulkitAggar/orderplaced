@@ -83,6 +83,8 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
     Future<List<BMCommonCardModel>> recommendedList =
         StoresRepository.getStoresList(widget.city);
 
+    Future<List<OfferCardModel>> offersList = StoresRepository.getOffers();
+
     return Scaffold(
       backgroundColor: bmLightScaffoldBackgroundColor,
       body: LayoutBuilder(
@@ -173,25 +175,48 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
                   }),
               16.height,
 
-              CarouselSlider(
-                options: CarouselOptions(height: 257.0),
-                items: offers.map((e) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(color: Color(0xFF181E00)),
-                            child: Image.asset(
-                              e.imageUrl,
-                              fit: BoxFit.cover,
-                            )).cornerRadiusWithClipRRect(20),
-                      );
-                    },
-                  );
-                }).toList(),
+              FutureBuilder<List<OfferCardModel>>(
+                future: offersList,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return CarouselSlider(
+                      options: CarouselOptions(height: 217.32, autoPlay: true),
+                      items: snapshot.data!.map((e) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: bmCommonCachedNetworkImage(e.img,
+                                  fit: BoxFit.cover)
+                              .cornerRadiusWithClipRRect(20),
+                        );
+                      }).toList(),
+                    );
+                  } else if (snapshot.hasError) {
+                    print(errorMessage);
+                    return Text(errorMessage);
+                  } else {
+                    return shimmerWidget();
+                  }
+                },
               ),
+              // CarouselSlider(
+              //   options: CarouselOptions(height: 257.0),
+              //   items: offers.map((e) {
+              //     return Builder(
+              //       builder: (BuildContext context) {
+              //         return Padding(
+              //           padding: const EdgeInsets.all(8.0),
+              //           child: Container(
+              //               width: MediaQuery.of(context).size.width,
+              //               decoration: BoxDecoration(color: Color(0xFF181E00)),
+              //               child: Image.asset(
+              //                 e.imageUrl,
+              //                 fit: BoxFit.cover,
+              //               )).cornerRadiusWithClipRRect(20),
+              //         );
+              //       },
+              //     );
+              //   }).toList(),
+              // ),
               16.height,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

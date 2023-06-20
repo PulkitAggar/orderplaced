@@ -34,7 +34,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         onTabChanged: updateSelectedTab,
       );
     } else if (selectedTab == 1) {
-      return RoadSideAssistance();
+      return RoadSideAssistance(
+        city: widget.city,
+      );
     } else if (selectedTab == 2) {
       return BMShoppingScreen();
     } else {

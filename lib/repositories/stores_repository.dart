@@ -8,6 +8,21 @@ import '../models/order.model.dart';
 import '../models/userordermodel.dart';
 
 class StoresRepository {
+  static Future<List<OfferCardModel>> getOffers() async {
+    List<OfferCardModel> offersList = [];
+
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await FirebaseFirestore.instance.collection('offers').get();
+
+    querySnapshot.docs.forEach((doc) {
+      String img = doc.data()['img'] ?? '';
+      OfferCardModel offerCardModel = OfferCardModel(img: img);
+      offersList.add(offerCardModel);
+    });
+
+    return offersList;
+  }
+
   static Future<List<BMCommonCardModel>> getStoresList(String city) async {
     List<BMCommonCardModel> storesList = [];
 
@@ -57,13 +72,14 @@ class StoresRepository {
     return storesList;
   }
 
-  static Future<List<BMRoadAssListModel>> getRoadAssList() async {
+  static Future<List<BMRoadAssListModel>> getRoadAssList(String city) async {
     List<BMRoadAssListModel> storesList = [];
 
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore
         .instance
         .collection('stores')
         .where("roadsideassistance", isEqualTo: true)
+        .where("city", isEqualTo: city.toLowerCase())
         .get();
 
     querySnapshot.docs.forEach((doc) {

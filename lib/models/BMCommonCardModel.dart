@@ -41,3 +41,8 @@ class ServiceCardModel {
       required this.valid,
       required this.invalid});
 }
+
+class OfferCardModel {
+  String img;
+  OfferCardModel({required this.img});
+}
