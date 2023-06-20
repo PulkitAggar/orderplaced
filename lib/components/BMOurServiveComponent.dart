@@ -58,7 +58,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                     if (snapshot.hasData) {
                       return CarouselSlider(
                           options: CarouselOptions(
-                            height: 400,
+                            height: 550,
                             autoPlay: true,
                             enlargeCenterPage: true,
                           ),
@@ -79,6 +79,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                               ),
                               padding: EdgeInsets.all(8.0),
                               child: SingleChildScrollView(
+                                physics: NeverScrollableScrollPhysics(),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -177,39 +178,39 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                     //     // ),
                                     //   ],
                                     // ),
-                                    ListView.builder(
-                                        shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
-                                        itemCount: e.invalid.length,
-                                        itemBuilder: (context, index) {
-                                          return Row(
-                                            children: [
-                                              Icon(
-                                                Icons.cancel,
-                                                color: Colors.red,
-                                                size: 18,
-                                              ),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Expanded(
-                                                child: Text(
-                                                  e.invalid[index],
-                                                  maxLines: 1,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                                flex: 7,
-                                              ),
-                                              Expanded(
-                                                child: SizedBox(
-                                                  width: 1,
-                                                ),
-                                                flex: 1,
-                                              ),
-                                            ],
-                                          );
-                                        }),
+                                    // ListView.builder(
+                                    //     shrinkWrap: true,
+                                    //     physics: NeverScrollableScrollPhysics(),
+                                    //     itemCount: e.invalid.length,
+                                    //     itemBuilder: (context, index) {
+                                    //       return Row(
+                                    //         children: [
+                                    //           Icon(
+                                    //             Icons.cancel,
+                                    //             color: Colors.red,
+                                    //             size: 18,
+                                    //           ),
+                                    //           SizedBox(
+                                    //             width: 5,
+                                    //           ),
+                                    //           Expanded(
+                                    //             child: Text(
+                                    //               e.invalid[index],
+                                    //               maxLines: 1,
+                                    //               overflow:
+                                    //                   TextOverflow.ellipsis,
+                                    //             ),
+                                    //             flex: 7,
+                                    //           ),
+                                    //           Expanded(
+                                    //             child: SizedBox(
+                                    //               width: 1,
+                                    //             ),
+                                    //             flex: 1,
+                                    //           ),
+                                    //         ],
+                                    //       );
+                                    //     }),
                                     ListView.builder(
                                         shrinkWrap: true,
                                         physics: NeverScrollableScrollPhysics(),
@@ -243,39 +244,39 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                             ],
                                           );
                                         }),
-                                    //   ListView.builder(
-                                    //       shrinkWrap: true,
-                                    //       physics: NeverScrollableScrollPhysics(),
-                                    //       itemCount: e.invalid.length,
-                                    //       itemBuilder: (context, index) {
-                                    //         return Row(
-                                    //           children: [
-                                    //             Icon(
-                                    //               Icons.cancel,
-                                    //               color: Colors.red,
-                                    //               size: 18,
-                                    //             ),
-                                    //             SizedBox(
-                                    //               width: 5,
-                                    //             ),
-                                    //             Expanded(
-                                    //               child: Text(
-                                    //                 e.invalid[index],
-                                    //                 maxLines: 1,
-                                    //                 overflow:
-                                    //                     TextOverflow.ellipsis,
-                                    //               ),
-                                    //               flex: 7,
-                                    //             ),
-                                    //             Expanded(
-                                    //               child: SizedBox(
-                                    //                 width: 1,
-                                    //               ),
-                                    //               flex: 1,
-                                    //             ),
-                                    //           ],
-                                    //         );
-                                    //       }),
+                                    ListView.builder(
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: e.invalid.length,
+                                        itemBuilder: (context, index) {
+                                          return Row(
+                                            children: [
+                                              Icon(
+                                                Icons.cancel,
+                                                color: Colors.red,
+                                                size: 18,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  e.invalid[index],
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                                flex: 7,
+                                              ),
+                                              Expanded(
+                                                child: SizedBox(
+                                                  width: 1,
+                                                ),
+                                                flex: 1,
+                                              ),
+                                            ],
+                                          );
+                                        }),
                                   ],
                                 ),
                               ),
