@@ -48,6 +48,9 @@ class _SelectCityScreenState extends State<SelectCityScreen> {
                           children: snapshot.data!.map((e) {
                             return RFLocationComponent(locationData: e);
                           }).toList());
+                    } else if (snapshot.hasError) {
+                      print(snapshot.error);
+                      return Text('Error: ${snapshot.error}');
                     } else {
                       return shimmerWidget();
                     }
