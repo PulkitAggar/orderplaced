@@ -19,11 +19,9 @@ void showFilterBottomSheet(BuildContext context) {
       isScrollControlled: true,
       enableDrag: true,
       isDismissible: true,
-      shape: RoundedRectangleBorder(
-          borderRadius: radiusOnly(topLeft: 30, topRight: 30)),
+      shape: RoundedRectangleBorder(borderRadius: radiusOnly(topLeft: 30, topRight: 30)),
       builder: (context) {
-        return StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
+        return StatefulBuilder(builder: (BuildContext context, StateSetter setState) {
           return Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,17 +37,14 @@ void showFilterBottomSheet(BuildContext context) {
               ),
               titleText(title: 'Filters', size: 24),
               16.height,
-              Text('Sort by', style: boldTextStyle(color: bmSpecialColorDark)),
+              Text('Sort by', style: boldTextStyle(color:bmSpecialColorDark)),
               16.height,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Distance',
-                      style: primaryTextStyle(color: bmSpecialColorDark)),
+                  Text('Distance', style: primaryTextStyle(color: bmSpecialColorDark)),
                   IconButton(
-                    icon: distChecked
-                        ? Icon(Icons.check_circle, color: bmPrimaryColor)
-                        : Icon(Icons.circle_outlined, color: bmPrimaryColor),
+                    icon: distChecked ? Icon(Icons.check_circle, color: bmPrimaryColor) : Icon(Icons.circle_outlined, color: bmPrimaryColor),
                     onPressed: () {
                       distChecked = !distChecked;
                       setState(() {});
@@ -60,12 +55,9 @@ void showFilterBottomSheet(BuildContext context) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Top Reviewed',
-                      style: primaryTextStyle(color: bmSpecialColorDark)),
+                  Text('Top Reviewed', style: primaryTextStyle(color: bmSpecialColorDark)),
                   IconButton(
-                    icon: topChecked
-                        ? Icon(Icons.check_circle, color: bmPrimaryColor)
-                        : Icon(Icons.circle_outlined, color: bmPrimaryColor),
+                    icon: topChecked ? Icon(Icons.check_circle, color: bmPrimaryColor) : Icon(Icons.circle_outlined, color: bmPrimaryColor),
                     onPressed: () {
                       topChecked = !topChecked;
                       setState(() {});
@@ -76,10 +68,8 @@ void showFilterBottomSheet(BuildContext context) {
               16.height,
               Row(
                 children: [
-                  Text('Distance ',
-                      style: boldTextStyle(color: bmSpecialColorDark)),
-                  Text('${value.round().toString()} miles',
-                      style: primaryTextStyle(color: bmSpecialColorDark)),
+                  Text('Distance ', style: boldTextStyle(color: bmSpecialColorDark)),
+                  Text('${value.round().toString()} miles', style: primaryTextStyle(color: bmSpecialColorDark)),
                 ],
               ),
               SliderTheme(
@@ -111,12 +101,9 @@ void showFilterBottomSheet(BuildContext context) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Special Offers',
-                      style: primaryTextStyle(color: bmSpecialColorDark)),
+                  Text('Special Offers', style: primaryTextStyle(color: bmSpecialColorDark)),
                   IconButton(
-                    icon: specialChecked
-                        ? Icon(Icons.check_circle, color: bmPrimaryColor)
-                        : Icon(Icons.circle_outlined, color: bmPrimaryColor),
+                    icon: specialChecked ? Icon(Icons.check_circle, color: bmPrimaryColor) : Icon(Icons.circle_outlined, color: bmPrimaryColor),
                     onPressed: () {
                       specialChecked = !specialChecked;
                       setState(() {});
@@ -127,12 +114,9 @@ void showFilterBottomSheet(BuildContext context) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Mobile Services',
-                      style: primaryTextStyle(color: bmSpecialColorDark)),
+                  Text('Mobile Services', style: primaryTextStyle(color:bmSpecialColorDark)),
                   IconButton(
-                    icon: mobileChecked
-                        ? Icon(Icons.check_circle, color: bmPrimaryColor)
-                        : Icon(Icons.circle_outlined, color: bmPrimaryColor),
+                    icon: mobileChecked ? Icon(Icons.check_circle, color: bmPrimaryColor) : Icon(Icons.circle_outlined, color: bmPrimaryColor),
                     onPressed: () {
                       mobileChecked = !mobileChecked;
                       setState(() {});
@@ -143,12 +127,9 @@ void showFilterBottomSheet(BuildContext context) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Online Services',
-                      style: primaryTextStyle(color: bmSpecialColorDark)),
+                  Text('Online Services', style: primaryTextStyle(color:bmSpecialColorDark)),
                   IconButton(
-                    icon: onlineChecked
-                        ? Icon(Icons.check_circle, color: bmPrimaryColor)
-                        : Icon(Icons.circle_outlined, color: bmPrimaryColor),
+                    icon: onlineChecked ? Icon(Icons.check_circle, color: bmPrimaryColor) : Icon(Icons.circle_outlined, color: bmPrimaryColor),
                     onPressed: () {
                       onlineChecked = !onlineChecked;
                       setState(() {});
@@ -160,9 +141,7 @@ void showFilterBottomSheet(BuildContext context) {
               Row(
                 children: [
                   AppButton(
-                    shapeBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32),
-                        side: BorderSide(color: bmPrimaryColor, width: 2)),
+                    shapeBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32), side: BorderSide(color: bmPrimaryColor, width: 2)),
                     child: Text('Clear', style: boldTextStyle()),
                     padding: EdgeInsets.all(16),
                     color: context.cardColor,
@@ -172,10 +151,8 @@ void showFilterBottomSheet(BuildContext context) {
                   ),
                   16.width,
                   AppButton(
-                    shapeBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32)),
-                    child: Text('Show 45+ places',
-                        style: boldTextStyle(color: Colors.white)),
+                    shapeBorder: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+                    child: Text('Show 45+ places', style: boldTextStyle(color: Colors.white)),
                     padding: EdgeInsets.all(16),
                     color: bmPrimaryColor,
                     onTap: () {
