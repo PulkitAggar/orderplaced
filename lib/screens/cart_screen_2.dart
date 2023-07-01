@@ -86,19 +86,23 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
         double calculateDiscount(
             List<BMShoppingModel> shoppingList, bool calculateDiscount) {
           double discount = 0.0;
-          bool hasServices = false;
+          double ngdiscount = 0.0;
 
           if (!calculateDiscount) {
             return 0.0;
           }
 
           for (var item in shoppingList) {
-            if (item.catName == 'Services') {
-              if (!hasServices || item.cost < discount) {
-                discount = item.cost;
-                hasServices = true;
-              }
+            if (item.subName == 'Geared') {
+              discount = state.discount;
             }
+            if (item.subName == 'Single-speed') {
+              ngdiscount = state.ngdiscount;
+            }
+          }
+
+          if (ngdiscount != 0.0) {
+            return ngdiscount;
           }
 
           return discount;

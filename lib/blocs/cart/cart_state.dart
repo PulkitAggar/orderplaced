@@ -16,8 +16,11 @@ class CartLoadedState extends CartState {
   final int deliveryFee;
   final String storUid;
   final bool calculateDiscount;
+  final double discount;
+  final double ngdiscount;
 
-  CartLoadedState(this.list, this.deliveryFee, this.storUid, this.calculateDiscount);
+  CartLoadedState(this.list, this.deliveryFee, this.storUid,
+      this.calculateDiscount, this.discount, this.ngdiscount);
 }
 
 class CartErrorState extends CartState {
