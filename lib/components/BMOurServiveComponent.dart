@@ -43,7 +43,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
   getbuilder(String n, String id) {
     return ExpansionTile(
         // expandedCrossAxisAlignment: CrossAxisAlignment.start,
-        shape: Border(),
+        shape: const Border(),
         initiallyExpanded: n == 'Services',
         // collapsedBackgroundColor: Colors.black12,
         // backgroundColor: Colors.black12,
@@ -58,7 +58,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                     if (snapshot.hasData) {
                       return CarouselSlider(
                           options: CarouselOptions(
-                            height: 550,
+                            height: 450,
                             autoPlay: true,
                             enlargeCenterPage: true,
                           ),
@@ -66,42 +66,42 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                             return Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(24.0),
-                                color: Color(0xFFE2FF6D),
+                                color: const Color(0xFFE2FF6D),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 2,
                                     blurRadius: 5,
-                                    offset: Offset(0,
+                                    offset: const Offset(0,
                                         3), // changes the position of the shadow
                                   ),
                                 ],
                               ),
-                              padding: EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(8.0),
                               child: SingleChildScrollView(
-                                physics: NeverScrollableScrollPhysics(),
+                                physics: const BouncingScrollPhysics(),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      height: 10,
+                                    const SizedBox(
+                                      height: 1,
                                     ),
                                     Row(
                                       children: [
-                                        Expanded(
+                                        const Expanded(
                                           child: SizedBox(
                                             width: 1,
                                           ),
                                         ),
                                         Text(
                                           e.name,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 22,
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold),
                                         ),
-                                        Expanded(
+                                        const Expanded(
                                           child: SizedBox(
                                             width: 1,
                                           ),
@@ -115,7 +115,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                       padding: const EdgeInsets.all(8.0),
                                       child: Row(
                                         children: [
-                                          Expanded(
+                                          const Expanded(
                                             child: SizedBox(
                                               width: 1,
                                             ),
@@ -127,26 +127,26 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                                   BorderRadius.circular(24.0),
                                             ),
                                             child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.black,
+                                                borderRadius:
+                                                    BorderRadius.circular(24.0),
+                                              ),
                                               child: Padding(
                                                 padding:
-                                                    const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(12.0),
                                                 child: Text(
                                                   'Rs.${e.price}',
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                       color: Colors.white,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       fontSize: 26),
                                                 ),
                                               ),
-                                              decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                borderRadius:
-                                                    BorderRadius.circular(24.0),
-                                              ),
                                             ),
                                           ),
-                                          Expanded(
+                                          const Expanded(
                                             child: SizedBox(
                                               width: 1,
                                             ),
@@ -213,17 +213,17 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                     //     }),
                                     ListView.builder(
                                         shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
+                                        physics: const NeverScrollableScrollPhysics(),
                                         itemCount: e.valid.length,
                                         itemBuilder: (context, index) {
                                           return Row(
                                             children: [
-                                              Icon(
+                                              const Icon(
                                                 Icons.check_circle,
                                                 color: Colors.green,
                                                 size: 18,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 5,
                                               ),
                                               Expanded(
@@ -235,7 +235,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                                 ),
                                                 flex: 7,
                                               ),
-                                              Expanded(
+                                              const Expanded(
                                                 child: SizedBox(
                                                   width: 1,
                                                 ),
@@ -246,17 +246,17 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                         }),
                                     ListView.builder(
                                         shrinkWrap: true,
-                                        physics: NeverScrollableScrollPhysics(),
+                                        physics: const NeverScrollableScrollPhysics(),
                                         itemCount: e.invalid.length,
                                         itemBuilder: (context, index) {
                                           return Row(
                                             children: [
-                                              Icon(
+                                              const Icon(
                                                 Icons.cancel,
                                                 color: Colors.red,
                                                 size: 18,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 5,
                                               ),
                                               Expanded(
@@ -268,7 +268,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                                 ),
                                                 flex: 7,
                                               ),
-                                              Expanded(
+                                              const Expanded(
                                                 child: SizedBox(
                                                   width: 1,
                                                 ),
@@ -286,7 +286,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                       print(snapshot.error);
                       return Text('Error: ${snapshot.error}');
                     } else {
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                     }
                   },
                 )
@@ -307,7 +307,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
               //         },
               //       );
               //     }).toList() )
-              : SizedBox(height: 0),
+              : const SizedBox(height: 0),
           StreamBuilder(
               stream: _firebase.collection("subnames").doc(n).snapshots(),
               builder: (context, snapshot) {
@@ -322,7 +322,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: ExpansionTile(
-                            shape: Border(),
+                            shape: const Border(),
                             initiallyExpanded: n == 'Services',
                             //n=='Services'?
                             collapsedIconColor: bmSpecialColorDark,
@@ -331,7 +331,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                             title: Text(
                               '${doc[i]}',
                               style:
-                                  TextStyle(color: Colors.black, fontSize: 22),
+                                  const TextStyle(color: Colors.black, fontSize: 22),
                             ),
 
                             children: [

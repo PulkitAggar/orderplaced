@@ -17,7 +17,21 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         list = await getCartList();
         await toCalculateDiscount();
         deliveryFee = await getDeliveryFee();
-        emit(CartLoadedState(list, deliveryFee, storeId, calculateDiscount));
+        if (storeId != '') {
+          print(storeId);
+          var doc = await FirebaseFirestore.instance
+              .collection('stores')
+              .doc(storeId)
+              .get();
+          print(1);
+          discountMoney = doc.data()!['discount'].toDouble();
+          ngdiscountMoney = doc.data()!['ngdiscount'].toDouble();
+          print(discountMoney);
+          print(ngdiscountMoney);
+          // ngdiscountMoney = doc.data()!['ngdiscount'];
+        }
+        emit(CartLoadedState(list, deliveryFee, storeId, calculateDiscount,
+            discountMoney, ngdiscountMoney));
       } catch (e) {
         emit(CartErrorState(e.toString()));
       }
@@ -38,7 +52,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             .update({'count': newCount});
         list = await getCartList();
         deliveryFee = await getDeliveryFee();
-        emit(CartLoadedState(list, deliveryFee, storeId, calculateDiscount));
+        emit(CartLoadedState(list, deliveryFee, storeId, calculateDiscount,
+            discountMoney, ngdiscountMoney));
       } catch (e) {
         emit(CartErrorState(e.toString()));
       }
@@ -57,7 +72,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             .update({'count': newCount});
         list = await getCartList();
         deliveryFee = await getDeliveryFee();
-        emit(CartLoadedState(list, deliveryFee, storeId, calculateDiscount));
+        emit(CartLoadedState(list, deliveryFee, storeId, calculateDiscount,
+            discountMoney, ngdiscountMoney));
       } catch (e) {
         emit(CartErrorState(e.toString()));
       }
@@ -84,7 +100,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
               .set({'storeid': ''}, SetOptions(merge: true));
         }
         deliveryFee = await getDeliveryFee();
-        emit(CartLoadedState(list, deliveryFee, storeId, calculateDiscount));
+        emit(CartLoadedState(list, deliveryFee, storeId, calculateDiscount,
+            discountMoney, ngdiscountMoney));
       } catch (e) {
         emit(CartErrorState(e.toString()));
       }
@@ -130,7 +147,8 @@ Future<List<BMShoppingModel>> getCartList() async {
 }
 
 String storeId = '';
-
+double discountMoney = 0.00;
+double ngdiscountMoney = 0.00;
 bool calculateDiscount = false;
 
 Future<void> toCalculateDiscount() async {
@@ -166,6 +184,7 @@ Future<int> getDeliveryFee() async {
     return fee;
   }
 }
+
 
 // feeFetch() async {
 

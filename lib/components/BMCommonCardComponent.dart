@@ -68,39 +68,44 @@ class _BMCommonCardComponentState extends State<BMCommonCardComponent> {
               ),
             ),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Offstage(),
-              210.height,
-              Text(widget.element.title,
-                      style: boldTextStyle(
-                          size: 22,
-                          color: Color(0xFFE2FF6D))) // bmSpecialColorDark
-                  .paddingSymmetric(horizontal: 12),
-              4.height,
-              Text(widget.element.subtitle!,
-                      style: secondaryTextStyle(
-                          color: Colors.white,
-                          size: 12,
-                          wordSpacing: 2,
-                          height: 1.5)) //bmPrimaryColor
-                  .paddingSymmetric(horizontal: 14),
-              4.height,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  const Icon(
-                    Icons.location_on_outlined,
-                    color: Colors.white,
-                  ),
-                  Text("$distanceinKM km away",
-                      style: secondaryTextStyle(color: Colors.white)),
-                ],
-              ).paddingSymmetric(horizontal: 18),
-              12.height,
-            ],
+          Positioned(
+            width: widget.fullScreenComponent ? context.width() - 32 : 250,
+            height: 300,
+            bottom: 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Offstage(),
+                // 210.height,
+                Text(widget.element.title,
+                        style: boldTextStyle(
+                            size: 22,
+                            color: Color(0xFFE2FF6D))) // bmSpecialColorDark
+                    .paddingSymmetric(horizontal: 12),
+                4.height,
+                Text(widget.element.subtitle!,
+                        style: secondaryTextStyle(
+                            color: Colors.white,
+                            size: 12,
+                            wordSpacing: 2,
+                            height: 1.5)) //bmPrimaryColor
+                    .paddingSymmetric(horizontal: 14),
+                4.height,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Icon(
+                      Icons.location_on_outlined,
+                      color: Colors.white,
+                    ),
+                    Text("$distanceinKM km away",
+                        style: secondaryTextStyle(color: Colors.white)),
+                  ],
+                ).paddingSymmetric(horizontal: 18),
+                12.height,
+              ],
+            ),
           ),
           // Positioned(
           //   top: 15,
