@@ -104,7 +104,7 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
           if (ngdiscount != 0.0) {
             return ngdiscount;
           }
-          
+
           return discount;
         }
 

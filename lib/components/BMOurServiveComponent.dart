@@ -58,7 +58,7 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                     if (snapshot.hasData) {
                       return CarouselSlider(
                           options: CarouselOptions(
-                            height: 450,
+                            height: 500,
                             autoPlay: true,
                             enlargeCenterPage: true,
                           ),
@@ -213,7 +213,8 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                     //     }),
                                     ListView.builder(
                                         shrinkWrap: true,
-                                        physics: const NeverScrollableScrollPhysics(),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
                                         itemCount: e.valid.length,
                                         itemBuilder: (context, index) {
                                           return Row(
@@ -246,7 +247,8 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                                         }),
                                     ListView.builder(
                                         shrinkWrap: true,
-                                        physics: const NeverScrollableScrollPhysics(),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
                                         itemCount: e.invalid.length,
                                         itemBuilder: (context, index) {
                                           return Row(
@@ -330,8 +332,8 @@ class _BMOurServiveComponentState extends State<BMOurServiveComponent> {
                             //crossAxisAlignment: CrossAxisAlignment.start,
                             title: Text(
                               '${doc[i]}',
-                              style:
-                                  const TextStyle(color: Colors.black, fontSize: 22),
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 22),
                             ),
 
                             children: [

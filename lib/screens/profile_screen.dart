@@ -6,6 +6,7 @@ import 'package:mycycleclinic/screens/cancellationpolicy.dart';
 import 'package:mycycleclinic/screens/current_order_screen.dart';
 import 'package:mycycleclinic/screens/past_order_screen.dart';
 import 'package:mycycleclinic/screens/privacypolicy.dart';
+import 'package:mycycleclinic/screens/shippingpolicy.dart';
 import 'package:mycycleclinic/screens/termsandcondition.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../screens/screens.dart';
@@ -209,7 +210,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8.0),
                   child: Container(
-                    height: 152,
+                    height: 200,
                     decoration: const BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -308,6 +309,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ],
                             ),
                           ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Row(
+                              children: const [
+                                Icon(
+                                  Icons.location_city,
+                                  color: Color(0xFF9ABF00),
+                                ),
+                                Text(
+                                  "  Address : ",
+                                  style: TextStyle(
+                                    color: Color(0xFF9ABF00),
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    "55232, Santro Enclave Industrial Area Road, Delhi Rd, opp Bharath Petrol Pump Vidyut Nagar, Hisar, Haryana 125006",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -352,21 +382,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           PrivacyPolicyScreen()));
                             },
                           ),
-                          Text('and'),
+                          Text(','),
                         ],
                       ),
-                      GestureDetector(
-                        child: Text(
-                          "Cancellation Policy ",
-                          style: TextStyle(color: Colors.blue),
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      CancellationPolicyScreen()));
-                        },
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            child: Text(
+                              "Cancellation Policy ",
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          CancellationPolicyScreen()));
+                            },
+                          ),
+                          Text('and '),
+                          GestureDetector(
+                            child: Text(
+                              "Shipping Policy ",
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ShippingPolicy()));
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
