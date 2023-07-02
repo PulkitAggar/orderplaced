@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -195,174 +196,173 @@ class BMServiceComponentState extends State<BMServiceComponent> {
               ).expand(),
               Row(
                 children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 10, right: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text("Quantity", style: TextStyle(color: Colors.white)),
+                        Row(
+                          children: [
+                            Text(
+                              "$val",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            IconButton(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (ctx) {
+                                        return WillPopScope(
+                                          onWillPop: () async {
+                                            return true;
+                                          },
+                                          child: Center(
+                                            child: AlertDialog(
+                                                title: const Center(
+                                                  child:
+                                                      Text("Pick the Quantity"),
+                                                ),
+                                                content: StatefulBuilder(
+                                                    builder:
+                                                        (context, SBsetState) {
+                                                  return NumberPicker(
+                                                    minValue: 1,
+                                                    maxValue: 100,
+                                                    value: val,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        val = value;
+                                                      });
+                                                      SBsetState(() {
+                                                        val = value;
+                                                      });
+                                                    },
+                                                  );
+                                                })),
+                                          ),
+                                        );
+                                      });
+                                },
+                                icon: const Icon(
+                                  Icons.arrow_drop_down_circle_outlined,
+                                  color: Colors.white,
+                                ))
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 5),
                   Column(
                     children: [
-                      Text("QTY", style: TextStyle(color: Colors.white)),
-                      Row(
-                        children: [
-                          Text(
-                            "$val",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          IconButton(
-                              onPressed: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (ctx) {
-                                      return WillPopScope(
-                                        onWillPop: () async {
-                                          return true;
-                                        },
-                                        child: Center(
-                                          child: AlertDialog(
-                                              title: const Center(
-                                                child: Text("Pick the QTY"),
-                                              ),
-                                              content: StatefulBuilder(builder:
-                                                  (context, SBsetState) {
-                                                return NumberPicker(
-                                                  minValue: 1,
-                                                  maxValue: 100,
-                                                  value: val,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      val = value;
-                                                    });
-                                                    SBsetState(() {
-                                                      val = value;
-                                                    });
-                                                  },
-                                                );
-                                              })),
-                                        ),
-                                      );
-                                    });
-                              },
-                              icon: const Icon(
-                                Icons.arrow_drop_down_circle_outlined,
-                                color: Colors.white,
-                              ))
-                        ],
-                      )
+                      OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                            minimumSize: Size(60, 40),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25)),
+                            side: BorderSide(color: Colors.white)),
+                        onPressed: () {
+                          showBookBottomSheet(context, widget.imageurl,
+                              widget.disc, widget.name, widget.cost);
+                        },
+                        child: Text('SHOW INFO',
+                            style:
+                                boldTextStyle(color: Colors.white, size: 12)),
+                      ),
+                      // SizedBox(height: 4),
+                      if (isAdded == false)
+                        AppButton(
+                          width: 60,
+                          padding: const EdgeInsets.all(5),
+                          shapeBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32)),
+                          // color: bmPrimaryColor,
+                          color: Colors.white,
+
+                          onTap: () {
+                            if (currentid == widget.storeid ||
+                                currentid == "") {
+                              FirebaseFirestore.instance
+                                  .collection("cart")
+                                  .doc("${_auth.currentUser?.email}")
+                                  .set({"storeid": widget.storeid});
+
+                              FirebaseFirestore.instance
+                                  .collection("cart")
+                                  .doc("${_auth.currentUser?.email}")
+                                  .collection("cart")
+                                  .doc("${widget.name}")
+                                  .set({
+                                'cost': widget.cost.toDouble(),
+                                'count': val,
+                                'subname': widget.subname,
+                                'catname': widget.catname,
+                                'imageurl': widget.imageurl,
+                                'name': widget.name,
+                              }).then((value) {
+                                setState(() {
+                                  isAdded = true;
+                                  fetched = val;
+                                });
+                                AnimatedSnackBar.rectangle(
+                                  'Success',
+                                  'Your Item is added to the Cart',
+                                  type: AnimatedSnackBarType.success,
+                                  brightness: Brightness.light,
+                                ).show(context);
+                              });
+                            } else {
+                              AnimatedSnackBar.rectangle(
+                                'Failed',
+                                'Cannot Add multiple store items remove your other store items to add this item',
+                                type: AnimatedSnackBarType.success,
+                                brightness: Brightness.light,
+                              ).show(context);
+                            }
+                          },
+                          child: Text('ADD TO CART',
+                              style:
+                                  boldTextStyle(color: Colors.black, size: 12)),
+                        ),
+                      if (isAdded == true)
+                        AppButton(
+                          width: 60,
+                          padding: const EdgeInsets.all(5),
+                          shapeBorder: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25)),
+                          // color: bmPrimaryColor,
+                          color: Colors.white,
+                          onTap: () {
+                            if (fetched != val) {
+                              itemSet();
+                              AnimatedSnackBar.rectangle(
+                                'Success',
+                                'Cart Updated Successfully',
+                                type: AnimatedSnackBarType.info,
+                                brightness: Brightness.light,
+                              ).show(context);
+                            } else {
+                              AnimatedSnackBar.rectangle(
+                                'Info',
+                                'Already Added',
+                                type: AnimatedSnackBarType.info,
+                                brightness: Brightness.light,
+                              ).show(context);
+                            }
+
+                            // showBookBottomSheet(context, element);
+                          },
+                          child: fetched != val
+                              ? Text('UPDATE CART',
+                                  style: boldTextStyle(
+                                      color: Colors.black, size: 12))
+                              : Text('ADDED TO CART',
+                                  style: boldTextStyle(
+                                      color: Colors.black, size: 12)),
+                        ),
                     ],
                   ),
-                  AppButton(
-                    width: 60,
-                    splashColor: Colors.white,
-                    padding: const EdgeInsets.all(0),
-
-                    shapeBorder: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32),
-                    ),
-                    // color: bmPrimaryColor,
-                    color: Colors.black,
-                    onTap: () {
-                      showBookBottomSheet(context, widget.imageurl, widget.disc,
-                          widget.name, widget.cost);
-                    },
-                    child: Text('INFO',
-                        style: boldTextStyle(color: Colors.white, size: 12)),
-                  ),
-                  8.width,
-                  if (isAdded == false)
-                    AppButton(
-                      width: 60,
-                      padding: const EdgeInsets.all(0),
-                      shapeBorder: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32)),
-                      // color: bmPrimaryColor,
-                      color: Colors.white,
-
-                      onTap: () {
-                        if (currentid == widget.storeid || currentid == "") {
-                          var snackBar = const SnackBar(
-                            dismissDirection: DismissDirection.down,
-                            content: Text(
-                              'Your Item is added to the Cart',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          );
-
-                          FirebaseFirestore.instance
-                              .collection("cart")
-                              .doc("${_auth.currentUser?.email}")
-                              .set({"storeid": widget.storeid});
-
-                          FirebaseFirestore.instance
-                              .collection("cart")
-                              .doc("${_auth.currentUser?.email}")
-                              .collection("cart")
-                              .doc("${widget.name}")
-                              .set({
-                            'cost': widget.cost.toDouble(),
-                            'count': val,
-                            'subname': widget.subname,
-                            'catname': widget.catname,
-                            'imageurl': widget.imageurl,
-                            'name': widget.name,
-                          }).then((value) {
-                            setState(() {
-                              isAdded = true;
-                              fetched = val;
-                            });
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                          });
-                        } else {
-                          var snackBar = const SnackBar(
-                            dismissDirection: DismissDirection.down,
-                            content: Text(
-                              'Cannot Add multiple store items remove your other store items to add this item',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-                      },
-                      child: Text('ADD',
-                          style: boldTextStyle(color: Colors.black, size: 12)),
-                    ),
-                  if (isAdded == true)
-                    AppButton(
-                      width: 60,
-                      padding: const EdgeInsets.all(0),
-                      shapeBorder: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32)),
-                      // color: bmPrimaryColor,
-                      color: fetched != val ? Colors.white : Colors.black12,
-                      onTap: () {
-                        if (fetched != val) {
-                          itemSet();
-
-                          var snackBar = const SnackBar(
-                            dismissDirection: DismissDirection.down,
-                            content: Text(
-                              'Your Item is Updated',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        } else {
-                          var snackBar = const SnackBar(
-                            dismissDirection: DismissDirection.down,
-                            content: Text(
-                              'Already Added',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        }
-
-                        // showBookBottomSheet(context, element);
-                      },
-                      child: fetched != val
-                          ? Text('UPDATE',
-                              style:
-                                  boldTextStyle(color: Colors.black, size: 12))
-                          : Text('ADDED',
-                              style:
-                                  boldTextStyle(color: Colors.white, size: 12)),
-                    ),
                 ],
               )
             ],
@@ -401,7 +401,7 @@ void showBookBottomSheet(
                         color: bmTextColorDarkMode),
                   ),
                 ),
-                titleText(title: name, size: 24),
+                titleText(title: name, size: 24, maxLines: 2),
                 16.height,
                 bmCommonCachedNetworkImage(image, fit: BoxFit.cover),
                 // Image.network(

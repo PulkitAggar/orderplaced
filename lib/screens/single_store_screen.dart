@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mycycleclinic/screens/cart_screen_2.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../components/BMOurServiveComponent.dart';
@@ -27,6 +28,28 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Color(0xffE1FF65),
+        elevation: 5,
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => BMShoppingScreen()));
+        },
+        label: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(children: [
+            Text(
+              "Go To Cart",
+              style: TextStyle(color: Colors.black),
+            ),
+            10.width,
+            Icon(
+              Icons.shopping_cart,
+              color: Colors.black,
+            )
+          ]),
+        ),
+      ),
       body: NestedScrollView(
         floatHeaderSlivers: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -52,15 +75,6 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
                     // BMSingleImageScreen(element: widget.element).launch(context);
                   },
                 ).visible(innerBoxIsScrolled),
-                // IconButton(
-                //   icon: widget.element.liked!
-                //       ? Icon(Icons.favorite, color: bmPrimaryColor)
-                //       : Icon(Icons.favorite_outline, color: bmPrimaryColor),
-                //   onPressed: () {
-                //     widget.element.liked = !widget.element.liked!;
-                //     setState(() {});
-                //   },
-                // ).visible(innerBoxIsScrolled),
               ],
               leadingWidth: 30,
               pinned: true,
