@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mycycleclinic/components/BMServiceComponent.dart';
 import 'package:mycycleclinic/screens/cart_screen_2.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -29,21 +30,28 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Color(0xffE1FF65),
+        backgroundColor: const Color(0xffE1FF65),
         elevation: 5,
-        onPressed: () {
-          Navigator.push(context,
+        onPressed: () async {
+          var call = await Navigator.push(context,
               MaterialPageRoute(builder: (context) => BMShoppingScreen()));
+          if (call.toString() == "refresh") {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        BMSingleComponentScreen(element: widget.element)));
+          }
         },
         label: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(children: [
-            Text(
+            const Text(
               "Go To Cart",
               style: TextStyle(color: Colors.black),
             ),
             10.width,
-            Icon(
+            const Icon(
               Icons.shopping_cart,
               color: Colors.black,
             )
@@ -65,7 +73,7 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
               ).visible(innerBoxIsScrolled),
               title: Text(
                 widget.element.title,
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: const TextStyle(fontSize: 20, color: Colors.white),
               ).visible(innerBoxIsScrolled),
               actions: [
                 IconButton(
@@ -163,7 +171,7 @@ class _BMSingleComponentScreenState extends State<BMSingleComponentScreen> {
                               children: [
                                 Text(
                                   widget.element.title,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 28, color: Color(0xFFE2FF6D)),
                                 ),
                                 // titleText(
