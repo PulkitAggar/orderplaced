@@ -1,11 +1,15 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mycycleclinic/components/BMCommonCardComponentTwo.dart';
+import 'package:mycycleclinic/components/BMHomeFragmentHeadComponentTwo.dart';
+import 'package:mycycleclinic/models/BMMasterModel.dart';
 import 'package:nb_utils/nb_utils.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+
 import '../components/BMCommonCardComponent.dart';
 import '../components/BMHomeFragmentHeadComponent.dart';
-import '../models/models.dart';
+import '../models/BMCommonCardModel.dart';
 import '../repositories/stores_repository.dart';
 import '../utils/BMColors.dart';
 import '../utils/BMCommonWidgets.dart';
@@ -26,17 +30,17 @@ List<OffersModel> getOffers() {
   return list;
 }
 
-class BMHomeFragment2 extends StatefulWidget {
+class BMHomeFragment2Two extends StatefulWidget {
   final Function(int) onTabChanged;
   String city;
 
-  BMHomeFragment2({required this.onTabChanged, required this.city});
+  BMHomeFragment2Two({required this.onTabChanged, required this.city});
 
   @override
-  State<BMHomeFragment2> createState() => _BMHomeFragmentState2();
+  State<BMHomeFragment2Two> createState() => _BMHomeFragment2TwoState();
 }
 
-class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
+class _BMHomeFragment2TwoState extends State<BMHomeFragment2Two> {
   final List<BMMasterModel> topServiceList = ServiceList();
   final List<OffersModel> offers = getOffers();
   // late String city1;
@@ -90,9 +94,7 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              HomeFragmentHeadComponent(
-                onButtonPressed: widget.onTabChanged,
-              ),
+              HomeFragmentHeadComponentTwo(),
 
               11.height,
               Row(
@@ -271,7 +273,7 @@ class _BMHomeFragmentState2 extends State<BMHomeFragment2> {
                                         children: snapshot.data!.map((e) {
                                           return GestureDetector(
                                             onTap: () {},
-                                            child: BMCommonCardComponent(
+                                            child: BMCommonCardComponentTwo(
                                               latitude: latitude,
                                               longitude: longitude,
                                               fullScreenComponent: true,

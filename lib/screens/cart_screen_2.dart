@@ -166,8 +166,9 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
                                             MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Text(
-                                              state.address == ''
-                                                  ? 'Your Address'
+                                              state.address == '' ||
+                                                      state.mobileno == ''
+                                                  ? 'Your Address and Number'
                                                   : 'Sweet Home',
                                               style: primaryTextStyle()),
                                           GestureDetector(
@@ -180,7 +181,8 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
                                               );
                                             },
                                             child: Text(
-                                                state.address == ''
+                                                state.address == '' ||
+                                                        state.mobileno == ''
                                                     ? 'Enter'
                                                     : 'Change',
                                                 style: primaryTextStyle(
@@ -189,12 +191,14 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
                                         ],
                                       ),
                                       Text(
-                                          state.address == ''
-                                              ? 'Please Enter your address'
+                                          state.address == '' ||
+                                                  state.mobileno == ''
+                                              ? 'Please Enter your address and number'
                                               : state.address,
-                                          style: primaryTextStyle()),
+                                          style: primaryTextStyle(size: 14)),
                                       Text(
-                                          state.address == ''
+                                          state.address == '' ||
+                                                  state.mobileno == ''
                                               ? 'before proceeding...'
                                               : state.city,
                                           style: primaryTextStyle(
@@ -215,7 +219,7 @@ class _BMShoppingScreenState extends State<BMShoppingScreen> {
                       padding: const EdgeInsets.all(10),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        height: MediaQuery.of(context).size.height * 0.06,
+                        height: MediaQuery.of(context).size.height * 0.05,
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           color: Colors.black,

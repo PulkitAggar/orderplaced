@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mycycleclinic/components/BMRoadAssComponent.dart';
+import 'package:mycycleclinic/fragments/fragments.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../models/BMRoadListModel.dart';
 import '../repositories/stores_repository.dart';
@@ -58,7 +59,7 @@ class _RoadSideAssistanceState extends State<RoadSideAssistance> {
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else {
-                    return CircularProgressIndicator();
+                    return shimmerWidget();
                   }
                 },
               )

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mycycleclinic/screens/select_city_two.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import 'screens.dart';
-
-class LandingScreen extends StatelessWidget {
-  const LandingScreen({super.key});
+class LandingScreenTwo extends StatelessWidget {
+  const LandingScreenTwo({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -63,43 +62,22 @@ class LandingScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(top: 25, left: 40, right: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AppButton(
-                    shapeBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32)),
-                    child: Text('Login Now',
-                        style: boldTextStyle(color: Colors.black)),
-                    padding: EdgeInsets.all(16),
-                    width: 130,
-                    color: Color(0xFFCCFE00),
-                    onTap: () {
-                      //SigninScreen().launch(context);
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => SigninScreen())));
-                    },
-                  ),
-                  16.width,
-                  AppButton(
-                    child: Text('Create Account',
-                        style: boldTextStyle(color: Colors.white)),
-                    width: 130,
-                    shapeBorder: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32)),
-                    padding: EdgeInsets.all(16),
-                    color: Colors.grey,
-                    onTap: () {
-                      //SignupScreen().launch(context);
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => SignupScreen())));
-                    },
-                  ),
-                ],
+              child: AppButton(
+                shapeBorder: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32)),
+                child: Text('Take a Tour',
+                    style: boldTextStyle(color: Colors.black)),
+                padding: EdgeInsets.all(16),
+                width: double.infinity,
+                color: Color(0xFFCCFE00),
+                onTap: () {
+                  //SigninScreen().launch(context);
+                  //Navigator.pushReplacement(context, MaterialPageRoute(builder: ((context) => SigninScreen())));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => SelectCityTwo())));
+                },
               ),
               // child: TextButton(
               //     style: ButtonStyle(
@@ -125,5 +103,6 @@ class LandingScreen extends StatelessWidget {
         ),
       ),
     );
+    ;
   }
 }

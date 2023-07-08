@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mycycleclinic/screens/landingScreen2.dart';
 import 'package:mycycleclinic/screens/select_city.dart';
 import 'repositories/auth_repository.dart';
 import 'screens/screens.dart';
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
           title: 'Aura',
           home: (FirebaseAuth.instance.currentUser != null)
               ? SelectCityScreen()
-              : const LandingScreen(),
+              : const LandingScreenTwo(),
         ),
       ),
     );

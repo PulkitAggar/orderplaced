@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:numberpicker/numberpicker.dart';
 import '../blocs/cart/cart_bloc.dart';
+import '../screens/landing_screen.dart';
 import '../utils/BMColors.dart';
 import '../utils/BMCommonWidgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -272,6 +273,61 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                       ),
                       // SizedBox(height: 4),
                       if (isAdded == false)
+                        if (FirebaseAuth.instance.currentUser != null)
+                          AppButton(
+                            width: 60,
+                            padding: const EdgeInsets.all(5),
+                            shapeBorder: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(32)),
+                            // color: bmPrimaryColor,
+                            color: Colors.white,
+
+                            onTap: () {
+                              if (currentid == widget.storeid ||
+                                  currentid == "") {
+                                FirebaseFirestore.instance
+                                    .collection("cart")
+                                    .doc("${_auth.currentUser?.email}")
+                                    .set({"storeid": widget.storeid});
+
+                                FirebaseFirestore.instance
+                                    .collection("cart")
+                                    .doc("${_auth.currentUser?.email}")
+                                    .collection("cart")
+                                    .doc("${widget.name}")
+                                    .set({
+                                  'cost': widget.cost.toDouble(),
+                                  'count': val,
+                                  'subname': widget.subname,
+                                  'catname': widget.catname,
+                                  'imageurl': widget.imageurl,
+                                  'name': widget.name,
+                                }).then((value) {
+                                  setState(() {
+                                    isAdded = true;
+                                    fetched = val;
+                                  });
+                                  AnimatedSnackBar.rectangle(
+                                    'Success',
+                                    'Your Item is added to the Cart',
+                                    type: AnimatedSnackBarType.success,
+                                    brightness: Brightness.light,
+                                  ).show(context);
+                                });
+                              } else {
+                                AnimatedSnackBar.rectangle(
+                                  'Failed',
+                                  'Cannot Add multiple store items remove your other store items to add this item',
+                                  type: AnimatedSnackBarType.success,
+                                  brightness: Brightness.light,
+                                ).show(context);
+                              }
+                            },
+                            child: Text('ADD TO CART',
+                                style: boldTextStyle(
+                                    color: Colors.black, size: 12)),
+                          ),
+                      if (FirebaseAuth.instance.currentUser == null)
                         AppButton(
                           width: 60,
                           padding: const EdgeInsets.all(5),
@@ -281,45 +337,7 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                           color: Colors.white,
 
                           onTap: () {
-                            if (currentid == widget.storeid ||
-                                currentid == "") {
-                              FirebaseFirestore.instance
-                                  .collection("cart")
-                                  .doc("${_auth.currentUser?.email}")
-                                  .set({"storeid": widget.storeid});
-
-                              FirebaseFirestore.instance
-                                  .collection("cart")
-                                  .doc("${_auth.currentUser?.email}")
-                                  .collection("cart")
-                                  .doc("${widget.name}")
-                                  .set({
-                                'cost': widget.cost.toDouble(),
-                                'count': val,
-                                'subname': widget.subname,
-                                'catname': widget.catname,
-                                'imageurl': widget.imageurl,
-                                'name': widget.name,
-                              }).then((value) {
-                                setState(() {
-                                  isAdded = true;
-                                  fetched = val;
-                                });
-                                AnimatedSnackBar.rectangle(
-                                  'Success',
-                                  'Your Item is added to the Cart',
-                                  type: AnimatedSnackBarType.success,
-                                  brightness: Brightness.light,
-                                ).show(context);
-                              });
-                            } else {
-                              AnimatedSnackBar.rectangle(
-                                'Failed',
-                                'Cannot Add multiple store items remove your other store items to add this item',
-                                type: AnimatedSnackBarType.success,
-                                brightness: Brightness.light,
-                              ).show(context);
-                            }
+                            showAlertDialog(context);
                           },
                           child: Text('ADD TO CART',
                               style:
@@ -441,4 +459,42 @@ void showBookBottomSheet(
           );
         });
       });
+}
+
+showAlertDialog(BuildContext context) {
+  // set up the buttons
+  Widget cancelButton = TextButton(
+    child: Text("No"),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
+  Widget continueButton = TextButton(
+    child: Text("Yeah, Sure"),
+    onPressed: () {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (((context) => LandingScreen()))),
+          (route) => false);
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("Hey, Why not join us!!!"),
+    content: Text(
+        "Sign-In or Create an Account to book a service or order from the stores."),
+    actions: [
+      cancelButton,
+      continueButton,
+    ],
+  );
+
+  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
 }

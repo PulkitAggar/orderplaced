@@ -302,38 +302,38 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 borderRadius: BorderRadius.circular(40),
               ),
               child: TextButton(
-                onPressed: () {
-                  if (selectedValue == 1) {
-                    createOrder();
-                  } else if (selectedValue == 2) {
-                    count();
-                    details();
-                    //ADD cart clear func
-                    delete();
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                          builder: (context) => LastBookingScreen(
-                                paymentdone: false,
-                                orderModel: widget.orderModel,
-                                namer: nameR,
-                                numberr: numberR,
-                                address: addressR,
-                                city: cityR,
-                                state: stateR,
-                                pincode: pincodeR,
-                              )),
-                      (Route<dynamic> route) => false,
-                    );
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Choose one of the options")));
-                  }
-                },
-                child: const Text(
-                    "Complete Payment",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: Colors.white)
-                )
-              ),
+                  onPressed: () {
+                    if (selectedValue == 1) {
+                      createOrder();
+                    } else if (selectedValue == 2) {
+                      count();
+                      details();
+                      //ADD cart clear func
+                      delete();
+                      Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => LastBookingScreen(
+                                  paymentdone: false,
+                                  orderModel: widget.orderModel,
+                                  namer: nameR,
+                                  numberr: numberR,
+                                  address: addressR,
+                                  city: cityR,
+                                  state: stateR,
+                                  pincode: pincodeR,
+                                )),
+                        (Route<dynamic> route) => false,
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Choose one of the options")));
+                    }
+                  },
+                  child: const Text("Complete Payment",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white))),
             ),
           );
         },
@@ -347,25 +347,25 @@ class _PaymentScreenState extends State<PaymentScreen> {
             children: [
               Space(75),
               //PaymentContainer(title: "Net Banking", icon: Icons.food_bank),
-              
+
+              // ListTile(
+              //   title: const Text('Net Banking'),
+              //   leading: Radio<int>(
+              //     fillColor:
+              //         MaterialStateColor.resolveWith((states) => Colors.black),
+              //     focusColor:
+              //         MaterialStateColor.resolveWith((states) => Colors.black),
+              //     value: 1,
+              //     groupValue: selectedValue,
+              //     onChanged: (value) {
+              //       setState(() {
+              //         selectedValue = value!;
+              //       });
+              //     },
+              //   ),
+              // ),
               ListTile(
-                title: const Text('Net Banking'),
-                leading: Radio<int>(
-                  fillColor:
-                      MaterialStateColor.resolveWith((states) => Colors.black),
-                  focusColor:
-                      MaterialStateColor.resolveWith((states) => Colors.black),
-                  value: 1,
-                  groupValue: selectedValue,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedValue = value!;
-                    });
-                  },
-                ),
-              ),
-              ListTile(
-                title: const Text('Cash Delivery'),
+                title: const Text('Cash on Delivery'),
                 leading: Radio<int>(
                   fillColor:
                       MaterialStateColor.resolveWith((states) => Colors.black),
@@ -378,21 +378,38 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   },
                 ),
               ),
-              Expanded(child: SizedBox(height: 1,), flex: 5,),
+              Expanded(
+                child: SizedBox(
+                  height: 1,
+                ),
+                flex: 5,
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
                   width: double.infinity,
                   child: Row(
                     children: [
-                      Text('Total', style: TextStyle(color: Colors.black, fontSize: 22),),
-                      Expanded(child: SizedBox(width: 1,)),
-                      Text('Rs.${widget.totsamount.toString()}', style: TextStyle(color: Colors.black, fontSize: 22))
+                      Text(
+                        'Total',
+                        style: TextStyle(color: Colors.black, fontSize: 22),
+                      ),
+                      Expanded(
+                          child: SizedBox(
+                        width: 1,
+                      )),
+                      Text('Rs.${widget.totsamount.toString()}',
+                          style: TextStyle(color: Colors.black, fontSize: 22))
                     ],
                   ),
                 ),
               ),
-              Expanded(child: SizedBox(height: 1,), flex: 1,),
+              Expanded(
+                child: SizedBox(
+                  height: 1,
+                ),
+                flex: 1,
+              ),
             ],
           ),
         ),
@@ -410,6 +427,13 @@ class MyHttpOverrides extends HttpOverrides {
   }
 }
 
-  Expanded _getAdress(String address){
-    return Expanded(child: Text(address, style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),), flex: 9,);
-  }
+Expanded _getAdress(String address) {
+  return Expanded(
+    child: Text(
+      address,
+      style: TextStyle(
+          color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+    ),
+    flex: 9,
+  );
+}

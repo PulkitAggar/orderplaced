@@ -1,15 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mycycleclinic/screens/cancellationpolicy.dart';
 import 'package:mycycleclinic/screens/current_order_screen.dart';
+import 'package:mycycleclinic/screens/landingScreen2.dart';
 import 'package:mycycleclinic/screens/past_order_screen.dart';
 import 'package:mycycleclinic/screens/privacypolicy.dart';
 import 'package:mycycleclinic/screens/shippingpolicy.dart';
 import 'package:mycycleclinic/screens/termsandcondition.dart';
 import 'package:nb_utils/nb_utils.dart';
-import '../screens/screens.dart';
 import '../blocs/blocs.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -30,6 +30,54 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final User? user = FirebaseAuth.instance.currentUser;
+
+  showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue"),
+      onPressed: () {
+        User? user2 = FirebaseAuth.instance.currentUser;
+        context.read<AuthBloc>().add(SignOutRequested());
+        user2!.delete().then((_) {
+          FirebaseFirestore.instance
+              .collection("users")
+              .doc(user2.uid)
+              .delete();
+          FirebaseFirestore.instance
+              .collection("cart")
+              .doc(user2.email)
+              .delete();
+        });
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Well, you can always come back!!!"),
+      content: Text(
+          "Would you like to PERMANENTLY DELETE your account???\nPressing continue will DELETE all your data with us."),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           if (state is UnAuthenticated) {
             // Navigate to the sign in screen when the user Signs Out
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => LandingScreen()),
+              MaterialPageRoute(builder: (context) => LandingScreenTwo()),
               (route) => false,
             );
           }
@@ -264,7 +312,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Color(0xFF9ABF00),
                                 ),
                                 Text(
-                                  "  Phone : ",
+                                  "  Phone :   ",
                                   style: TextStyle(
                                     color: Color(0xFF9ABF00),
                                     fontSize: 12,
@@ -291,7 +339,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   color: Color(0xFF9ABF00),
                                 ),
                                 Text(
-                                  "  E-Mail : ",
+                                  "  E-Mail :     ",
                                   style: TextStyle(
                                     color: Color(0xFF9ABF00),
                                     fontSize: 12,
@@ -344,7 +392,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextButton(
+                    onPressed: () {
+                      showAlertDialog(context);
+                    },
+                    child: Container(
+                      child: Text(
+                        'Delete Account',
+                        textAlign: TextAlign.center,
+                      ),
+                      width: double.infinity,
+                    ),
+                    style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(
+                            EdgeInsets.all(15)),
+                        foregroundColor:
+                            MaterialStateProperty.all<Color>(Colors.red),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: BorderSide(color: Colors.red)))),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 2.0),
                   child: GestureDetector(
                     onTap: () {
                       Navigator.push(
