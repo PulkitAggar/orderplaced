@@ -317,7 +317,7 @@ class BMServiceComponentState extends State<BMServiceComponent> {
                               } else {
                                 AnimatedSnackBar.rectangle(
                                   'Failed',
-                                  'Cannot Add multiple store items remove your other store items to add this item',
+                                  'Items from multiple stores cannot be added at a time. To add items from this store remove items present in the cart from other store.',
                                   type: AnimatedSnackBarType.success,
                                   brightness: Brightness.light,
                                 ).show(context);
