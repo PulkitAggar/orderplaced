@@ -183,7 +183,7 @@ Padding editTextStyle(var hintText,
     padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
     child: TextFormField(
       style: const TextStyle(fontSize: 20, color: Colors.white),
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      //autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: validator,
       obscureText: isPassword,
       controller: controller,
